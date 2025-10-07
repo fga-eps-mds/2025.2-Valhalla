@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Usuario {
+  id  Int   @id @default(autoincrement())
+  nome String
+  email String @unique
+  senha String
+  role Boolean
+  cargo String
+  admMaster Boolean
+  mediasrc String?
+  denuncias Denuncia[]
+  comentarios Comentario[]
+  noticias Noticia[]
+}
+
+model Denuncia {
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  descricao String
+  tipo String
+  usuario  Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  comentarios Comentario []
+}
+
+model Comentario{
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  idDenuncia Int
+  Descricao String
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Noticia {
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  descricao String
+  tipo String
+  mediasrc String?
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  }
