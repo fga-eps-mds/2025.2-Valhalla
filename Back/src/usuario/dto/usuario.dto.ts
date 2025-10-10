@@ -13,14 +13,13 @@ export type UsuarioDto = {
     //}
 
     id: number
+    nome: string
     email: string
     senha: string
-    role: boolean
     cargo: string
-    admMaster: string
     mediasrc?: string
-    denuncias: Denuncia[]
-    comentarios: Comentario[]
-    noticias: Noticia[]
-    
+    //denuncias: Denuncia[]
+    //comentarios: Comentario[]
+    //noticias: Noticia[]
+
 }
