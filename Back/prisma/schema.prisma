@@ -69,6 +69,7 @@ model Apoios {
   idDenuncia Int
   usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
   denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@unique([idUsuario, idDenuncia])
 }
 
 model Reports {
@@ -77,4 +78,5 @@ model Reports {
   idDenuncia Int
   usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
   denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@unique([idUsuario, idDenuncia])
 }
