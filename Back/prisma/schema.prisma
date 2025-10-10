@@ -16,7 +16,7 @@ model Usuario {
   email String @unique
   senha String
   cargo String
-  IsAdmin Boolean
+  isAdmin Boolean
   admMaster Boolean
   mediasrc String?
   denuncias Denuncia[]
@@ -36,9 +36,9 @@ model Denuncia {
   comentarios Comentario []
   reports Reports[]
   apoios Apoios[]
-  DataCriacao DateTime @default(now())
-  DataUpdate DateTime @updatedAt
-  Anonimato Boolean
+  dataCriacao DateTime @default(now())
+  dataUpdate DateTime @updatedAt
+  anonimato Boolean
 }
 
 model Comentario{
@@ -48,8 +48,8 @@ model Comentario{
   Descricao String
   usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
   denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  DataCriacao DateTime @default(now())
-  DataUpdate DateTime @updatedAt
+  dataCriacao DateTime @default(now())
+  dataUpdate DateTime @updatedAt
 }
 
 model Noticia {
@@ -59,8 +59,8 @@ model Noticia {
   tipo String
   mediasrc String?
   usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  DataCriacao DateTime @default(now())
-  DataUpdate DateTime @updatedAt
+  dataCriacao DateTime @default(now())
+  dataUpdate DateTime @updatedAt
   }
 
 model Apoios {
