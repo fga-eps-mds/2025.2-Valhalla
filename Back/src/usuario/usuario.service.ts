@@ -56,4 +56,31 @@ constructor(private prisma: PrismaService) {}
 
         return usuario;
     }
+
+// Filtro de denúncias para o usuário.
+// Recomendado que o filtro vá para o crud de denúncias.
+        async FiltrarDenunciasPorTipo(tipo: string) {
+
+        const denuncias = await this.prisma.denuncia.findMany({
+            where: {
+
+                tipo: {
+                    contains: tipo, 
+                    mode: 'insensitive' 
+                }
+            },
+            // Inclui alguns dados do autor da denúncia para dar mais contexto
+            include: {
+                autor: {
+                    select: {
+                        id: true,
+                        nome: true
+                    }
+                }
+            }
+        });
+
+        // Retorna a lista de denúncias encontradas (pode ser uma lista vazia)
+        return denuncias;
+    }
 }

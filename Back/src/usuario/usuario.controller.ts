@@ -24,4 +24,11 @@ export class UsuarioController {
     async findByEmail(@Param('email') email: string) {
         return this.usuarioService.BuscarUsuarioPorEmail(email);
     }
+
+// Filtro de denúncias
+// Recomendado que o filtro vá para o crud de denúncias.
+    @Get('denuncias/filtrar/:tipo')
+    async filtrarDenuncias(@Param('tipo') tipo: string) {
+        return this.usuarioService.FiltrarDenunciasPorTipo(tipo);
+    }
 }
