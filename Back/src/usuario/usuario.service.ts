@@ -42,5 +42,18 @@ constructor(private prisma: PrismaService) {}
             }
         })
     }
+// Filtro de usuários por email (função para adm)
+    async BuscarUsuarioPorEmail(email: string){
+        const usuario = await this.prisma.usuario.findUnique({
+            where: {
+                email: email,
+            }
+        });
 
+        if (!usuario) {
+            throw new Error("Usuário com este email não foi encontrado!");
+        }
+
+        return usuario;
+    }
 }

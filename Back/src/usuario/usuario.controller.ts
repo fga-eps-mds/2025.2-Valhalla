@@ -1,6 +1,7 @@
-import { Controller, Body, Post, Delete, Param } from '@nestjs/common';
+import { Controller, Body, Post, Delete, Param, UseGuards, Get } from '@nestjs/common';
 import { UsuarioDto } from './dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
+import { AdminMasterGuard } from 'src/autenticacao/admin-master.guard';
 
 @Controller('Usuario')
 export class UsuarioController {
@@ -15,5 +16,12 @@ export class UsuarioController {
     @Delete(":id")
     async delete(@Param("id") id:number) {
         return this.usuarioService.DeletarUsuario(Number(id));
+    }
+    
+//Rota protegida para acesso apenas do adm
+    @UseGuards(AdminMasterGuard)
+    @Get('buscar/:email')
+    async findByEmail(@Param('email') email: string) {
+        return this.usuarioService.BuscarUsuarioPorEmail(email);
     }
 }
