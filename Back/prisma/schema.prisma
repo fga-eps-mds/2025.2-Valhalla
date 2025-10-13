@@ -13,12 +13,13 @@ datasource db {
 model Usuario {
   id  Int   @id @default(autoincrement())
   nome String
-  email String @unique
+  email String
   senha String
   cargo String
   isAdmin Boolean
   admMaster Boolean
   mediasrc String?
+  dataDelete DateTime?
   denuncias Denuncia[]
   comentarios Comentario[]
   noticias Noticia[]
@@ -35,12 +36,13 @@ model Denuncia {
   tipo String
   mediasrc String?
   anonimato Boolean @default(false)
+  dataDelete DateTime?
   dataCriacao DateTime @default(now())
   dataUpdate DateTime @updatedAt
   comentarios Comentario []
   reportsDenuncia ReportsDenuncia[]
   apoiosDenuncia ApoiosDenuncia[]
-  usuario  Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuario  Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
 }
 
 model Comentario{
@@ -48,13 +50,14 @@ model Comentario{
   idUsuario Int
   idDenuncia Int
   Descricao String
+  anonimato Boolean @default(false)
+  dataDelete DateTime?
   dataCriacao DateTime @default(now())
   dataUpdate DateTime @updatedAt
-  anonimato Boolean @default(false)
   reportsComentario ReportsComentario[]
   apoiosComentario ApoiosComentario[]
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onUpdate: Cascade)
 }
 
 model Noticia {
@@ -63,17 +66,18 @@ model Noticia {
   descricao String
   tipo String
   mediasrc String?
+  dataDelete DateTime?
   dataCriacao DateTime @default(now())
   dataUpdate DateTime @updatedAt
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
   }
 
 model ApoiosDenuncia {
   id Int @id @default(autoincrement())
   idUsuario Int
   idDenuncia Int
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onUpdate: Cascade)
   @@unique([idUsuario, idDenuncia])
 }
 
@@ -81,8 +85,8 @@ model ReportsDenuncia {
   id Int @id @default(autoincrement())
   idUsuario Int
   idDenuncia Int
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onUpdate: Cascade)
   @@unique([idUsuario, idDenuncia])
 }
 
@@ -90,8 +94,8 @@ model ApoiosComentario {
   id Int @id @default(autoincrement())
   idUsuario Int
   idComentario Int
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  comentario Comentario @relation(fields: [idComentario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  comentario Comentario @relation(fields: [idComentario], references: [id], onUpdate: Cascade)
   @@unique([idUsuario, idComentario])
 }
 
@@ -99,7 +103,7 @@ model ReportsComentario {
   id Int @id @default(autoincrement())
   idUsuario Int
   idComentario Int
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  comentario Comentario @relation(fields: [idComentario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  comentario Comentario @relation(fields: [idComentario], references: [id], onUpdate: Cascade)
   @@unique([idUsuario, idComentario])
 }
