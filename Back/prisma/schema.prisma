@@ -40,7 +40,7 @@ model Denuncia {
   apoiosDenuncia ApoiosDenuncia[]
   dataCriacao DateTime @default(now())
   dataUpdate DateTime @updatedAt
-  anonimato Boolean
+  anonimato Boolean @default(false)
 }
 
 model Comentario{
@@ -54,6 +54,7 @@ model Comentario{
   dataUpdate DateTime @updatedAt
   reportsComentario ReportsComentario[]
   apoiosComentario ApoiosComentario[]
+  anonimato Boolean @default(false)
 }
 
 model Noticia {
