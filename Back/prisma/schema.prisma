@@ -34,13 +34,13 @@ model Denuncia {
   descricao String
   tipo String
   mediasrc String?
-  usuario  Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  anonimato Boolean @default(false)
+  dataCriacao DateTime @default(now())
+  dataUpdate DateTime @updatedAt
   comentarios Comentario []
   reportsDenuncia ReportsDenuncia[]
   apoiosDenuncia ApoiosDenuncia[]
-  dataCriacao DateTime @default(now())
-  dataUpdate DateTime @updatedAt
-  anonimato Boolean @default(false)
+  usuario  Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Comentario{
@@ -48,13 +48,13 @@ model Comentario{
   idUsuario Int
   idDenuncia Int
   Descricao String
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
   dataCriacao DateTime @default(now())
   dataUpdate DateTime @updatedAt
+  anonimato Boolean @default(false)
   reportsComentario ReportsComentario[]
   apoiosComentario ApoiosComentario[]
-  anonimato Boolean @default(false)
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Noticia {
@@ -63,9 +63,9 @@ model Noticia {
   descricao String
   tipo String
   mediasrc String?
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
   dataCriacao DateTime @default(now())
   dataUpdate DateTime @updatedAt
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
   }
 
 model ApoiosDenuncia {
