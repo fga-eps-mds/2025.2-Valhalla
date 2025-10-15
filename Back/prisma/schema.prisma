@@ -33,7 +33,7 @@ model Denuncia {
   id Int @id @default(autoincrement())
   idUsuario Int
   descricao String
-  tipo String
+  idCategoria Int
   mediasrc String?
   anonimato Boolean @default(false)
   dataDelete DateTime?
@@ -43,6 +43,7 @@ model Denuncia {
   reportsDenuncia ReportsDenuncia[]
   apoiosDenuncia ApoiosDenuncia[]
   usuario  Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  categoria Categoria @relation(fields: [idCategoria], references: [id], onUpdate: Cascade)
 }
 
 model Comentario{
@@ -71,6 +72,12 @@ model Noticia {
   dataUpdate DateTime @updatedAt
   usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
   }
+
+model Categoria {
+  id Int @id @default(autoincrement())
+  nome String @unique
+  denuncias Denuncia[]
+}
 
 model ApoiosDenuncia {
   id Int @id @default(autoincrement())
