@@ -7,11 +7,10 @@ export class DenunciasService{
 
     constructor (private prisma: PrismaService){}
 
-    async create (data: DenunciaDto, idUsuario: number){
+    async create (data: DenunciaDto){
         const denuncia = await this.prisma.denuncia.create({
             data: {
-                ...data,
-                idUsuario: idUsuario
+                ...data
             }
         });
 

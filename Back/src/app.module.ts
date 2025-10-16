@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
-//import { UsuarioService } from './usuario/usuario.service';
-import { DenunciaService } from './denuncia/denuncia.service';
-import { DenunciaController } from './denuncia/denuncia.controller';
-import { DenunciaModule } from './denuncia/denuncia.module';
+import { DenunciasService } from './denuncias/denuncias.service';
+import { DenunciasController } from './denuncias/denuncias.controller';
 import { DenunciasModule } from './denuncias/denuncias.module';
 
 
 @Module({
-  imports: [DenunciaModule, DenunciasModule],
-  controllers: [DenunciaController],
-  providers: [DenunciaService],
+  imports: [DenunciasModule, DenunciasModule],
+  controllers: [DenunciasController],
+  providers: [DenunciasService],
 })
 export class AppModule {}

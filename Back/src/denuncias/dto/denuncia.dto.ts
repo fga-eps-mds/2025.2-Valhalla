@@ -1,6 +1,11 @@
 import { IsString, IsNotEmpty, IsInt, IsOptional, IsBoolean } from 'class-validator';
 
 export class DenunciaDto {
+
+    @IsInt({ message: 'O idCategoria deve ser um numero.' })
+    @IsNotEmpty({ message: 'O idCategoria não pode estar vazio.' })
+    idUsuario: number;
+
     @IsString({ message: 'A descrição deve ser um texto.' })
     @IsNotEmpty({ message: 'A descrição não pode estar vazia.' })
     descricao: string;
