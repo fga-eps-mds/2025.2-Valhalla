@@ -13,24 +13,37 @@ datasource db {
 model Usuario {
   id  Int   @id @default(autoincrement())
   nome String
-  email String @unique
+  email String
   senha String
-  role Boolean
   cargo String
+  isAdmin Boolean
   admMaster Boolean
   mediasrc String?
+  dataDelete DateTime?
   denuncias Denuncia[]
   comentarios Comentario[]
   noticias Noticia[]
+  reportsDenuncia ReportsDenuncia[]
+  apoiosDenuncia ApoiosDenuncia[]
+  reportsComentario ReportsComentario[]
+  apoiosComentario ApoiosComentario[]
 }
 
 model Denuncia {
   id Int @id @default(autoincrement())
   idUsuario Int
   descricao String
-  tipo String
-  usuario  Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idCategoria Int
+  mediasrc String?
+  anonimato Boolean @default(false)
+  dataDelete DateTime?
+  dataCriacao DateTime @default(now())
+  dataUpdate DateTime @updatedAt
   comentarios Comentario []
+  reportsDenuncia ReportsDenuncia[]
+  apoiosDenuncia ApoiosDenuncia[]
+  usuario  Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  categoria Categoria @relation(fields: [idCategoria], references: [id], onUpdate: Cascade)
 }
 
 model Comentario{
@@ -38,8 +51,14 @@ model Comentario{
   idUsuario Int
   idDenuncia Int
   Descricao String
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  anonimato Boolean @default(false)
+  dataDelete DateTime?
+  dataCriacao DateTime @default(now())
+  dataUpdate DateTime @updatedAt
+  reportsComentario ReportsComentario[]
+  apoiosComentario ApoiosComentario[]
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onUpdate: Cascade)
 }
 
 model Noticia {
@@ -48,5 +67,50 @@ model Noticia {
   descricao String
   tipo String
   mediasrc String?
-  usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  dataDelete DateTime?
+  dataCriacao DateTime @default(now())
+  dataUpdate DateTime @updatedAt
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
   }
+
+model Categoria {
+  id Int @id @default(autoincrement())
+  nome String @unique
+  denuncias Denuncia[]
+}
+
+model ApoiosDenuncia {
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  idDenuncia Int
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onUpdate: Cascade)
+  @@unique([idUsuario, idDenuncia])
+}
+
+model ReportsDenuncia {
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  idDenuncia Int
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  denuncia Denuncia @relation(fields: [idDenuncia], references: [id], onUpdate: Cascade)
+  @@unique([idUsuario, idDenuncia])
+}
+
+model ApoiosComentario {
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  idComentario Int
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  comentario Comentario @relation(fields: [idComentario], references: [id], onUpdate: Cascade)
+  @@unique([idUsuario, idComentario])
+}
+
+model ReportsComentario {
+  id Int @id @default(autoincrement())
+  idUsuario Int
+  idComentario Int
+  usuario Usuario @relation(fields: [idUsuario], references: [id], onUpdate: Cascade)
+  comentario Comentario @relation(fields: [idComentario], references: [id], onUpdate: Cascade)
+  @@unique([idUsuario, idComentario])
+}
