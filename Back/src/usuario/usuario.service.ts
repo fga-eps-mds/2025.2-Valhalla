@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UsuarioDto } from './dto/usuario.dto';
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from '../database/prisma.service';
+import * as bcrypt from 'bcrypt';
+import { updateUsuarioDto } from './dto/update.usuario.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -8,20 +10,20 @@ export class UsuarioService {
 constructor(private prisma: PrismaService) {}
 
     async CriarUsuario(DadosUsuario: UsuarioDto){
+        const SenhaHash = await bcrypt.hash(DadosUsuario.senha, 10 )
         const CriacaoDeUsuario = await this.prisma.usuario.create({
             data:{
                 nome: DadosUsuario.nome,
                 email: DadosUsuario.email,
-                senha: DadosUsuario.senha,
+                senha: SenhaHash,
                 cargo: DadosUsuario.cargo,
                 mediasrc: DadosUsuario.mediasrc,
-                role: false,
-                admMaster:false
-            }     
-     
-        })
-
-         return CriacaoDeUsuario;
+                isAdmin: false,
+                admMaster: false
+            },
+        });
+        const{senha, ...result} = CriacaoDeUsuario;
+        return result;
         
     }
 
@@ -42,45 +44,28 @@ constructor(private prisma: PrismaService) {}
             }
         })
     }
-// Filtro de usuários por email (função para adm)
-    async BuscarUsuarioPorEmail(email: string){
-        const usuario = await this.prisma.usuario.findUnique({
-            where: {
-                email: email,
-            }
-        });
-
-        if (!usuario) {
-            throw new Error("Usuário com este email não foi encontrado!");
+    
+    async FindOne(id: number){
+        if(!id) {
+            throw new Error("Usuário não encontrado!")
         }
 
-        return usuario;
+        return await this.prisma.usuario.findUnique({where:{id}})
     }
-
-// Filtro de denúncias para o usuário.
-// Recomendado que o filtro vá para o crud de denúncias.
-        async FiltrarDenunciasPorTipo(tipo: string) {
-
-        const denuncias = await this.prisma.denuncia.findMany({
-            where: {
-
-                tipo: {
-                    contains: tipo, 
-                    mode: 'insensitive' 
-                }
-            },
-            // Inclui alguns dados do autor da denúncia para dar mais contexto
-            include: {
-                autor: {
-                    select: {
-                        id: true,
-                        nome: true
-                    }
-                }
-            }
-        });
-
-        // Retorna a lista de denúncias encontradas (pode ser uma lista vazia)
-        return denuncias;
+    
+    async findAll() {
+        return this.prisma.usuario.findMany();
+    }
+    async update(id:number, data: updateUsuarioDto){
+        const usuario = await this.prisma.usuario.findUnique({
+            where:{ id }
+        })
+        if(!usuario) {
+            throw new Error("Usuário não encontrado!")
+        }
+        return await this.prisma.usuario.update({
+            data,
+            where:{ id }
+        })
     }
 }

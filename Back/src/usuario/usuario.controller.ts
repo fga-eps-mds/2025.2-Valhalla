@@ -1,7 +1,7 @@
-import { Controller, Body, Post, Delete, Param, UseGuards, Get } from '@nestjs/common';
+import { Controller, Body, Post, Delete, Param, UseGuards, Get, Patch, ParseIntPipe } from '@nestjs/common';
 import { UsuarioDto } from './dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
-import { AdminMasterGuard } from 'src/autenticacao/admin-master.guard';
+import { updateUsuarioDto } from './dto/update.usuario.dto';
 
 @Controller('Usuario')
 export class UsuarioController {
@@ -17,18 +17,23 @@ export class UsuarioController {
     async delete(@Param("id") id:number) {
         return this.usuarioService.DeletarUsuario(Number(id));
     }
+
+    @Get(":id")
+    async FindOne(@Param("id") id:number) {
+        return this.usuarioService.FindOne(Number(id));
+    }
     
-//Rota protegida para acesso apenas do adm
-    @UseGuards(AdminMasterGuard)
-    @Get('buscar/:email')
-    async findByEmail(@Param('email') email: string) {
-        return this.usuarioService.BuscarUsuarioPorEmail(email);
+    @Get()
+    async findAll() {
+        return this.usuarioService.findAll();
     }
 
-// Filtro de denúncias
-// Recomendado que o filtro vá para o crud de denúncias.
-    @Get('denuncias/filtrar/:tipo')
-    async filtrarDenuncias(@Param('tipo') tipo: string) {
-        return this.usuarioService.FiltrarDenunciasPorTipo(tipo);
-    }
+    @Patch(':id')
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateData: updateUsuarioDto,
+    ) {
+        return this.usuarioService.update(id, updateData);
+    };
 }
+

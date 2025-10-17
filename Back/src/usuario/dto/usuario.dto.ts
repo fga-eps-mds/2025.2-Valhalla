@@ -1,25 +1,26 @@
-export type UsuarioDto = {
-    //      id  Int   @id @default(autoincrement())
-    //   nome String
-    //   email String @unique
-    //   senha String
-    //   role Boolean
-    //   cargo String
-    //   admMaster Boolean
-    //   mediasrc String?
-    //   denuncias Denuncia[]
-    //   comentarios Comentario[]
-    //   noticias Noticia[]
-    //}
+import { IsEmail, isNotEmpty, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
 
-    id: number
-    nome: string
-    email: string
-    senha: string
-    cargo: string
-    mediasrc?: string
-    //denuncias: Denuncia[]
-    //comentarios: Comentario[]
-    //noticias: Noticia[]
+export class UsuarioDto {
+    @IsEmail()
+    email: string;
 
+    @IsString()
+    @IsNotEmpty()
+    nome: string;
+
+    @IsString()
+    @IsNotEmpty()
+    cargo: string;
+
+    @IsString()
+    @IsOptional()
+    mediasrc: string;
+
+    @IsNotEmpty({message: 'a senha não pode ser vazia'})
+    @MinLength(8, {message: 'a senha tem que ter no mínimo 8 caracteres'})
+    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais.',
+  })
+    senha: string;
+    
 }
