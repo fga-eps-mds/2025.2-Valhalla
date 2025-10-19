@@ -50,4 +50,23 @@ export class DenunciasService{
         });
     }
 
+    async deletarDenuncia (id: number, data: edicaoDenunciaDto){
+        const existeDenuncia = await this.prisma.denuncia.findUnique({
+            where: { id },
+        })
+        if (!existeDenuncia) {
+            throw new Error('Denúncia não encontrada!');
+        }
+        return await this.prisma.denuncia.update({
+            where: { id },
+            data: {
+                descricao: data.descricao,
+                idCategoria: data.idCategoria,
+                mediasrc: data.mediasrc,
+                anonimato: data.anonimato,
+                dataDelete: new Date(),
+            },
+        });
+    }
+
 }

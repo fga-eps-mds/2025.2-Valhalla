@@ -31,4 +31,13 @@ export class DenunciasController {
     ) {
         return this.denunciasService.deletarDenunciaPermanente(id);
     }
+
+    @Patch(':id')
+    async deletarDenuncia(
+      @Param('id', ParseIntPipe) id: number,
+      @Body() data: edicaoDenunciaDto,
+    ) {
+        return this.denunciasService.editarDenuncia(id, data);
+    }
+
 }
