@@ -2,11 +2,6 @@ import { Body, Controller, Post, UseGuards, Req, Param, Put, ParseIntPipe, Patch
 import { DenunciaDto } from './dto/denuncia.dto';
 import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
 import { DenunciasService } from './denuncias.service';
-import { Request } from 'express';
-
-interface AuthRequest extends Request {
-  user: { id: number; email: string; };
-}
 
 @Controller('denuncias')
 export class DenunciasController {
@@ -32,7 +27,7 @@ export class DenunciasController {
         return this.denunciasService.deletarDenunciaPermanente(id);
     }
 
-    @Patch(':id')
+    @Delete('soft-delete/:id')
     async deletarDenuncia(
       @Param('id', ParseIntPipe) id: number,
       @Body() data: edicaoDenunciaDto,
