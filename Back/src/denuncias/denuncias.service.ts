@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { DenunciaDto } from './dto/denuncia.dto';
+import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
 
 @Injectable()
 export class DenunciasService{
@@ -17,5 +18,23 @@ export class DenunciasService{
                 anonimato: data.anonimato,
             }});
         return criacaoDenuncia;
+    }
+
+    async editarDenuncia (id: number,data: edicaoDenunciaDto){
+        const edicaoDenuncia = await this.prisma.denuncia.findUnique({
+            where: { id },
+        })
+        if (!edicaoDenuncia) {
+            throw new Error('Denúncia não encontrada!');
+        }
+        return await this.prisma.denuncia.update({
+            where: { id },
+            data: {
+                descricao: data.descricao,
+                idCategoria: data.idCategoria,
+                mediasrc: data.mediasrc,
+                anonimato: data.anonimato,
+            },
+        });
     }
 }
