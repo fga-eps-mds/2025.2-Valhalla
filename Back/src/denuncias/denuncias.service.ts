@@ -21,10 +21,10 @@ export class DenunciasService{
     }
 
     async editarDenuncia (id: number,data: edicaoDenunciaDto){
-        const edicaoDenuncia = await this.prisma.denuncia.findUnique({
+        const existeDenuncia = await this.prisma.denuncia.findUnique({
             where: { id },
         })
-        if (!edicaoDenuncia) {
+        if (!existeDenuncia) {
             throw new Error('Denúncia não encontrada!');
         }
         return await this.prisma.denuncia.update({
@@ -37,4 +37,17 @@ export class DenunciasService{
             },
         });
     }
+
+    async deletarDenunciaPermanente (id: number){
+        const existeDenuncia = await this.prisma.denuncia.findUnique({
+            where: { id },
+        })
+        if (!existeDenuncia) {
+            throw new Error('Denúncia não encontrada!');
+        }
+        return await this.prisma.denuncia.delete({
+            where: { id },
+        });
+    }
+
 }

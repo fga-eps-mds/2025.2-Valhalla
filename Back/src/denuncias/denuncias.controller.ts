@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Req, Param, Put, ParseIntPipe, Patch } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Req, Param, Put, ParseIntPipe, Patch, Delete } from '@nestjs/common';
 import { DenunciaDto } from './dto/denuncia.dto';
 import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
 import { DenunciasService } from './denuncias.service';
@@ -23,5 +23,12 @@ export class DenunciasController {
       @Body() data: edicaoDenunciaDto,
     ) {
         return this.denunciasService.editarDenuncia(id, data);
+    }
+
+    @Delete(':id')
+    async deletarDenunciaPermanente(
+      @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.denunciasService.deletarDenunciaPermanente(id);
     }
 }
