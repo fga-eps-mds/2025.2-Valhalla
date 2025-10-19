@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Req, Param, Put, ParseIntPipe, Patch, Delete } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Req, Param, Put, ParseIntPipe, Patch, Delete, Get } from '@nestjs/common';
 import { DenunciaDto } from './dto/denuncia.dto';
 import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
 import { DenunciasService } from './denuncias.service';
@@ -13,7 +13,7 @@ export class DenunciasController {
     constructor(private readonly denunciasService: DenunciasService) {}
 
     @Post()
-    async create(@Body() data: DenunciaDto) {
+    async criarDenuncia(@Body() data: DenunciaDto) {
         return this.denunciasService.criarDenuncia(data);
     }
 
@@ -38,6 +38,13 @@ export class DenunciasController {
       @Body() data: edicaoDenunciaDto,
     ) {
         return this.denunciasService.editarDenuncia(id, data);
+    }
+
+    @Get(':id')
+    async encontrarDenuncia(
+      @Param('id') id: number
+    ) {
+        return this.denunciasService.encontrarDenuncia(id);
     }
 
 }

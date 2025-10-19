@@ -69,4 +69,15 @@ export class DenunciasService{
         });
     }
 
+    async encontrarDenuncia(id: number) {
+        if (!id) {
+            throw new Error('Denuncia não Encontrada!');
+        }
+        return this.prisma.denuncia.findUnique({
+            where: { id },
+        });
+    }
+
+
+
 }
