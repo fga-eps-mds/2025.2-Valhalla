@@ -47,4 +47,9 @@ export class DenunciasController {
         return this.denunciasService.encontrarDenuncia(id);
     }
 
+    @Get()
+    async listarDenuncias() {
+        return this.denunciasService.listarDenuncias();
+    }
+
 }

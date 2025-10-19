@@ -78,6 +78,8 @@ export class DenunciasService{
         });
     }
 
-
+    async listarDenuncias() {
+        return this.prisma.denuncia.findMany();
+    }
 
 }
