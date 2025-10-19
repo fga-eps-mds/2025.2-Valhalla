@@ -13,6 +13,6 @@ export class DenunciasController {
 
     @Post()
     async create(@Body() data: DenunciaDto) {
-        return this.denunciasService.create(data);
+        return this.denunciasService.criarDenuncia(data);
     }
 }

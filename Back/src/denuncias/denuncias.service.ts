@@ -7,14 +7,15 @@ export class DenunciasService{
 
     constructor (private prisma: PrismaService){}
 
-    async create (data: DenunciaDto){
-        const denuncia = await this.prisma.denuncia.create({
+    async criarDenuncia (data: DenunciaDto){
+        const criacaoDenuncia = await this.prisma.denuncia.create({
             data: {
-                ...data
-            }
-        });
-
-        return denuncia;
+                idUsuario: data.idUsuario,
+                descricao: data.descricao,
+                idCategoria: data.idCategoria,
+                mediasrc: data.mediasrc,
+                anonimato: data.anonimato,
+            }});
+        return criacaoDenuncia;
     }
-
 }
