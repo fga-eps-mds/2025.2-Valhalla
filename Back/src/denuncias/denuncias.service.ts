@@ -38,7 +38,7 @@ export class DenunciasService{
         });
     }
 
-    async deletarDenunciaPermanente (id: number){
+    async deletarDenuncia (id: number){
         const existeDenuncia = await this.prisma.denuncia.findUnique({
             where: { id },
         })
@@ -50,7 +50,7 @@ export class DenunciasService{
         });
     }
 
-    async deletarDenuncia (id: number){
+    async desativarDenuncia (id: number){
         const existeDenuncia = await this.prisma.denuncia.findUnique({
             where: { id },
         })

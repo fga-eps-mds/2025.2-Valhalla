@@ -7,7 +7,7 @@ import { AppController } from './app.controller';
 import { PrismaModule } from './database/prisma.module';
 
 @Module({
-  imports: [DenunciasModule, DenunciasModule, PrismaModule],
+  imports: [DenunciasModule, PrismaModule],
   controllers: [DenunciasController,AppController],
   providers: [DenunciasService,AppService],
 })

@@ -21,17 +21,17 @@ export class DenunciasController {
     }
 
     @Delete(':id')
-    async deletarDenunciaPermanente(
+    async deletarDenuncia(
       @Param('id', ParseIntPipe) id: number,
     ) {
-        return this.denunciasService.deletarDenunciaPermanente(id);
+        return this.denunciasService.deletarDenuncia(id);
     }
 
-    @Delete('soft-delete/:id')
-    async deletarDenuncia(
+    @Patch('soft-delete/:id')
+    async desativarDenuncia(
       @Param('id', ParseIntPipe) id: number
     ) {
-        return this.denunciasService.deletarDenuncia(id);
+        return this.denunciasService.desativarDenuncia(id);
     }
 
     @Get(':id')
