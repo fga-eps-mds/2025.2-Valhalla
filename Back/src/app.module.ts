@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-//import { UsuarioService } from './usuario/usuario.service';
-import { DenunciaService } from './denuncia/denuncia.service';
-import { DenunciaController } from './denuncia/denuncia.controller';
-import { DenunciaModule } from './denuncia/denuncia.module';
-
+import { DenunciasService } from './denuncias/denuncias.service';
+import { DenunciasController } from './denuncias/denuncias.controller';
+import { DenunciasModule } from './denuncias/denuncias.module';
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
+import { PrismaModule } from './database/prisma.module';
 
 @Module({
-  imports: [DenunciaModule],
-  controllers: [DenunciaController],
-  providers: [DenunciaService],
+  imports: [DenunciasModule, DenunciasModule, PrismaModule],
+  controllers: [DenunciasController,AppController],
+  providers: [DenunciasService,AppService],
 })
 export class AppModule {}
