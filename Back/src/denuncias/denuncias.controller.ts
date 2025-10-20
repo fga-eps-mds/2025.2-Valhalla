@@ -29,10 +29,9 @@ export class DenunciasController {
 
     @Delete('soft-delete/:id')
     async deletarDenuncia(
-      @Param('id', ParseIntPipe) id: number,
-      @Body() data: edicaoDenunciaDto,
+      @Param('id', ParseIntPipe) id: number
     ) {
-        return this.denunciasService.editarDenuncia(id, data);
+        return this.denunciasService.deletarDenuncia(id);
     }
 
     @Get(':id')

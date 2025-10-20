@@ -50,7 +50,7 @@ export class DenunciasService{
         });
     }
 
-    async deletarDenuncia (id: number, data: edicaoDenunciaDto){
+    async deletarDenuncia (id: number){
         const existeDenuncia = await this.prisma.denuncia.findUnique({
             where: { id },
         })
@@ -60,10 +60,6 @@ export class DenunciasService{
         return await this.prisma.denuncia.update({
             where: { id },
             data: {
-                descricao: data.descricao,
-                idCategoria: data.idCategoria,
-                mediasrc: data.mediasrc,
-                anonimato: data.anonimato,
                 dataDelete: new Date(),
             },
         });
