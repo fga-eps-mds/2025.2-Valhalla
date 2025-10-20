@@ -37,7 +37,7 @@ export class DenunciasController {
 
     @Get(':id')
     async encontrarDenuncia(
-      @Param('id') id: number
+      @Param('id', ParseIntPipe) id: number,
     ) {
         return this.denunciasService.encontrarDenuncia(id);
     }
