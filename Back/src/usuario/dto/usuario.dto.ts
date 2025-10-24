@@ -1,4 +1,5 @@
-import { IsEmail, isNotEmpty, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
+import { IsEmail, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
+import { CargoUsuario } from "generated/prisma";
 
 export class UsuarioDto {
     @IsEmail()
@@ -8,9 +9,9 @@ export class UsuarioDto {
     @IsNotEmpty()
     nome: string;
 
-    @IsString()
+    @IsEnum(CargoUsuario)
     @IsNotEmpty()
-    cargo: string;
+    cargo: CargoUsuario;
 
     @IsString()
     @IsOptional()

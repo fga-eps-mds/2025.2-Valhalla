@@ -6,6 +6,7 @@ import { AdminMasterGuard } from 'src/autenticacao/admin-master.guard';
 
 @Module({
   providers: [UsuarioService, PrismaService, AdminMasterGuard],
-  controllers: [UsuarioController]
+  controllers: [UsuarioController],
+  exports: [UsuarioService]
 })
 export class UsuarioModule {}
