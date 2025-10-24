@@ -8,9 +8,10 @@ import { DenunciasModule } from './denuncias/denuncias.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { PrismaModule } from './database/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [DenunciasModule, PrismaModule, UsuarioModule],
+  imports: [DenunciasModule, PrismaModule, UsuarioModule, AuthModule],
   controllers: [DenunciasController,AppController, UsuarioController],
   providers: [DenunciasService,AppService, UsuarioService],
 })
