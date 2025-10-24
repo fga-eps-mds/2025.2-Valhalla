@@ -31,7 +31,6 @@ model Usuario {
 
 enum CargoUsuario {
   ESTUDANTE
-  PROFESSOR
   SERVIDOR
   OUTRO
 }
