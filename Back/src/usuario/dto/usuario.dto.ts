@@ -2,6 +2,9 @@ import { IsEmail, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsString, Matches,
 import { CargoUsuario } from "generated/prisma";
 
 export class UsuarioDto {
+    @IsOptional()
+    id: number
+    
     @IsEmail()
     email: string;
 
