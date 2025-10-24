@@ -15,7 +15,7 @@ export default function Cadastro() {
             <h1>Cadastro</h1>
 
             <ul className='flex flex-col gap-2 px-6' >
-                <li className='flex items-center border'>
+                <li className='flex items-center w-[400] border'>
                     <AcademicCapIcon className='size-6'/>
                     <input type="text" 
                     placeholder='Digite aqui seu Nome'
@@ -59,6 +59,11 @@ export default function Cadastro() {
                 </li>
             </ul>
 
+            <button
+                type="submit"
+                className="bg-[#1A2A4A] text-white py-2 rounded hover:bg-[#67A8FF] transition">
+                Cadastrar
+            </button>
         </div>
         </>
     )
