@@ -50,7 +50,7 @@ export default function Cadastro() {
                 <li className='flex items-center border'>
                     <ChevronUpDownIcon className='size-6'/>
                     <select className='w-full outline-none'>
-                        <option value="" disabled selected>Selecione sua Ocupação</option>
+                        <option value="" disabled selected> Selecione sua Ocupação</option>
                         <option value="Servidor">Servidor</option>
                         <option value="Aluno">Aluno</option>
                     </select>
@@ -62,8 +62,17 @@ export default function Cadastro() {
             <button
                 type="submit"
                 className="bg-[#1A2A4A] text-white py-2 rounded hover:bg-[#67A8FF] transition">
-                Cadastrar
+                CADASTRAR
+                <ArrowRightEndOnRectangleIcon className='size-6'/>
             </button>
+        
+            <div className="flex items-center gap-2">
+                <input type="checkbox" id="termos" className="w-4 h-4" />
+                <label htmlFor="termos" className="text-sm text-gray-700">
+                    Declaro que li e aceito os <a href="#" className="text-blue-500 underline">termos de uso</a>
+                </label>
+                <ShieldCheckIcon className='size-6'/>
+            </div>
         </div>
         </>
     )
