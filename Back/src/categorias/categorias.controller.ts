@@ -34,7 +34,6 @@ export class CategoriasController {
         return this.categoriasService.encontrarCategorias(id);
     }
 
-    
     @Get()
     async listarCategorias() {
         return this.categoriasService.listarCategorias();
