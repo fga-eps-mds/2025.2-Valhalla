@@ -18,6 +18,11 @@ export class UsuarioController {
         return this.usuarioService.deletarUsuario(Number(id));
     }
 
+    @Delete("soft-delete/:id")
+    async desativarUsuario(@Param("id") id:number){
+        return this.usuarioService.desativarUsuario(Number(id))
+    }
+
     @Get(":id")
     async encontrarUsuario(@Param("id") id:number) {
         return this.usuarioService.encontrarUsuario(Number(id));

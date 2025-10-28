@@ -45,6 +45,25 @@ constructor(private prisma: PrismaService) {}
             }
         })
     }
+
+    async desativarUsuario(id: number){
+        const UsuarioExiste = await this.prisma.usuario.findUnique({
+            where: {
+                id,
+            }
+        });
+
+        if (!UsuarioExiste) {
+            throw new Error("Usuário Não Encontrado!")
+        }
+        
+        return await this.prisma.usuario.update({
+            where: { id },
+            data: {
+                dataDelete: new Date()
+            }
+        })
+    }
     
     async encontrarUsuario(id: number){
         if(!id) {
