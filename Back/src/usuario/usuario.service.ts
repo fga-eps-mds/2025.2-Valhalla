@@ -3,6 +3,7 @@ import { UsuarioDto } from './dto/usuario.dto';
 import { PrismaService } from '../database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { updateUsuarioDto } from './dto/update.usuario.dto';
+import { CargoUsuario } from 'generated/prisma';
 
 @Injectable()
 export class UsuarioService {
@@ -16,7 +17,7 @@ constructor(private prisma: PrismaService) {}
                 nome: DadosUsuario.nome,
                 email: DadosUsuario.email,
                 senha: SenhaHash,
-                cargo: DadosUsuario.cargo,
+                cargo: DadosUsuario.cargo as CargoUsuario,
                 mediasrc: DadosUsuario.mediasrc,
                 isAdmin: false,
                 admMaster: false
