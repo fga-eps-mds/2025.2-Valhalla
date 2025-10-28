@@ -9,31 +9,31 @@ export class UsuarioController {
     constructor (private readonly usuarioService: UsuarioService){}
 
     @Post()
-    async create(@Body() data:UsuarioDto){
-        return this.usuarioService.CriarUsuario(data);
+    async criarUsuario(@Body() data:UsuarioDto){
+        return this.usuarioService.criarUsuario(data);
     }
         
     @Delete(":id")
-    async delete(@Param("id") id:number) {
-        return this.usuarioService.DeletarUsuario(Number(id));
+    async deletarUsuario(@Param("id") id:number) {
+        return this.usuarioService.deletarUsuario(Number(id));
     }
 
     @Get(":id")
-    async FindOne(@Param("id") id:number) {
-        return this.usuarioService.FindOne(Number(id));
+    async encontrarUsuario(@Param("id") id:number) {
+        return this.usuarioService.encontrarUsuario(Number(id));
     }
     
     @Get()
-    async findAll() {
-        return this.usuarioService.findAll();
+    async listarUsuario() {
+        return this.usuarioService.listarUsuario();
     }
 
     @Patch(':id')
-    async update(
+    async editarUsuario(
         @Param('id', ParseIntPipe) id: number,
         @Body() updateData: updateUsuarioDto,
     ) {
-        return this.usuarioService.update(id, updateData);
+        return this.usuarioService.editarUsuario(id, updateData);
     };
 }
 

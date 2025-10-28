@@ -10,7 +10,7 @@ export class UsuarioService {
 
 constructor(private prisma: PrismaService) {}
 
-    async CriarUsuario(DadosUsuario: UsuarioDto){
+    async criarUsuario(DadosUsuario: UsuarioDto){
         const SenhaHash = await bcrypt.hash(DadosUsuario.senha, 10 )
         const CriacaoDeUsuario = await this.prisma.usuario.create({
             data:{
@@ -28,7 +28,7 @@ constructor(private prisma: PrismaService) {}
         
     }
 
-    async DeletarUsuario(id: number){
+    async deletarUsuario(id: number){
         const UsuarioExiste = await this.prisma.usuario.findUnique({
             where: {
                 id,
@@ -46,7 +46,7 @@ constructor(private prisma: PrismaService) {}
         })
     }
     
-    async FindOne(id: number){
+    async encontrarUsuario(id: number){
         if(!id) {
             throw new Error("Usuário não encontrado!")
         }
@@ -54,10 +54,10 @@ constructor(private prisma: PrismaService) {}
         return await this.prisma.usuario.findUnique({where:{id}})
     }
     
-    async findAll() {
+    async listarUsuario() {
         return this.prisma.usuario.findMany();
     }
-    async update(id:number, data: updateUsuarioDto){
+    async editarUsuario(id:number, data: updateUsuarioDto){
         const usuario = await this.prisma.usuario.findUnique({
             where:{ id }
         })
