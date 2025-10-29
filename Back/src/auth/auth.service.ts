@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsuarioService } from 'src/usuario/usuario.service';
 import * as bcrypt from 'bcrypt';
 import { UsuarioDto } from 'src/usuario/dto/usuario.dto';
 import { JwtService } from "@nestjs/jwt";
 import { UsuarioPayload } from './models/UsuarioPayload';
 import { UsuarioToken } from './models/UsuarioToken';
+import { updateUsuarioDto } from 'src/usuario/dto/update.usuario.dto';
 @Injectable()
 export class AuthService {
     constructor(private readonly usuarioService: UsuarioService, private readonly jwtService: JwtService){}
@@ -35,5 +36,26 @@ export class AuthService {
         };
         }
         throw new Error('email ou senha inválidas')
+    }
+
+    async mudarSenha(usuarioId, senhaAntiga: string, senhaNova: string){
+        const usuario = await this.usuarioService.FindOne(usuarioId)
+        if (!usuario){
+            throw new NotFoundException("usuario não encontrado")
+        }
+
+        const verificar = await bcrypt.compare(senhaAntiga, usuario.senha)
+            if(!verificar) {
+                throw new UnauthorizedException('credenciais erradas');
+            }
+        
+        const novaSenhahash = await bcrypt.hash(senhaNova, 10);
+        usuario.senha = novaSenhahash;
+            
+        const dadosParaAtualizar = new updateUsuarioDto();
+        dadosParaAtualizar.senha = novaSenhahash
+
+        await this.usuarioService.update(usuario.id, dadosParaAtualizar);
+        
     }
 }
