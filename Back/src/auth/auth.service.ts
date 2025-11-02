@@ -58,4 +58,6 @@ export class AuthService {
         await this.usuarioService.update(usuario.id, dadosParaAtualizar);
         
     }
+
+    
 }
