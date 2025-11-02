@@ -10,7 +10,7 @@ export class MailService {
 
   async sendPasswordResetEmail(user: Usuario, token: string) { 
     
-    const resetUrl = `http://localhost:3000/reset-password?token=${token}`; // alterar para a url do front IMPORTANTE
+    const resetUrl = `http://localhost:3001/reset-password?token=${token}`; // alterar para a url do front IMPORTANTE
 
     const emailHtml = `
       <p>Olá, ${user.nome || 'utilizador'},</p> // <-- Funciona porque o modelo 'usuario' tem 'nome'
