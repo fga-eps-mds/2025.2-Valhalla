@@ -5,6 +5,8 @@ import { AuthRequest } from './models/authRequest';
 import { IsPublic } from './decorators/is-public.decorator';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { MudarSenhaDto } from './models/mudar-senhaDto';
+import { ResetPasswordDto } from './models/reset-password.dto';
+import { esqueciSenhaDto } from './models/esqueci-senha.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,5 +24,23 @@ export class AuthController {
     @Patch('mudar-senha')
     async mudarSenha(@Req() req, @Body() MudarSenhaDto: MudarSenhaDto){
         return this.authService.mudarSenha(req.user.id, MudarSenhaDto.senhaAntiga, MudarSenhaDto.senhaNova);
+    }
+
+    @IsPublic() 
+    @Post('esqueci-senha')
+    @HttpCode(HttpStatus.OK)
+    async esqueciSenha(@Body() forgotPasswordDto: esqueciSenhaDto) {
+      return this.authService.esqueciSenha(forgotPasswordDto.email);
+    }
+
+
+    @IsPublic() 
+    @Post('reset-password')
+    @HttpCode(HttpStatus.OK)
+    async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+      return this.authService.resetSenha(
+        resetPasswordDto.token, 
+        resetPasswordDto.novaSenha
+      );
     }
 }

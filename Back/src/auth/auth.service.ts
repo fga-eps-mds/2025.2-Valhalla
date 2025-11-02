@@ -68,7 +68,6 @@ export class AuthService {
         return { message: 'Se um utilizador com esse email existir, um link de redefinição será enviado.' };
       }
 
-      // 1. Criar o payload para o token de reset
       const payload: UsuarioPayload = { 
         sub: usuario.id!,
         email: usuario.email,
