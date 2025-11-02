@@ -13,7 +13,7 @@ export class MailService {
     const resetUrl = `http://localhost:3001/reset-password?token=${token}`; // alterar para a url do front IMPORTANTE
 
     const emailHtml = `
-      <p>Olá, ${user.nome || 'utilizador'},</p> // <-- Funciona porque o modelo 'usuario' tem 'nome'
+      <p>Olá, ${user.nome || 'utilizador'},</p> 
       <p>Recebemos um pedido para redefinir a sua senha.</p>
       <p>Clique no link abaixo para criar uma nova senha:</p>
       <a href="${resetUrl}" style="background-color: #007bff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">Redefinir Senha</a>
