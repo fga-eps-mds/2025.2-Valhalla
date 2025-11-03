@@ -15,7 +15,7 @@ model Usuario {
   nome String
   email String
   senha String
-  cargo String
+  cargo CargoUsuario
   isAdmin Boolean
   admMaster Boolean
   mediasrc String?
@@ -27,6 +27,12 @@ model Usuario {
   apoiosDenuncia ApoiosDenuncia[]
   reportsComentario ReportsComentario[]
   apoiosComentario ApoiosComentario[]
+}
+
+enum CargoUsuario {
+  ESTUDANTE
+  SERVIDOR
+  OUTRO
 }
 
 model Denuncia {
