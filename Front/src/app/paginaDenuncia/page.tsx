@@ -22,6 +22,18 @@ export default function PaginaDenuncias() {
         {/*Cabeçalho*/}
       <div>
         {/*Conteúdo do header*/}
+
+        {/*Esquerda: Logo e Título */}
+        <div>
+          <Image
+            src="/Corujuda - Contorno.svg"
+            alt="Logo Guardiões da Universidade"
+            width={84}
+            height={84}
+          />
+          <h1>Guardiões da Universidade</h1>
+        </div>
+        
       </div>
       <main>
         {/*Conteúdo da lista de denúncias*/}
