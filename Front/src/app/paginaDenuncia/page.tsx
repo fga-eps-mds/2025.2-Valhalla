@@ -17,5 +17,15 @@ import {
 
 export default function PaginaDenuncias() {
 
-  return null;
+  return (
+    <div>
+        {/*Cabeçalho*/}
+      <div>
+        {/*Conteúdo do header*/}
+      </div>
+      <main>
+        {/*Conteúdo da lista de denúncias*/}
+      </main>
+    </div>
+  );
 }
