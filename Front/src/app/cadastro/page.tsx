@@ -5,7 +5,11 @@ import Link from "next/link";
 export default function Cadastro() {
     return (
         <>
-        <div className="w-[640px] h-[730px] rounded-[1rem] opacity-80 shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center relative"> 
+        <div className="w-[640px] h-[730px] rounded-[1rem] opacity-80 shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">   
+            <Link href="/" className="absolute top-6 left-6">
+                <ArrowLeftIcon className="w-[48px] h-[48px] text-[#1A2A4A] cursor-pointer hover:text-[#3060BF] transition" />
+            </Link>
+
             <Image 
             src="/Corujuda.svg"
             alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
