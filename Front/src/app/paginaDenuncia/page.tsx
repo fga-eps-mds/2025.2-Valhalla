@@ -18,9 +18,9 @@ import {
 export default function PaginaDenuncias() {
 
   return (
-    <div>
+    <div className="bg-white min-h-screen relative">
         {/*Cabeçalho*/}
-      <div>
+      <div className="bg-[#1A293F] h-21 shadow-md flex items-center justify-between pl-5 pr-15">
         {/*Conteúdo do header*/}
 
         {/*Esquerda: Logo e Título */}
