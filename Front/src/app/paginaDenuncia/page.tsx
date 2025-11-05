@@ -24,32 +24,33 @@ export default function PaginaDenuncias() {
         {/*Conteúdo do header*/}
 
         {/*Esquerda: Logo e Título */}
-        <div>
+        <div className="flex items-center space-x-4">
           <Image
             src="/Corujuda - Contorno.svg"
             alt="Logo Guardiões da Universidade"
             width={84}
             height={84}
           />
-          <h1>Guardiões da Universidade</h1>
+          <h1 className="text-white text-3xl font-bold">
+            Guardiões da Universidade</h1>
         </div>
 
         {/*Direita: Ícones de Navegação */}
-        <div>
+        <div className="flex items-center space-x-6">
           <button aria-label="Orientação">
-            <BookOpenIcon />
+            <BookOpenIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
           </button>
           <button aria-label="Notícias">
-            <NewspaperIcon />
+            <NewspaperIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
           </button>
           <button aria-label="Denúncia">
-            <HomeIcon />
+            <HomeIcon className="h-10 w-10 text-[#67A8FF]"/>
           </button>
           <button aria-label="Histórico">
-            <ArchiveBoxIcon />
+            <ArchiveBoxIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
           </button>
           <button aria-label="Meu Perfil">
-            <UserCircleIcon />
+            <UserCircleIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
           </button>
         </div>
 
