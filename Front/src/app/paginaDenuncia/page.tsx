@@ -57,6 +57,12 @@ export default function PaginaDenuncias() {
       <main>
         {/*Conteúdo da lista de denúncias*/}
       </main>
+
+      {/* Botão flutuante */}
+      <button aria-label="Nova Denúncia">
+        <PlusIcon />
+      </button>
+
     </div>
   );
 }
