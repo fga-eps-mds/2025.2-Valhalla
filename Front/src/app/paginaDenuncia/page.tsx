@@ -33,7 +33,26 @@ export default function PaginaDenuncias() {
           />
           <h1>Guardiões da Universidade</h1>
         </div>
-        
+
+        {/*Direita: Ícones de Navegação */}
+        <div>
+          <button aria-label="Orientação">
+            <BookOpenIcon />
+          </button>
+          <button aria-label="Notícias">
+            <NewspaperIcon />
+          </button>
+          <button aria-label="Denúncia">
+            <HomeIcon />
+          </button>
+          <button aria-label="Histórico">
+            <ArchiveBoxIcon />
+          </button>
+          <button aria-label="Meu Perfil">
+            <UserCircleIcon />
+          </button>
+        </div>
+
       </div>
       <main>
         {/*Conteúdo da lista de denúncias*/}
