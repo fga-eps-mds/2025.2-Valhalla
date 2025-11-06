@@ -24,7 +24,7 @@ export default function Cadastro() {
                     <AcademicCapIcon className='size-5'/>
                     <input type="text" 
                     placeholder='Digite aqui seu Nome'
-                    className="w-full outline-none px-[9px] placeholder-secundaria"
+                    className="w-full outline-none px-[9px] placeholder-secundaria text-[#1A293F]"
                     />
                 </li>
                 
@@ -73,7 +73,7 @@ export default function Cadastro() {
         
             <div className="flex items-center gap-2 mb-[50px]">
                 <input type="checkbox" id="termos" className="w-4 h-4" />
-                <label htmlFor="termos" className="text-sm text-gray-700">
+                <label htmlFor="termos" className="text-sm text-[#1A293F]">
                     Declaro que li e aceito os <a href="#" className="text-blue-500 underline">termos de uso</a>
                 </label>
                 <ShieldCheckIcon className='size-6'/>
