@@ -2,7 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #ff0000;
+  --foreground: #e8ecf0;
+  --fonte-primaria: 'Merriweather', serif;
 }
 
 @theme inline {
@@ -14,7 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ff0000;
+    --background: #e8ecf0;
     --foreground: #4b0000;
   }
 }

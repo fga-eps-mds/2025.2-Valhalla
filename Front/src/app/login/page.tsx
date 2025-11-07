@@ -1,0 +1,102 @@
+import { 
+    UserCircleIcon, 
+    ArrowRightEndOnRectangleIcon, 
+    ArrowLeftIcon, 
+    KeyIcon
+} from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import Image from "next/image";
+import Link from "next/link";
+
+export default function Login() {
+    return (
+        <>
+
+            <div className="w-[640px] h-[730px] rounded-2xl bg-white border border-gray-200 shadow-xl absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8"> 
+                
+                <Link href="/" className="absolute top-6 left-6">
+                    <ArrowLeftIcon className="w-10 h-10 text-[#1A2A4A] cursor-pointer hover:text-blue-600 transition" />
+                </Link>
+
+                <Image 
+                    src="/Corujuda.svg"
+                    alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
+                    width={120}
+                    height={120}
+                    className="mt-2" 
+                />
+                
+                <h1 className='text-[36px] text-[#050505] mb-10 font-bold font-[var(--fonte-primaria)]'>
+                    Login
+                </h1>
+
+
+                <form className="w-full max-w-sm flex flex-col items-center">
+                    
+                    <div className="w-full mb-5">
+                        <label htmlFor="email" className="block text-2xl font-bold text-gray-800 mb-2 font-[var(--fonte-primaria)]">
+                            E-mail
+                        </label>
+                        <div className="relative">
+                            <UserCircleIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
+                            <input 
+                                type="email" 
+                                id="email" 
+                                placeholder="Digite aqui seu Email" 
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-[#1A2A4A] font-[var(--fonte-primaria)]"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="w-full mb-5">
+                        <label htmlFor="password" className="block text-2xl font-bold text-gray-800 mb-2 font-[var(--fonte-primaria)]">
+                            Senha
+                        </label>
+                        <div className="relative">
+                            <KeyIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
+                            <input 
+                                type="password" 
+                                id="password" 
+                                placeholder="Digite aqui sua senha" 
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-[#1A2A4A] font-[var(--fonte-primaria)]"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="w-full flex justify-around items-center mb-8">
+                        <div className="flex items-center">
+                            <button type="button" className="flex items-center">
+                                <CheckCircleIcon className="w-5 h-5 text-[#1A2A4A]" />
+                                <span className="ml-2 block text-sm text-[#1A2A4A]"> 
+                                    Lembrar-me
+                                </span>
+                            </button>
+                        </div>
+                        <Link href="/esqueci-senha" className="text-sm text-blue-600 hover:underline"> 
+                            Esqueci a senha
+                        </Link>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="flex items-center justify-center border border-[#1A2A4A] rounded-xl py-3 gap-2 bg-[#3060BF] w-[240px] text-white hover:bg-[#254c9b] transition font-semibold">
+                        LOGIN
+                        <ArrowRightEndOnRectangleIcon className='size-5'/>
+                    </button>
+                </form>
+
+                <button className="mt-8 flex items-center justify-center w-12 h-12 border border-gray-300 rounded-full shadow-sm hover:shadow-md transition">  {/* n está funciona */}
+                    <Image src="/google.png" alt="Login com Google" width={48} height={48} /> 
+                </button>
+
+                <p className="mt-6 text-sm text-[#1A2A4A]">
+                    Novo por aqui ?  {'   '}
+                    <Link href="/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
+                        Crie sua conta
+                    </Link>
+                </p>
+
+            </div>
+        </>
+    )
+}

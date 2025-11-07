@@ -1,8 +1,10 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap');
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --fonte-primaria: 'Merriweather', serif;
 }
 
 @theme inline {
