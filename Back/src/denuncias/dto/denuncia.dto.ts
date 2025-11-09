@@ -2,8 +2,8 @@ import { IsString, IsNotEmpty, IsInt, IsOptional, IsBoolean } from 'class-valida
 
 export class DenunciaDto {
 
-    @IsInt({ message: 'O idCategoria deve ser um numero.' })
-    @IsNotEmpty({ message: 'O idCategoria não pode estar vazio.' })
+    @IsInt({ message: 'O idCategoria deve ser um numero.' }) // Perguntar pro Pedrão
+    @IsNotEmpty({ message: 'O idCategoria não pode estar vazio.' }) // Perguntar pro Pedrão
     idUsuario: number;
 
     @IsString({ message: 'A descrição deve ser um texto.' })
