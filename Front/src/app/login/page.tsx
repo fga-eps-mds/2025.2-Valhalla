@@ -52,7 +52,7 @@ export default function Login() {
     return (
         <>
 
-            <div className="w-[640px] h-[730px] rounded-2xl bg-white border border-gray-200 shadow-xl absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8"> 
+            <div className="w-[640px] min-h-[730px] rounded-2xl bg-white border border-gray-200 shadow-xl absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8"> 
                 
                 <Link href="/" className="absolute top-6 left-6">
                     <ArrowLeftIcon className="w-10 h-10 text-[#1A2A4A] cursor-pointer hover:text-blue-600 transition" />
