@@ -1,3 +1,7 @@
+'use client';
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
     UserCircleIcon, 
     ArrowRightEndOnRectangleIcon, 
@@ -7,8 +11,44 @@ import {
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import Image from "next/image";
 import Link from "next/link";
+import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../contexts/AuthContext';
+import { loginUsuario, getOneUsuario } from '../utils/api';
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [erro, setErro] = useState<string | null>(null);
+    const router = useRouter();
+    const { setLoggedInUser } = useAuth();
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setErro(null); 
+
+        if (!email || !senha) {
+            setErro('Por favor, preencha todos os campos.');
+            return;
+        }
+        try {
+            const response = await loginUsuario(email, senha);
+            const token = response.access_token;
+
+            localStorage.setItem("token", token);
+
+            const decoded: { sub?: string } = jwtDecode(token);
+            if (decoded.sub) {
+                const userData = await getOneUsuario(Number(decoded.sub));
+                setLoggedInUser(userData);
+            }
+
+            router.push('/');
+        } catch (error) {
+            console.error('ERRO DETALHADO DO LOGIN:', error);
+            console.error('Erro ao fazer login:', error);
+            setErro('Email ou senha incorretos.');
+        }
+    };
     return (
         <>
 
@@ -31,7 +71,7 @@ export default function Login() {
                 </h1>
 
 
-                <form className="w-full max-w-sm flex flex-col items-center">
+                <form className="w-full max-w-sm flex flex-col items-center" onSubmit={handleLogin}>
                     
                     <div className="w-full mb-5">
                         <label htmlFor="email" className="block text-2xl font-bold text-gray-800 mb-2 font-[var(--fonte-primaria)]">
@@ -42,6 +82,8 @@ export default function Login() {
                             <input 
                                 type="email" 
                                 id="email" 
+                                value={email}
+                                onChange= {(e) => setEmail(e.target.value)}
                                 placeholder="Digite aqui seu Email" 
                                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-[#1A2A4A] font-[var(--fonte-primaria)]"
                             />
@@ -58,10 +100,18 @@ export default function Login() {
                                 type="password" 
                                 id="password" 
                                 placeholder="Digite aqui sua senha" 
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
                                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-[#1A2A4A] font-[var(--fonte-primaria)]"
                             />
                         </div>
                     </div>
+
+                    {erro && (
+                        <p className="text-red-500 text-sm mb-4 w-full text-center bg-red-50 py-2 rounded-md border border-red-200">
+                            {erro}
+                        </p>
+                    )}
 
                     <div className="w-full flex justify-around items-center mb-8">
                         <div className="flex items-center">
