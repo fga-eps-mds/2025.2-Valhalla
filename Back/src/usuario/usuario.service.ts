@@ -88,4 +88,7 @@ constructor(private prisma: PrismaService) {}
             where:{ id }
         })
     }
+    procurarPorEmail(email: string) {
+    return this.prisma.usuario.findUnique({ where: { email } });
+  }
 }

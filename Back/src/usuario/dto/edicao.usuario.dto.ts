@@ -6,5 +6,8 @@ export class updateUsuarioDto {
     @IsOptional()
     mediasrc: string;
 
+    @IsString()
+    @IsOptional()
+    senha: string
 
 }

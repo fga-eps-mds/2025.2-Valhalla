@@ -1,7 +1,10 @@
-import { IsEmail, IsEnum, isEnum, isNotEmpty, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
+import { IsEmail, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
 import { CargoUsuario } from "generated/prisma";
 
 export class UsuarioDto {
+    @IsOptional()
+    id: number
+    
     @IsEmail()
     email: string;
 
