@@ -17,18 +17,18 @@ export default function Cadastro() {
             height={160}
             className=""
             />
-            <h1 className='text-[36px] text-[#050505] style={{fontFamily: "var(--fonte-primaria)"}} mb-[43px]'>Cadastro</h1>
+            <h1 className='text-[36px] text-texto-primario style={{fontFamily: "var(--fonte-primaria)"}} mb-[43px]'>Cadastro</h1>
 
             <ul className='flex flex-col items-center justify-center gap-[10px] w-full h-[440px]' >
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas] rounded-[15px] w-[440px] h-[50px]'>
                     <AcademicCapIcon className='size-5'/>
                     <input type="text" 
                     placeholder='Digite aqui seu Nome'
-                    className="w-full outline-none px-[9px] placeholder-secundaria text-[#1A293F]"
+                    className="w-full outline-none px-[9px] placeholder-secundaria text-texto-corpo"
                     />
                 </li>
                 
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <UserCircleIcon className='size-5'/>
                     <input type="text" 
                     placeholder='Digite aqui seu Email'
@@ -36,7 +36,7 @@ export default function Cadastro() {
                     />
                 </li>
                 
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <KeyIcon className='size-5'/>
                     <input type="password" 
                     placeholder='Digite aqui sua Senha'
@@ -73,7 +73,7 @@ export default function Cadastro() {
         
             <div className="flex items-center gap-2 mb-[50px]">
                 <input type="checkbox" id="termos" className="w-4 h-4" />
-                <label htmlFor="termos" className="text-sm text-[#1A293F]">
+                <label htmlFor="termos" className="text-sm text-texto-corpo">
                     Declaro que li e aceito os <a href="#" className="text-blue-500 underline">termos de uso</a>
                 </label>
                 <ShieldCheckIcon className='size-6'/>

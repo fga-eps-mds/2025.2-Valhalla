@@ -23,7 +23,7 @@ export default function PaginaDenuncias() {
     <div className="bg-white min-h-screen relative">
 
         {/*Cabeçalho*/}
-      <div className="bg-[#1A293F] h-21 shadow-md flex items-center justify-between pl-5 pr-15">
+      <div className="bg-texto-corpo h-21 shadow-md flex items-center justify-between pl-5 pr-15">
         
         {/*Conteúdo do header*/}
         {/*Esquerda: Logo e Título */}
