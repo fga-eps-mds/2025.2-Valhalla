@@ -29,7 +29,7 @@ export default function PaginaDenuncias() {
         {/*Esquerda: Logo e Título */}
         <div className="flex items-center space-x-4">
           <Image
-            src="/Corujuda - Contorno.svg"
+            src="/Corujuda-Contorno.svg"
             alt="Logo Guardiões da Universidade"
             width={84}
             height={84}
