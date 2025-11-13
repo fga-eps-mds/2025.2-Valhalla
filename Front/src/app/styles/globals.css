@@ -1,28 +1,84 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --fonte-primaria: 'Merriweather', serif;
+@theme {
+
+    --color-azul-principal: #3060BF;
+    --color-azul-dark: #1A2A4A;
+    --color-azul-light: #67A8FF;
+    --color-branco: #FFFFFF;
+    --color-off-white: #E8ECF0;
+    --color-texto-primario: #050505;
+    --color-texto-corpo: #1A293F;
+    --color-bordas: #A6AAAE;
+    --color-amarelo: #FBBF24;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer components {
+    /* Display: Merriweather 700, 36px, Line-height 96px */
+    .text-display {
+        font-family: var(--font-heading), serif !important;
+        font-size: 36px !important;
+        font-weight: 700 !important;
+        line-height: 96px !important;
+        color: var(--color-texto-primario);
+        text-align: center;
+        letter-spacing: -0.36px;
+    }
+
+    /* H1: Merriweather 700, 36px, Line-height 72px */
+    .text-h1 {
+        font-family: var(--font-heading), serif !important;
+        font-size: 36px !important;
+        font-weight: 700 !important;
+        line-height: 72px !important;
+        color: var(--color-texto-primario);
+        text-align: center;
+    }
+
+    /* H2: Merriweather 700, 36px, Line-height 54px */
+    .text-h2 {
+        font-family: var(--font-heading), serif !important;
+        font-size: 36px !important;
+        font-weight: 700 !important;
+        line-height: 54px !important;
+        color: var(--color-texto-primario);
+        text-align: center;
+    }
+
+    /* H3: Merriweather 700, 24px, Line-height 36px */
+    .text-h3 {
+        font-family: var(--font-heading), serif !important;
+        font-size: 24px !important;
+        font-weight: 700 !important;
+        line-height: 36px !important;
+        color: var(--color-texto-primario);
+        text-align: center;
+    }
+    
+    /* Body: Lato 400, 16px, Line-height 24px */
+    .text-body {
+        font-family: var(--font-body), sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 400 !important;
+        line-height: 24px !important;
+        color: var(--color-texto-corpo);
+        text-align: center;
+    }
+
+    /* Small: Lato 400, 14px, Line-height 21px, letter-spacing 0.7px */
+    .text-small {
+        font-family: var(--font-body), sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        line-height: 21px !important;
+        color: var(--color-texto-corpo);
+        text-align: center;
+        letter-spacing: 0.7px;
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+    body {
+      font-family: var(--font-body), sans-serif;
+    }
 }
