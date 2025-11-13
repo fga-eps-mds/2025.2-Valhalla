@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`${merriweather.variable} antialiased`}
+        className={`${merriweather.variable} ${lato.variable} antialiased`}
         
       >
         <AuthProvider>

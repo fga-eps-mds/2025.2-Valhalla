@@ -12,8 +12,8 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import Image from "next/image";
 import Link from "next/link";
 import { jwtDecode } from 'jwt-decode';
-import { useAuth } from '../contexts/AuthContext';
-import { loginUsuario, getOneUsuario } from '../utils/api';
+import { useAuth } from '../../../contexts/AuthContext';
+import { loginUsuario, getOneUsuario } from '../../../utils/api';
 
 export default function Login() {
     const [email, setEmail] = useState('');
