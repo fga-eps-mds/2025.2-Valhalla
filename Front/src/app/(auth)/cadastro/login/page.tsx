@@ -141,7 +141,7 @@ export default function Login() {
 
                 <p className="mt-6 text-sm text-[#1A2A4A]">
                     Novo por aqui ?  {'   '}
-                    <Link href="/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
+                    <Link href="/cadastro/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
                         Crie sua conta
                     </Link>
                 </p>

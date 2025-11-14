@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import modalDenuncia from '@/app/components/modalDenuncia/modalDenuncia';
 
 // Imports VISUAIS
 import {
@@ -17,6 +18,8 @@ import {
 
 
 export default function PaginaDenuncias() {
+
+  const [abrirModal, setabrirModal] = useState(false) 
 
   return (
     // Container principal da página
@@ -64,6 +67,7 @@ export default function PaginaDenuncias() {
 
       {/* Botão flutuante */}
       <button 
+      onClick={() => setabrirModal(true)}
       aria-label="Nova Denúncia"
       className="
           fixed                   /* Fixo na tela */
@@ -84,7 +88,6 @@ export default function PaginaDenuncias() {
       >
         <PlusIcon className="h-12 w-12 text-white"/>
       </button>
-
     </div>
   );
 }
