@@ -16,7 +16,7 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
         return (
             <>
             <div className='flex flex-col items-center justify-center border w-[720px] h-[993px] rounded-[1rem] opacity-80 shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-              <h1 className='text-black'>Qual sua Denúncia?</h1>
+              <h1 className='text-h1'>Qual sua Denúncia?</h1>
               <div className='border'>
                 <button>ANÔNIMA</button>
                 <button>PÚBLICA</button>
