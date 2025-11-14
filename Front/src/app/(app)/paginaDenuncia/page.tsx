@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import modalDenuncia from '@/app/components/modalDenuncia/modalDenuncia';
+import ModalDenuncia from '@/app/components/modalDenuncia/modalDenuncia';
 
 // Imports VISUAIS
 import {
@@ -88,6 +88,7 @@ export default function PaginaDenuncias() {
       >
         <PlusIcon className="h-12 w-12 text-white"/>
       </button>
+      <ModalDenuncia isOpen={true}/>
     </div>
   );
 }
