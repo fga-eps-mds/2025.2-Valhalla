@@ -78,6 +78,41 @@
         text-align: center;
         letter-spacing: 0.7px;
     }
+    .text-medium {
+        font-family: var(--font-body), sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 400 !important;
+        line-height: 24px !important;
+        color: var(--color-texto-corpo);
+        text-align: center;
+        letter-spacing: 0.7px;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* track */
+::-webkit-scrollbar-track {
+  background: #82a8f3;
+}
+
+/* handle */
+::-webkit-scrollbar-thumb {
+  background: #5181d4;
+  background-image: url('/corujuda-Contorno.svg');
+  background-size:contain;
+  background-position:center;
+}
+
+/* handle hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1153d7;
+  background-image: url('/corujuda-Capeluda-Contorno.svg');
+  background-size:contain;
+  background-position:center;
 }
 
 @layer base {
