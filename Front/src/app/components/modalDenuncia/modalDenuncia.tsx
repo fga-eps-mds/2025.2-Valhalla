@@ -22,11 +22,14 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
                 <button className='w-[135px] h-[45px] border rounded-[46px] text-small'>PÚBLICA</button>
               
               </div>
-              <select className='w-[366px] h-[52px] outline-none'>
+              <div className='w-[366px] h-[52px] border-[var(--color-bordas)] rounded-[10px] flex items-center '>
+              <ChevronUpDownIcon className='size-[24px]'/>
+              <select className=''>
                         <option value="" disabled selected>Selecione a Categoria</option>
                         <option value="">Servidor</option>
                         <option value="">Aluno</option>
                     </select>
+              </div>
               <div className='w-[256px] h-[159px] flex items-center justify-center border'>
                 <CameraIcon className='size-[74px]'/>
                 <PlusIcon className='size-[41px]'/>
