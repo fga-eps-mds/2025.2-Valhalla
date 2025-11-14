@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 interface LinkCardProps {
@@ -52,7 +54,6 @@ export default function AcolhimentoPage() {
     ]
   };
 
-
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <main className="max-w-6xl mx-auto">
@@ -68,7 +69,7 @@ export default function AcolhimentoPage() {
               src={pageData.illustration} 
               alt="Ilustração sobre acolhimento e saúde mental" 
               className="w-full h-auto rounded-lg object-cover"
-              onError={(e) => { const img = e.target as HTMLImageElement; img.onerror = null; img.src="https://placehold.co/500x300/EFEFEF/AAAAAA?text=Ilustração+Acolhimento"; }}
+              onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src="https://placehold.co/500x300/EFEFEF/AAAAAA?text=Ilustração+Acolhimento"; }}
             />
           </div>
         </header>
@@ -114,4 +115,4 @@ export default function AcolhimentoPage() {
       </main>
     </div>
   );
-}   
+}
