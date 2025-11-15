@@ -24,3 +24,8 @@ export const getOneUsuario = async (id: number) => {
   const response = await api.get(`/Usuario/${id}`); 
   return response.data;
 };
+
+export const EmailRecuperação = async (email: string) => {
+  const response = await api.get(`/auth/esqueci-senha/${email}`); 
+  return response.data;
+};
