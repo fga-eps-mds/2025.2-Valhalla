@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from 'react';
 import { CameraIcon } from '@heroicons/react/24/outline';
 import {
   ChevronUpDownIcon,
@@ -12,6 +13,9 @@ interface DenunciaModalProps {
 }
 
 export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
+  {/*"Memória" (estado) chamado descricao para o campo de descrição da denúncia. Começa com texto vazio*/}
+  const [descricao, setDescricao] = useState('');
+
     if (!isOpen) return null;
         return (
           <>
@@ -32,6 +36,7 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
                           </select>
                     </div>
                     
+                    {/*Campo de INSERÇÃO DE IMAGEM*/}
                     <div className='w-[256px] h-[159px] flex items-center justify-center border border-[3px] border-dashed border-[var(--color-azul-principal)] rounded-[20px] relative'>
                       <CameraIcon className='size-[74px] text-[var(--color-azul-principal)]'/>
                       <div
@@ -48,15 +53,19 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
                         <textarea id="descricao"
                           className="w-[456px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 "
                           placeholder="Escreva a sua denúncia..."
+                          value={descricao} /*Valor é o que está guardado na memória "descricao"*/
+                          onChange={(e) => setDescricao(e.target.value)} /*Quando usuário digita é guardado na memómria*/
                          />
                       </div>
                     </div>
                     
+                    {/*Botão PUBLICAR*/}
                     <button
                       type="submit"
                       className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded hover:bg-[#67A8FF] transition">
                       PUBLICAR
                     </button>
+
                 </div>
             </div>
           </>
