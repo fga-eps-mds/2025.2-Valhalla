@@ -40,10 +40,16 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
                         <PlusIcon className='size-[23px] text-[var(--color-branco)]' />
                       </div>
                     </div>
-                     
+
+                    {/*Campo Descrição*/} 
                     <div>
-                      <label htmlFor="descricao">Descrição</label>
-                      <textarea id="descricao" />
+                      <label htmlFor="descricao" className="text-body mb-1">Descrição</label>
+                      <div>
+                        <textarea id="descricao"
+                          className="w-[456px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 "
+                          placeholder="Escreva a sua denúncia..."
+                         />
+                      </div>
                     </div>
                     
                     <button
