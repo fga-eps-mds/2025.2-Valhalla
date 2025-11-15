@@ -26,6 +26,6 @@ export const getOneUsuario = async (id: number) => {
 };
 
 export const EmailRecuperação = async (email: string) => {
-  const response = await api.get(`/auth/esqueci-senha/${email}`); 
+  const response = await api.post('/auth/esqueci-senha/', {email}); 
   return response.data;
 };
