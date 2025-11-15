@@ -40,12 +40,12 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
                         <PlusIcon className='size-[23px] text-[var(--color-branco)]' />
                       </div>
                     </div>
-                    
+                     
                     <div>
-                      <h2>Descrição</h2>
-                      <div className='w-[456px] h-[273px] rounded-[15px] border border-solid border-[1px]'>
-                      </div>
+                      <label htmlFor="descricao">Descrição</label>
+                      <textarea id="descricao" />
                     </div>
+                    
                     <button
                       type="submit"
                       className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded hover:bg-[#67A8FF] transition">
