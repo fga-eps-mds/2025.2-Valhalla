@@ -63,7 +63,89 @@ export default function Home() {
           </div>
         </div>
       </div>
+  
+<section className="py-12 bg-white">
+  <div className="max-w-7xl mx-auto px-4">   
+    <div className="bg-gray-200 rounded-lg shadow-lg p-6 md:p-8">      
+      <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 md:mb-8">
+        Desenvolvedores
+      </h2>
+        <div className="grid grid-cols-5 gap-4 md:gap-6 justify-items-center">
 
+        {/*Dev 1*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Pedrão Líder
+          </p>
+        </div>
+        {/*Dev 2*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Pedrinho
+          </p>
+        </div>
+        {/*Dev 3*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Gepeto
+          </p>
+        </div>
+        {/*Dev 4*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Julia
+          </p>
+        </div>
+        {/*Dev 5*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Laura
+          </p>
+        </div>
+        {/*Dev 6*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Gustavo
+          </p>
+        </div>
+        {/*Dev 7*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Luquinhas
+          </p>
+        </div>
+        {/*Dev 8*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Pedro Ian
+          </p>
+        </div>
+        {/*Dev 9*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Antônio
+          </p>
+        </div>
+        {/*Dev 10*/}
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 md:w-16 md:h-16 bg-red-500 rounded-full mb-2"></div>
+          <p className="text-sm font-medium text-gray-800 text-center">
+            Diniz
+          </p>
+        </div>     
+          </div>
+         </div>
+        </div>
+      </section>
     </main>
   )
 }
