@@ -42,13 +42,13 @@ export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
                     
                     {/*Botões de TIPO DE DENUNCIA*/}
                     <div className='flex items-center gap-[10px] mb-[26px]'>
-                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small'>ANÔNIMA</button>
-                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small'>PÚBLICA</button>
+                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold'>ANÔNIMA</button>
+                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold'>PÚBLICA</button>
                     </div>
                     
                     <div className='w-[366px] h-[52px] border border-[var(--color-bordas)] rounded-[10px] flex items-center p-[16px] mb-[20px]'>
                     <ChevronUpDownIcon className='size-[24px]'/>
-                    <select className='flex items-center mx-[5px] text-small'>
+                    <select className='flex items-center mx-[5px] text-small cursor-pointer'>
                               <option value="" disabled selected>Selecione a Categoria</option>
                               <option value="">Servidor</option>
                               <option value="">Aluno</option>
@@ -56,12 +56,23 @@ export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
                     </div>
                     
                     {/*Campo de INSERÇÃO DE IMAGEM*/}
-                    <div className='w-[256px] h-[159px] shrink-0 flex items-center justify-center border border-[3px] border-dashed border-[var(--color-azul-principal)] rounded-[20px] relative mb-[15px]'>
-                      <CameraIcon className='size-[74px] text-[var(--color-azul-principal)]'/>
+                    <div 
+                      className='
+                        w-[256px] h-[159px] shrink-0 
+                        flex items-center justify-center 
+                        border border-[3px] border-dashed border-[var(--color-azul-principal)] 
+                        rounded-[20px] relative mb-[15px]
+                        
+                        group
+                        cursor-pointer
+                        hover:border-[var(--color-azul-light)]
+                        transition-colors duration-300'
+                      >
+                      <CameraIcon className='size-[74px] text-[var(--color-azul-principal)] group-hover:text-[var(--color-azul-light)] transition-colors duration-300'/>
                       <div
-                        className='size-[39px] text-[var(--color-branco)] absolute bottom-[30.84px] right-[70px] bg-[var(--color-azul-principal)] rounded-full flex items-center justify-center'>
+                        className='size-[39px] text-[var(--color-branco)] absolute bottom-[30.84px] right-[70px] bg-[var(--color-azul-principal)] rounded-full flex items-center justify-center group-hover:bg-[var(--color-azul-light)] transition-colors duration-300'>
                         {/*Ícone "+"*/}
-                        <PlusIcon className='size-[23px] text-[var(--color-branco)]' />
+                        <PlusIcon className='size-[23px] text-[var(--color-branco)] ' />
                       </div>
                     </div>
 
@@ -81,7 +92,7 @@ export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
                     {/*Botão PUBLICAR*/}
                     <button
                       type="submit"
-                      className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded hover:bg-[#67A8FF] transition font-bold">
+                      className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold">
                       PUBLICAR
                     </button>
 
