@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import { CameraIcon } from '@heroicons/react/24/outline';
+import { 
+  CameraIcon, 
+  ArrowLeftIcon
+} from '@heroicons/react/24/outline';
 import {
   ChevronUpDownIcon,
   PlusIcon
@@ -20,11 +23,19 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
         return (
           <>
             <div className='fixed inset-0 z-[999999] bg-black/40 pointer-events-none flex items-center justify-center'>
-                  <div className='pointer-events-auto flex flex-col items-center w-[720px] max-w-[100%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6'>
+                  <div className='pointer-events-auto relative flex flex-col items-center w-[720px] max-w-[100%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6'>
+                    
+                    {/*Botão de "voltar"*/}
+                    <button
+                      type="button"
+                      className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors">
+                      <ArrowLeftIcon className="size-[48px]" />
+                    </button>
+
                     <h1 className='text-h1 mb-[48px]'>Qual sua Denúncia?</h1>
                     <div className='flex items-center gap-[10px] mb-[26px]'>
-                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-body'>ANÔNIMA</button>
-                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-body'>PÚBLICA</button>
+                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small font-bold'>ANÔNIMA</button>
+                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small'>PÚBLICA</button>
                     </div>
                     
                     <div className='w-[366px] h-[52px] border border-[var(--color-bordas)] rounded-[10px] flex items-center p-[16px]'>
@@ -62,7 +73,7 @@ export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
                     {/*Botão PUBLICAR*/}
                     <button
                       type="submit"
-                      className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded hover:bg-[#67A8FF] transition">
+                      className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded hover:bg-[#67A8FF] transition font-bold">
                       PUBLICAR
                     </button>
 
