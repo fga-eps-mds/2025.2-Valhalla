@@ -29,7 +29,7 @@ export default function PaginaDenuncias() {
         {/*Esquerda: Logo e Título */}
         <div className="flex items-center space-x-4">
           <Image
-            src="/Corujuda-Contorno.svg"
+            src="/logos/Corujuda-Contorno.svg"
             alt="Logo Guardiões da Universidade"
             width={84}
             height={84}
@@ -47,7 +47,7 @@ export default function PaginaDenuncias() {
             <NewspaperIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
           </button>
           <button aria-label="Denúncia">
-            <HomeIcon className="h-10 w-10 text-[#67A8FF]"/>
+            <HomeIcon className="h-10 w-10 text-azul-light"/>
           </button>
           <button aria-label="Histórico">
             <ArchiveBoxIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
@@ -72,14 +72,14 @@ export default function PaginaDenuncias() {
           h-26                    /* Altura: 104px */
           w-26                    /* Largura: 104px */
           rounded-full            /* Totalmente redondo */
-          bg-[#1A2A4A]          /* Cor de fundo */
-          hover:bg-[#67A8FF]    /* Cor ao passar o mouse */
+          bg-azul-dark          /* Cor de fundo */
+          hover:bg-azul-light   /* Cor ao passar o mouse */
           flex                    /* Para centralizar o ícone */
           items-center            /* ...verticalmente */
           justify-center          /* ...horizontalmente */
           shadow-lg               /* Sombra */
           transition-colors       /* Efeito de transição */
-          duration-300
+          duration-300            /* Duração da transição */
         "
       >
         <PlusIcon className="h-12 w-12 text-white"/>

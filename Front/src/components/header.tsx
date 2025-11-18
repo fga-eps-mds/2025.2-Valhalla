@@ -8,7 +8,7 @@ export default function Header() {
       <Link href="/" className="flex items-center space-x-3">
         <>
           <Image
-            src="/Corujuda-Contorno.svg"
+            src="/logos/Corujuda-Contorno.svg"
             alt="Logo Guardiões da Universidade"
             width={84}
             height={84}

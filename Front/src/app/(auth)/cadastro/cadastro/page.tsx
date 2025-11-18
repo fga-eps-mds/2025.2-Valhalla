@@ -20,7 +20,7 @@ export default function Cadastro() {
             <h1 className='text-[36px] text-texto-primario style={{fontFamily: "var(--fonte-primaria)"}} mb-[43px]'>Cadastro</h1>
 
             <ul className='flex flex-col items-center justify-center gap-2.5 w-full h-[440px]' >
-                <li className='flex items-center p-[13px_15px] border border-bordas] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <AcademicCapIcon className='size-5'/>
                     <input type="text" 
                     placeholder='Digite aqui seu Nome'
@@ -54,27 +54,25 @@ export default function Cadastro() {
                 
                 <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <ChevronUpDownIcon className='size-5'/>
-                    <select className='w-full outline-none px-[9px] '>
+                    <select className='w-full outline-none px-[9px]'>
                         <option value="" disabled selected>Selecione sua Ocupação</option>
                         <option value="Servidor">Servidor</option>
                         <option value="Aluno">Aluno</option>
                     </select>
-                    
-                    
                 </li>
             </ul>
 
             <button
                 type="submit"
-                className="flex items-center justify-center border border-azul-dark rounded-md py-[11px] my-[38px] gap-[5px] bg-azul-principal w-60 h-[45px] text-white hover:bg-azul-light transition">
+                className="flex items-center justify-center border border-azul-dark rounded-[15px] py-[11px] my-[38px] gap-[5px] bg-azul-principal w-60 h-[45px] text-white hover:bg-azul-light transition">
                 CADASTRAR
                 <ArrowRightEndOnRectangleIcon className='size-5'/>
             </button>
         
             <div className="flex items-center gap-2 mb-[50px]">
-                <input type="checkbox" id="termos" className="w-4 h-4" />
+                <input type="checkbox" id="termos" className="w-5 h-5 bg-azul-principal" />
                 <label htmlFor="termos" className="text-sm text-texto-corpo">
-                    Declaro que li e aceito os <a href="#" className="text-blue-500 underline">termos de uso</a>
+                    Declaro que li e aceito os <a href="#" className="text-azul-principal underline">termos de uso</a>
                 </label>
                 <ShieldCheckIcon className='size-6'/>
             </div>
