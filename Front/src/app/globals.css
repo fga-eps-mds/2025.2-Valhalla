@@ -91,7 +91,7 @@
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* track */
@@ -102,7 +102,6 @@
 /* handle */
 ::-webkit-scrollbar-thumb {
   background: #5181d4;
-  background-image: url('/corujuda-Contorno.svg');
   background-size:contain;
   background-position:center;
 }
@@ -110,7 +109,6 @@
 /* handle hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #1153d7;
-  background-image: url('/corujuda-Capeluda-Contorno.svg');
   background-size:contain;
   background-position:center;
 }
