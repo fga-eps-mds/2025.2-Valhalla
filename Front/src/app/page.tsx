@@ -3,6 +3,8 @@
 import Image from "next/image";
 
 import SecaoDesenvolvedores from "@/components/secaoDevs";
+import Footer from "@/components/footer";
+import Header from "@/components/header"
 
 // Imports ESTRUTURAIS do React e Next
 import React, { useState, useEffect } from 'react';
@@ -14,19 +16,8 @@ export default function Home() {
 
       {/*Header Inicio*/}
 
-      <header className="bg-texto-corpo h-17 shadow-md flex items-center justify-between pl-5 pr-15">
-
-        {/*Conteúdo do header*/} {/*Esquerda: Logo e Título */}
-        <div className="flex items-center space-x-3">
-          <Image
-            src="/Corujuda-Contorno.svg"
-            alt="Logo Guardiões da Universidade"
-            width={84}
-            height={84}
-          />
-          <h1 className="text-white text-3xl font-bold">
-            Guardiões da Universidade</h1>
-        </div>
+      <header>
+        <Header/>
       </header>
 
       {/*Header Fim*/}
@@ -75,8 +66,14 @@ export default function Home() {
             <SecaoDesenvolvedores/>
           </div>
 
+          
         </div>
       </div>
+
+      {/* Footer */}
+      <footer>
+        <Footer/>
+      </footer>
 
     </main>
   )
