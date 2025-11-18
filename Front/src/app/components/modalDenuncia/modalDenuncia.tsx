@@ -12,27 +12,34 @@ import {
 
 interface DenunciaModalProps {
   isOpen: boolean;
-  // onClose: () => void;
+  onClose: () => void;
 }
 
-export default function ModalDenuncia ({isOpen}:DenunciaModalProps) {
+export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
   {/*"Memória" (estado) chamado descricao para o campo de descrição da denúncia. Começa com texto vazio*/}
   const [descricao, setDescricao] = useState('');
 
     if (!isOpen) return null;
         return (
           <>
-            <div className='fixed inset-0 z-[999999] bg-black/40 pointer-events-none flex items-center justify-center'>
-                  <div className='pointer-events-auto relative flex flex-col items-center w-[720px] max-w-[100%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6'>
+            <div 
+              onClick={onClose}
+              className='fixed inset-0 z-[999999] bg-black/40 flex items-center justify-center'>
+                  <div 
+                    onClick={(e) => e.stopPropagation()}
+                    className='pointer-events-auto relative flex flex-col items-center w-[720px] max-w-[100%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6'
+                    >
                     
                     {/*Botão de "voltar"*/}
                     <button
                       type="button"
+                      onClick={onClose}
                       className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors">
                       <ArrowLeftIcon className="size-[48px]" />
                     </button>
 
                     <h1 className='text-h1 mb-[48px]'>Qual sua Denúncia?</h1>
+
                     <div className='flex items-center gap-[10px] mb-[26px]'>
                       <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small font-bold'>ANÔNIMA</button>
                       <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small'>PÚBLICA</button>

@@ -88,7 +88,11 @@ export default function PaginaDenuncias() {
       >
         <PlusIcon className="h-12 w-12 text-white"/>
       </button>
-      <ModalDenuncia isOpen={true}/>
+
+      <ModalDenuncia 
+        isOpen={abrirModal}
+        onClose={() => setabrirModal(false)}
+        />
     </div>
   );
 }
