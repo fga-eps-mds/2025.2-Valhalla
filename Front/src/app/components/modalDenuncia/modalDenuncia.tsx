@@ -13,12 +13,20 @@ import {
 interface DenunciaModalProps {
   isOpen: boolean;
   onClose: () => void;
+
+  descricao: string;
+  setDescricao: (text: string) => void;
+
+  categoria: string;
+  setCategoria: (text: string) => void;
+
+  anonimato: boolean | null;
+  setAnonimato: (valor: boolean) => void;
+
 }
 
-export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
-  {/*"Memória" (estado) chamado descricao para o campo de descrição da denúncia. Começa com texto vazio*/}
-  const [descricao, setDescricao] = useState('');
-
+export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao, categoria, setCategoria, anonimato, setAnonimato}:DenunciaModalProps) {
+  
     if (!isOpen) return null;
         return (
           <>
@@ -42,16 +50,45 @@ export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
                     
                     {/*Botões de TIPO DE DENUNCIA*/}
                     <div className='flex items-center gap-[10px] mb-[26px]'>
-                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold'>ANÔNIMA</button>
-                      <button type='button' className='w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold'>PÚBLICA</button>
+
+                    {/* Botão ANÔNIMA (Ativo se anonimato === true) */}
+                      <button 
+                        type='button' 
+                        onClick={() => setAnonimato(true)} 
+                        className={`
+                          w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
+                          ${anonimato === true 
+                            ? 'bg-[var(--color-azul-dark)] text-[var(--color-branco)] border-[var(--color-azul-dark)]'
+                            : 'bg-[var(--color-branco)] text-[var(--color-azul-dark)] border-[var(--color-azul-dark)] hover:bg-[var(--color-off-white)]'}
+                        `}
+                      > ANÔNIMA
+                      </button>
+                      
+                      {/* Botão PÚBLICA (Ativo se anonimato === false) */}
+                      <button 
+                        type='button' 
+                        onClick={() => setAnonimato(false)} 
+                        className={`
+                          w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
+                          ${anonimato === false
+                            ? 'bg-[var(--color-azul-dark)] text-[var(--color-branco)] border-[var(--color-azul-dark)]' 
+                            : 'bg-[var(--color-branco)] text-[var(--color-azul-dark)]  border-[var(--color-azul-dark)] hover:bg-[var(--color-off-white)]'}
+                        `}
+                      > PÚBLICA
+                      </button>
                     </div>
                     
-                    <div className='w-[366px] h-[52px] border border-[var(--color-bordas)] rounded-[10px] flex items-center p-[16px] mb-[20px]'>
+                    {/*Campo de CATEGORIA*/}
+                    <div className='w-[366px] h-[52px] border border-[var(--color-bordas)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
                     <ChevronUpDownIcon className='size-[24px]'/>
-                    <select className='flex items-center mx-[5px] text-small cursor-pointer'>
-                              <option value="" disabled selected>Selecione a Categoria</option>
-                              <option value="">Servidor</option>
-                              <option value="">Aluno</option>
+                    <select 
+                      className='flex items-center mx-[5px] text-small cursor-pointer'
+                      value={categoria}
+                      onChange={(e) => setCategoria(e.target.value)}
+                    >
+                              <option value="" disabled>Selecione a Categoria</option>
+                              <option value="Servid">Servidor</option>
+                              <option value="Aluno">Aluno</option>
                           </select>
                     </div>
                     
@@ -61,8 +98,8 @@ export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
                         w-[256px] h-[159px] shrink-0 
                         flex items-center justify-center 
                         border border-[3px] border-dashed border-[var(--color-azul-principal)] 
-                        rounded-[20px] relative mb-[15px]
-                        
+                        rounded-[20px] relative mb-[15px]                        
+                    
                         group
                         cursor-pointer
                         hover:border-[var(--color-azul-light)]
@@ -76,12 +113,12 @@ export default function ModalDenuncia ({isOpen, onClose}:DenunciaModalProps) {
                       </div>
                     </div>
 
-                    {/*Campo Descrição*/} 
+                    {/*Campo DESCRIÇÃO*/} 
                     <div>
                       <label htmlFor="descricao" className="text-body mb-1">Descrição</label>
                       <div>
                         <textarea id="descricao"
-                          className="w-[456px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 resize-none "
+                          className="w-[500px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 resize-none "
                           placeholder="Escreva a sua denúncia..."
                           value={descricao} /*Valor é o que está guardado na memória "descricao"*/
                           onChange={(e) => setDescricao(e.target.value)} /*Quando usuário digita é guardado na memómria*/
