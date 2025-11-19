@@ -19,12 +19,12 @@ const developers: Dev[] = [
   },
   {
     name: "Gustavo Bonifacio",
-    photo: "/devs/dev3.jpg",
+    photo: "/devs/bonifacio.jpg",
     github: "https://github.com/Gustavo2703",
   },
   {
     name: "Julia Gabriella",
-    photo: "/devs/dev4.jpg",
+    photo: "/devs/julia.jpg",
     github: "https://github.com/juliagabriellafs",
   },
   {
@@ -39,7 +39,7 @@ const developers: Dev[] = [
   },
   {
     name: "Lucas Oliveira",
-    photo: "/devs/dev7.jpg",
+    photo: "/devs/luquinhas.jpg",
     github: "https://github.com/dev-LucasDpaula",
   },
   {
@@ -61,28 +61,32 @@ const developers: Dev[] = [
 
 export default function SecaoDesenvolvedores() {
   return (
-    <section className="mt-96 w-full bg-gray-100">
-      <h2 className="text-center text-display mb-6">Desenvolvedores</h2>
+    <section className="mt-90 px- 10 py-10">
+
+      <h2 className="text-center text-display mb-8 mt-0 cursor-default">
+        Desenvolvedores
+      </h2>
 
       <div className="grid grid-cols-5 gap-20 place-items-center">
         {developers.map((dev, idx) => (
           <div
             key={idx}
-            className="flex flex-col items-center gap-1.5 hover:scale-110 transition"
-          >
+            className="flex flex-col items-center gap-1.5 hover:scale-110 transition">
             <img
               src={dev.photo}
               alt={dev.name}
-              className="w-30 h-30 rounded-full object-cover shadow-2xl"
+              className="w-30 h-30 rounded-full object-cover shadow-lg"
             />
 
-            <p className="text-lg font-medium hover:cursor-default">{dev.name}</p>
-
+            <p className="text-lg font-medium hover:cursor-default">
+              {dev.name}
+            </p>
+            
             <a
               href={dev.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black hover:text-gray-500 "
+              className="text-black hover:text-gray-400 "
             >
               <FaGithub size={28} />
             </a>
