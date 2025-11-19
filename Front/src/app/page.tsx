@@ -30,15 +30,15 @@ export default function Home() {
             <div className="flex-1 max-w-xl">
               <h1 className="text-h1">Guardiões da Universidade</h1>
 
-              <p className="text-medium text-justify">
+              <p className="text-medium text-justify mb-8">
                 O projeto Guardiões da Universidade foi desenvolvido para ser um canal de denúncia para a comunidade da Universidade de Brasília (UnB), sendo um meio para os discentes e os servidores exporem suas denúncias, conhecerem os procedimentos oficiais de denúncia e visualizarem as demandas da universidade.
               
               </p>
-              <div className="flex gap-4">
-                <button className="px-6 py-3 bg-gray-300 rounded-lg hover:bg-gray-400">
+              <div className="flex gap-4 justify-center">
+                <button className="px-10 py-5 bg-white rounded-lg hover:bg-gray-400 border border-black">
                   Sobre Nós
                 </button>
-                <button className="px-6 py-3 bg-gray-300 rounded-lg hover:bg-gray-400">
+                <button className="px-10 py-5 bg-azul-principal rounded-lg hover:bg-azul-light border border-black text-white">
                   Denuncie
                 </button>
               </div>
