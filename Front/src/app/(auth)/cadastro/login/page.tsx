@@ -59,7 +59,7 @@ export default function Login() {
                 </Link>
 
                 <Image 
-                    src="/Corujuda.svg"
+                    src="/logos/Corujuda.svg"
                     alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
                     width={120}
                     height={120}
@@ -140,7 +140,7 @@ export default function Login() {
 
                 <p className="mt-6 text-sm text-azul-dark">
                     Novo por aqui ?  {'   '}
-                    <Link href="/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
+                    <Link href="/cadastro/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
                         Crie sua conta
                     </Link>
                 </p>
