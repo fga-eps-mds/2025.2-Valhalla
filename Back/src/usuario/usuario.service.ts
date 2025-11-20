@@ -3,7 +3,7 @@ import { UsuarioDto } from './dto/usuario.dto';
 import { PrismaService } from '../database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { updateUsuarioDto } from './dto/edicao.usuario.dto';
-import { CargoUsuario } from 'generated/prisma';
+import { CargoUsuario } from '@prisma/client';
 
 @Injectable()
 export class UsuarioService {
@@ -89,6 +89,6 @@ constructor(private prisma: PrismaService) {}
         })
     }
     procurarPorEmail(email: string) {
-    return this.prisma.usuario.findUnique({ where: { email } });
+    return this.prisma.usuario.findFirst({ where: { email } });
   }
 }
