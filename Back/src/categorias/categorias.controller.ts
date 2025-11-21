@@ -1,4 +1,5 @@
 import { Body, Controller, Post, UseGuards, Req, Param, Put, ParseIntPipe, Patch, Delete, Get} from '@nestjs/common';
+import { IsPublic } from '../auth/decorators/is-public.decorator';
 import { criarCategoriasDto } from './dto/create_categorias.dto';
 import { edicaoCategoriasDto } from './dto/edicao_categorias.dto';
 import { CategoriasService } from './categorias.service';
@@ -34,6 +35,7 @@ export class CategoriasController {
         return this.categoriasService.encontrarCategorias(id);
     }
 
+    @IsPublic()
     @Get()
     async listarCategorias() {
         return this.categoriasService.listarCategorias();
