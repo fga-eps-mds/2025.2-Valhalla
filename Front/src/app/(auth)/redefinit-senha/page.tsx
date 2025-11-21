@@ -1,60 +1,77 @@
-"use client"
+'use client';
 
-import React, { useState } from "react"
-import{
-    UserCircleIcon,
-    ArrowLeftIcon,
-    ArrowRightEndOnRectangleIcon,
-    LockClosedIcon,
-} from "@heroicons/react/24/outline"
-import Image from "next/image"
-import Link from "next/link"
+import React, { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation'; // Para pegar o token da URL
+import { 
+    ArrowLeftIcon, 
+    LockClosedIcon 
+} from '@heroicons/react/24/outline';
+import { resetarSenha } from '@/app/utils/api'; // Importe a função que criamos anteriormente
 
-export default function RedefinirSenha(){
+// Componente interno que usa useSearchParams
+function FormularioRedefinicao() {
+    const searchParams = useSearchParams();
+    const token = searchParams.get('token'); // Pega o token da URL ?token=...
+
     const [senha, setSenha] = useState('');
     const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
-    const [erro, setErro] = useState(null);
-    const [sucesso, setSucesso] = useState(null);
+    const [erro, setErro] = useState<string | null>(null);
+    const [sucesso, setSucesso] = useState<string | null>(null);
     const [carregando, setCarregando] = useState(false);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         setErro(null);
         setSucesso(null);
 
         if (!senha || !confirmacaoSenha) {
-            setErro('Por favor, preencha ambos os campos de senha.');
+            setErro('Por favor, preencha todos os campos.');
             return;
         }
 
         if (senha !== confirmacaoSenha) {
-            setErro('As senhas digitadas não coincidem.');
+            setErro('As senhas não coincidem.');
             return;
         }
 
-         setCarregando(true);
+        if (!token) {
+            setErro('Token inválido ou expirado. Solicite uma nova recuperação de senha.');
+            return;
+        }
 
-        
-    }
-};
+        setCarregando(true);
 
-return (
+        try {
+            // Chama a API que criamos no passo anterior
+            await resetarSenha(token, senha);
+            
+            setSucesso('Senha redefinida com sucesso! Você já pode fazer login.');
+            setSenha('');
+            setConfirmacaoSenha('');
+        } catch (error) {
+            console.error('Erro ao redefinir senha:', error);
+            setErro('Não foi possível redefinir a senha. O link pode ter expirado.');
+        } finally {
+            setCarregando(false);
+        }
+    };
+
+    return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 sm:p-8 font-sans">
             <div className="w-full max-w-lg min-h-[550px] rounded-2xl bg-white border border-gray-200 shadow-xl flex flex-col items-center p-8 sm:p-10 relative">
 
                 {/* Back Link */}
-                <a href="#" className="absolute top-6 left-6" aria-label="Voltar para a página inicial">
+                <a href="/" className="absolute top-6 left-6" aria-label="Voltar para a página inicial">
                     <ArrowLeftIcon className="w-8 h-8 sm:w-10 sm:h-10 text-[#1A2A4A] cursor-pointer hover:text-blue-600 transition" />
                 </a>
 
-                {/* Logo */}
+                {/* Logo - Ajuste o caminho da imagem conforme seu projeto */}
                 <img
                     src="/Corujuda - contorno.svg"
-                    alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
+                    alt='Logo do Guardiões da Universidade'
                     width={120}
                     height={120}
-                    className="mt-8 mb-4 rounded-full"
+                    className="mt-8 mb-4"
                 />
 
                 <h1 className='text-3xl sm:text-[36px] text-[#050505] mb-4 font-extrabold text-center'>
@@ -65,14 +82,11 @@ return (
                     Digite a nova senha abaixo:
                 </p>
 
+                <form className="w-full max-w-sm flex flex-col items-center" onSubmit={handleSubmit}>
 
-                <form className="w-full max-w-sm flex flex-col items-center" onSubmit={handleSubmit} >
-
-                    {/* Novo Campo de Senha */}
+                    {/* Campo de Senha */}
                     <div className="w-full mb-6">
-                        <label htmlFor="senha" className="sr-only">
-                            Nova Senha
-                        </label>
+                        <label htmlFor="senha" className="sr-only">Nova Senha</label>
                         <div className="relative">
                             <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
                             <input
@@ -88,11 +102,9 @@ return (
                         </div>
                     </div>
 
-                    {/* Campo de Confirmação de Senha */}
+                    {/* Campo de Confirmação */}
                     <div className="w-full mb-10">
-                        <label htmlFor="confirmacaoSenha" className="sr-only">
-                            Confirmação de Senha
-                        </label>
+                        <label htmlFor="confirmacaoSenha" className="sr-only">Confirmação de Senha</label>
                         <div className="relative">
                             <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
                             <input
@@ -108,7 +120,7 @@ return (
                         </div>
                     </div>
 
-                    {/* Mensagens de Erro e Sucesso */}
+                    {/* Mensagens */}
                     {erro && (
                         <div className="text-red-700 text-sm mb-6 w-full text-center bg-red-100 p-3 rounded-xl border border-red-300 transition duration-300">
                             {erro}
@@ -120,20 +132,14 @@ return (
                         </div>
                     )}
 
-                    {/* Botão de Redefinir */}
+                    {/* Botão */}
                     <button
                         type="submit"
                         className="flex items-center justify-center border-2 border-[#1A2A4A] rounded-xl py-3 px-8 gap-2 bg-[#3060BF] w-full text-white font-semibold shadow-lg hover:bg-[#254c9b] transition duration-200 disabled:bg-gray-400 disabled:border-gray-500 disabled:shadow-none"
                         disabled={carregando || !!sucesso}
                     >
                         {carregando ? (
-                            <span className="flex items-center gap-2">
-                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Redefinindo...
-                            </span>
+                            <span className="flex items-center gap-2">Enviando...</span>
                         ) : (
                             <>
                                 Redefinir Senha
@@ -143,14 +149,21 @@ return (
                     </button>
                     
                     {sucesso && (
-                        <a href="#" className="mt-6 text-sm text-[#3060BF] hover:underline transition">
+                        <a href="/login" className="mt-6 text-sm text-[#3060BF] hover:underline transition">
                             Ir para Login
                         </a>
                     )}
                 </form>
-
             </div>
         </div>
     );
 }
 
+// Componente Principal (Export Default) com Suspense
+export default function RedefinirSenhaPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Carregando...</div>}>
+            <FormularioRedefinicao />
+        </Suspense>
+    );
+}
