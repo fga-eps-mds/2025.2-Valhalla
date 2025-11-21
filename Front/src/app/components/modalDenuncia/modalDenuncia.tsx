@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { getCategorias, Categoria } from '@/app/services/categoriaService';
+import { criarDenuncia } from '../../services/denunciaService'; 
 import { 
   CameraIcon, 
   ArrowLeftIcon
@@ -28,6 +29,7 @@ interface DenunciaModalProps {
 
 export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao, categoria, setCategoria, anonimato, setAnonimato}:DenunciaModalProps) {
   
+    // Estado local para guardar a LISTA CATEGORIA
     const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
 
     useEffect(() => {
@@ -37,6 +39,31 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
       };
       carregar();
     }, []); 
+
+    // Função que é chamada ao clicar em PUBLICAR
+    const publicarDenuncia = async () => {
+      
+      if (!descricao || !categoria) {
+        alert("Por favor, preencha a descrição e selecione uma categoria.");
+        return;}
+
+      try {
+        await criarDenuncia({
+          descricao: descricao,
+          idCategoria: Number(categoria), 
+          anonimato: anonimato ?? false, 
+          // idUsuario: 1 ID FIXO PARA TESTE (ALTERAR)
+          idUsuario: 1 
+        });
+
+        alert("Denúncia realizada com sucesso!");
+        onClose();
+
+      } catch (error) {
+        alert("Erro ao publicar denúncia. Verifique o console.");
+        console.error(error);
+      }
+    };
 
 
     if (!isOpen) return null;
@@ -105,7 +132,7 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
                                   {cat.nome}
                               </option>
                             ))}
-                            
+
                           </select>
                     </div>
                     
