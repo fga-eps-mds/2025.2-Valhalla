@@ -24,3 +24,5 @@ export const getOneUsuario = async (id: number) => {
   const response = await api.get(`/Usuario/${id}`); 
   return response.data;
 };
+
+export default api;
