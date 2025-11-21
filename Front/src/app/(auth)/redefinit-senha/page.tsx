@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation'; // Para pegar o token da URL
+import { useSearchParams } from 'next/navigation'; 
 import { 
     ArrowLeftIcon, 
     LockClosedIcon 
 } from '@heroicons/react/24/outline';
-import { resetarSenha } from '@/app/utils/api'; // Importe a função que criamos anteriormente
+import { resetarSenha } from '@/app/utils/api';
 
-// Componente interno que usa useSearchParams
+
 function FormularioRedefinicao() {
     const searchParams = useSearchParams();
-    const token = searchParams.get('token'); // Pega o token da URL ?token=...
+    const token = searchParams.get('token'); 
 
     const [senha, setSenha] = useState('');
     const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
@@ -42,7 +42,7 @@ function FormularioRedefinicao() {
         setCarregando(true);
 
         try {
-            // Chama a API que criamos no passo anterior
+            
             await resetarSenha(token, senha);
             
             setSucesso('Senha redefinida com sucesso! Você já pode fazer login.');
@@ -65,7 +65,6 @@ function FormularioRedefinicao() {
                     <ArrowLeftIcon className="w-8 h-8 sm:w-10 sm:h-10 text-[#1A2A4A] cursor-pointer hover:text-blue-600 transition" />
                 </a>
 
-                {/* Logo - Ajuste o caminho da imagem conforme seu projeto */}
                 <img
                     src="/Corujuda - contorno.svg"
                     alt='Logo do Guardiões da Universidade'
@@ -149,7 +148,7 @@ function FormularioRedefinicao() {
                     </button>
                     
                     {sucesso && (
-                        <a href="/login" className="mt-6 text-sm text-[#3060BF] hover:underline transition">
+                        <a href="/cadastro/login" className="mt-6 text-sm text-[#3060BF] hover:underline transition">
                             Ir para Login
                         </a>
                     )}
@@ -159,7 +158,7 @@ function FormularioRedefinicao() {
     );
 }
 
-// Componente Principal (Export Default) com Suspense
+
 export default function RedefinirSenhaPage() {
     return (
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Carregando...</div>}>
