@@ -19,6 +19,32 @@ function FormularioRedefinicao() {
     const [sucesso, setSucesso] = useState<string | null>(null);
     const [carregando, setCarregando] = useState(false);
 
+    const calcularForcaSenha = (pass: string) => {
+        let pontuacao = 0;
+        if (!pass) return 0;
+
+        if (pass.length >= 8) pontuacao++; // Critério 1: Tamanho
+        if (/[A-Z]/.test(pass)) pontuacao++; // Critério 2: Maiúscula
+        if (/[0-9]/.test(pass)) pontuacao++; // Critério 3: Número
+        if (/[^A-Za-z0-9]/.test(pass)) pontuacao++; // Critério 4: Símbolo
+
+        return pontuacao;
+    };
+
+    const forcaSenha = calcularForcaSenha(senha);
+    
+    const getForcaInfo = () => {
+        switch (true) {
+            case forcaSenha < 2: return { label: 'Fraca', color: 'bg-red-500', width: 'w-1/4' };
+            case forcaSenha < 3: return { label: 'Média', color: 'bg-yellow-400', width: 'w-2/4' };
+            case forcaSenha < 4: return { label: 'Boa', color: 'bg-blue-500', width: 'w-3/4' };
+            case forcaSenha === 4: return { label: 'Forte', color: 'bg-green-500', width: 'w-full' };
+            default: return { label: '', color: 'bg-gray-200', width: 'w-0' };
+        }
+    };
+    
+    const infoForca = getForcaInfo();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setErro(null);
@@ -29,28 +55,50 @@ function FormularioRedefinicao() {
             return;
         }
 
+        if (senha.length < 8) {
+            setErro('A senha precisa ter no mínimo 8 caracteres.');
+            return; 
+        }
+
+        if (!/[A-Z]/.test(senha)) {
+            setErro('A senha precisa ter pelo menos uma letra maiúscula.');
+            return;
+        }
+
+        // Verifica Número
+        if (!/[0-9]/.test(senha)) {
+            setErro('A senha precisa ter pelo menos um número.');
+            return;
+        }
+
+        // Verifica Símbolo
+        if (!/[^A-Za-z0-9]/.test(senha)) {
+            setErro('A senha precisa ter pelo menos um símbolo (ex: !@#$).');
+            return;
+        }
+        // ---------------------------------------
+
+        // Verifica se as senhas batem
         if (senha !== confirmacaoSenha) {
             setErro('As senhas não coincidem.');
             return;
         }
 
         if (!token) {
-            setErro('Token inválido ou expirado. Solicite uma nova recuperação de senha.');
+            setErro('Token inválido. Solicite um novo link.');
             return;
         }
 
         setCarregando(true);
 
         try {
-            
             await resetarSenha(token, senha);
-            
-            setSucesso('Senha redefinida com sucesso! Você já pode fazer login.');
+            setSucesso('Senha redefinida com sucesso!');
             setSenha('');
             setConfirmacaoSenha('');
         } catch (error) {
-            console.error('Erro ao redefinir senha:', error);
-            setErro('Não foi possível redefinir a senha. O link pode ter expirado.');
+            console.error(error);
+            setErro('Erro ao redefinir senha.');
         } finally {
             setCarregando(false);
         }
@@ -100,6 +148,40 @@ function FormularioRedefinicao() {
                             />
                         </div>
                     </div>
+                    {senha && (
+                        <div className="w-full mb-6 -mt-4 px-1">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-xs text-gray-500">Força da senha:</span>
+                                <span className={`text-xs font-bold ${infoForca.label === 'Fraca' ? 'text-red-500' : infoForca.label === 'Média' ? 'text-yellow-500' : infoForca.label === 'Boa' ? 'text-blue-500' : 'text-green-600'}`}>
+                                    {infoForca.label}
+                                </span>
+                            </div>
+                            {/* Barra de fundo cinza */}
+                            <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                                {/* Barra colorida dinâmica */}
+                                <div 
+                                    className={`h-full ${infoForca.color} transition-all duration-500 ease-out`} 
+                                    style={{ width: infoForca.width === 'w-1/4' ? '25%' : infoForca.width === 'w-2/4' ? '50%' : infoForca.width === 'w-3/4' ? '75%' : '100%' }}
+                                ></div>
+                            </div>
+                            
+                            {/* Dicas do que falta (Opcional, mas muito útil) */}
+                            <div className="mt-2 flex flex-wrap gap-2">
+                                <span className={`text-[10px] px-2 py-1 rounded-full ${senha.length >= 8 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                    8+ Caracteres
+                                </span>
+                                <span className={`text-[10px] px-2 py-1 rounded-full ${/[A-Z]/.test(senha) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                    Maiúscula
+                                </span>
+                                <span className={`text-[10px] px-2 py-1 rounded-full ${/[0-9]/.test(senha) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                    Número
+                                </span>
+                                <span className={`text-[10px] px-2 py-1 rounded-full ${/[^A-Za-z0-9]/.test(senha) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                    Símbolo
+                                </span>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Campo de Confirmação */}
                     <div className="w-full mb-10">
