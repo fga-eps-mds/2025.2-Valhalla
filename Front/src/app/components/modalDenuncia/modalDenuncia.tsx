@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getCategorias, Categoria } from '@/app/services/categoriaService';
 import { 
   CameraIcon, 
   ArrowLeftIcon
@@ -27,6 +28,17 @@ interface DenunciaModalProps {
 
 export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao, categoria, setCategoria, anonimato, setAnonimato}:DenunciaModalProps) {
   
+    const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
+
+    useEffect(() => {
+      const carregar = async () => {
+        const dados = await getCategorias();
+        setListaCategorias(dados);
+      };
+      carregar();
+    }, []); 
+
+
     if (!isOpen) return null;
         return (
           <>
