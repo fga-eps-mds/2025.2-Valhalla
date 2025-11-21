@@ -99,8 +99,13 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
                       onChange={(e) => setCategoria(e.target.value)}
                     >
                               <option value="" disabled>Selecione a Categoria</option>
-                              <option value="Servid">Servidor</option>
-                              <option value="Aluno">Aluno</option>
+                              
+                              {listaCategorias.map((cat) => (
+                                <option key={cat.id} value={cat.id}>
+                                  {cat.nome}
+                              </option>
+                            ))}
+                            
                           </select>
                     </div>
                     
