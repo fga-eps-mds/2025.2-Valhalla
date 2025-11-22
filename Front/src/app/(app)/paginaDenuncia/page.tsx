@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import ModalDenuncia from '@/app/components/modalDenuncia/modalDenuncia';
 
 // Imports VISUAIS
 import {
@@ -17,6 +18,13 @@ import {
 
 
 export default function PaginaDenuncias() {
+
+  const [abrirModal, setabrirModal] = useState(false) 
+
+  //Estados (Descrição, Categoria, Anonimato) da denúncia
+  const [descricao, setDescricao] = useState('');
+  const [categoria, setCategoria] = useState('');
+  const [anonimato, setAnonimato] = useState<boolean | null>(null);
 
   return (
     // Container principal da página
@@ -64,6 +72,7 @@ export default function PaginaDenuncias() {
 
       {/* Botão flutuante */}
       <button 
+      onClick={() => setabrirModal(true)}
       aria-label="Nova Denúncia"
       className="
           fixed                   /* Fixo na tela */
@@ -79,12 +88,26 @@ export default function PaginaDenuncias() {
           justify-center          /* ...horizontalmente */
           shadow-lg               /* Sombra */
           transition-colors       /* Efeito de transição */
-          duration-300            /* Duração da transição */
+          duration-300
+          cursor-pointer
         "
       >
         <PlusIcon className="h-12 w-12 text-white"/>
       </button>
 
+      <ModalDenuncia 
+        isOpen={abrirModal}
+        onClose={() => setabrirModal(false)}
+
+        descricao={descricao}
+        setDescricao={setDescricao}
+
+        categoria={categoria}
+        setCategoria={setCategoria}
+
+        anonimato={anonimato}
+        setAnonimato={setAnonimato}
+        />
     </div>
   );
 }
