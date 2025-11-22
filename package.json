@@ -16,7 +16,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

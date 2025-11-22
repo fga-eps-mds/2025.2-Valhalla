@@ -1,7 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 
-import { Usuario } from 'generated/prisma';
+import { Usuario } from '@prisma/client';
 
 
 @Injectable()
@@ -10,7 +10,7 @@ export class MailService {
 
   async sendPasswordResetEmail(user: Usuario, token: string) { 
     
-    const resetUrl = `http://localhost:3001/reset-password?token=${token}`; // alterar para a url do front IMPORTANTE
+    const resetUrl = `http://localhost:3000/redefinit-senha?token=${token}`; // alterar para a url do front IMPORTANTE
 
     const emailHtml = `
       <p>Olá, ${user.nome || 'utilizador'},</p> 

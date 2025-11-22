@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import ModalDenuncia from '@/app/components/modalDenuncia/modalDenuncia';
 
 // Imports VISUAIS
 import {
@@ -18,18 +19,25 @@ import {
 
 export default function PaginaDenuncias() {
 
+  const [abrirModal, setabrirModal] = useState(false) 
+
+  //Estados (Descrição, Categoria, Anonimato) da denúncia
+  const [descricao, setDescricao] = useState('');
+  const [categoria, setCategoria] = useState('');
+  const [anonimato, setAnonimato] = useState<boolean | null>(null);
+
   return (
     // Container principal da página
     <div className="bg-white min-h-screen relative">
 
         {/*Cabeçalho*/}
-      <div className="bg-[#1A293F] h-21 shadow-md flex items-center justify-between pl-5 pr-15">
+      <div className="bg-texto-corpo h-21 shadow-md flex items-center justify-between pl-5 pr-15">
         
         {/*Conteúdo do header*/}
         {/*Esquerda: Logo e Título */}
         <div className="flex items-center space-x-4">
           <Image
-            src="/Corujuda - Contorno.svg"
+            src="/logos/Corujuda-Contorno.svg"
             alt="Logo Guardiões da Universidade"
             width={84}
             height={84}
@@ -47,7 +55,7 @@ export default function PaginaDenuncias() {
             <NewspaperIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
           </button>
           <button aria-label="Denúncia">
-            <HomeIcon className="h-10 w-10 text-[#67A8FF]"/>
+            <HomeIcon className="h-10 w-10 text-azul-light"/>
           </button>
           <button aria-label="Histórico">
             <ArchiveBoxIcon className="h-10 w-10 text-white hover:opacity-80 transition-opacity"/>
@@ -64,6 +72,7 @@ export default function PaginaDenuncias() {
 
       {/* Botão flutuante */}
       <button 
+      onClick={() => setabrirModal(true)}
       aria-label="Nova Denúncia"
       className="
           fixed                   /* Fixo na tela */
@@ -72,19 +81,33 @@ export default function PaginaDenuncias() {
           h-26                    /* Altura: 104px */
           w-26                    /* Largura: 104px */
           rounded-full            /* Totalmente redondo */
-          bg-[#1A2A4A]          /* Cor de fundo */
-          hover:bg-[#67A8FF]    /* Cor ao passar o mouse */
+          bg-azul-dark          /* Cor de fundo */
+          hover:bg-azul-light   /* Cor ao passar o mouse */
           flex                    /* Para centralizar o ícone */
           items-center            /* ...verticalmente */
           justify-center          /* ...horizontalmente */
           shadow-lg               /* Sombra */
           transition-colors       /* Efeito de transição */
           duration-300
+          cursor-pointer
         "
       >
         <PlusIcon className="h-12 w-12 text-white"/>
       </button>
 
+      <ModalDenuncia 
+        isOpen={abrirModal}
+        onClose={() => setabrirModal(false)}
+
+        descricao={descricao}
+        setDescricao={setDescricao}
+
+        categoria={categoria}
+        setCategoria={setCategoria}
+
+        anonimato={anonimato}
+        setAnonimato={setAnonimato}
+        />
     </div>
   );
 }

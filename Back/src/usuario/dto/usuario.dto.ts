@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
-import { CargoUsuario } from "generated/prisma";
+import { CargoUsuario } from "@prisma/client";
 
 export class UsuarioDto {
     @IsOptional()

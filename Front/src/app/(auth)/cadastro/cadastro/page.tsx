@@ -5,30 +5,30 @@ import Link from "next/link";
 export default function Cadastro() {
     return (
         <>
-        <div className="w-[640px] h-[730px] rounded-[1rem] opacity-80 shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">   
+        <div className="w-[640px] h-[730px] rounded-2xl opacity-80 shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">   
             <Link href="/" className="absolute top-6 left-6">
-                <ArrowLeftIcon className="w-[48px] h-[48px] text-[#1A2A4A] cursor-pointer hover:text-[#3060BF] transition" />
+                <ArrowLeftIcon className="w-12 h-12 text-azul-dark cursor-pointer hover:text-azul-principal transition" />
             </Link>
 
             <Image 
-            src="/Corujuda.svg"
+            src="/Corujuda - Contorno.svg"
             alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
             width={160}
             height={160}
             className=""
             />
-            <h1 className='text-[36px] text-[#050505] style={{fontFamily: "var(--fonte-primaria)"}} mb-[43px]'>Cadastro</h1>
+            <h1 className='text-[36px] text-texto-primario style={{fontFamily: "var(--fonte-primaria)"}} mb-[43px]'>Cadastro</h1>
 
-            <ul className='flex flex-col items-center justify-center gap-[10px] w-full h-[440px]' >
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+            <ul className='flex flex-col items-center justify-center gap-2.5 w-full h-[440px]' >
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <AcademicCapIcon className='size-5'/>
                     <input type="text" 
                     placeholder='Digite aqui seu Nome'
-                    className="w-full outline-none px-[9px] placeholder-secundaria text-[#1A293F]"
+                    className="w-full outline-none px-[9px] placeholder-secundaria text-texto-corpo"
                     />
                 </li>
                 
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <UserCircleIcon className='size-5'/>
                     <input type="text" 
                     placeholder='Digite aqui seu Email'
@@ -36,7 +36,7 @@ export default function Cadastro() {
                     />
                 </li>
                 
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <KeyIcon className='size-5'/>
                     <input type="password" 
                     placeholder='Digite aqui sua Senha'
@@ -44,7 +44,7 @@ export default function Cadastro() {
                     />
                 </li>
                 
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <KeyIcon className='size-5'/>
                     <input type="password" 
                     placeholder='Digite aqui sua Senha'
@@ -52,29 +52,27 @@ export default function Cadastro() {
                     />
                 </li>
                 
-                <li className='flex items-center p-[13px_15px] border border-[#A6AAAE] rounded-[15px] w-[440px] h-[50px]'>
+                <li className='flex items-center p-[13px_15px] border border-bordas rounded-[15px] w-[440px] h-[50px]'>
                     <ChevronUpDownIcon className='size-5'/>
-                    <select className='w-full outline-none px-[9px] '>
+                    <select className='w-full outline-none px-[9px]'>
                         <option value="" disabled selected>Selecione sua Ocupação</option>
                         <option value="Servidor">Servidor</option>
                         <option value="Aluno">Aluno</option>
                     </select>
-                    
-                    
                 </li>
             </ul>
 
             <button
                 type="submit"
-                className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[#3060BF] w-[240px] h-[45px] text-white rounded hover:bg-[#67A8FF] transition">
+                className="flex items-center justify-center border border-azul-dark rounded-[15px] py-[11px] my-[38px] gap-[5px] bg-azul-principal w-60 h-[45px] text-white hover:bg-azul-light transition">
                 CADASTRAR
                 <ArrowRightEndOnRectangleIcon className='size-5'/>
             </button>
         
             <div className="flex items-center gap-2 mb-[50px]">
-                <input type="checkbox" id="termos" className="w-4 h-4" />
-                <label htmlFor="termos" className="text-sm text-[#1A293F]">
-                    Declaro que li e aceito os <a href="#" className="text-blue-500 underline">termos de uso</a>
+                <input type="checkbox" id="termos" className="w-5 h-5 bg-azul-principal" />
+                <label htmlFor="termos" className="text-sm text-texto-corpo">
+                    Declaro que li e aceito os <a href="#" className="text-azul-principal underline">termos de uso</a>
                 </label>
                 <ShieldCheckIcon className='size-6'/>
             </div>

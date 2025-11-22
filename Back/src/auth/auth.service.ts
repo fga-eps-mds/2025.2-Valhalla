@@ -5,7 +5,7 @@ import { UsuarioDto } from 'src/usuario/dto/usuario.dto';
 import { JwtService } from "@nestjs/jwt";
 import { UsuarioPayload } from './models/UsuarioPayload';
 import { UsuarioToken } from './models/UsuarioToken';
-import { updateUsuarioDto } from 'src/usuario/dto/update.usuario.dto';
+import { updateUsuarioDto } from 'src/usuario/dto/edicao.usuario.dto';
 import { MailService } from 'src/mail/mail.service';
 import { ConfigService } from '@nestjs/config';
 @Injectable()
@@ -42,7 +42,7 @@ export class AuthService {
     }
 
     async mudarSenha(usuarioId, senhaAntiga: string, senhaNova: string){
-        const usuario = await this.usuarioService.FindOne(usuarioId)
+        const usuario = await this.usuarioService.encontrarUsuario(usuarioId)
         if (!usuario){
             throw new NotFoundException("usuario não encontrado")
         }
@@ -58,7 +58,7 @@ export class AuthService {
         const dadosParaAtualizar = new updateUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash
 
-        await this.usuarioService.update(usuario.id, dadosParaAtualizar);
+        await this.usuarioService.editarUsuario(usuario.id, dadosParaAtualizar);
         
     }
     async esqueciSenha(email: string): Promise<{ message: string }> {
@@ -107,7 +107,7 @@ export class AuthService {
         const dadosParaAtualizar = new updateUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash;
 
-        await this.usuarioService.update(userId, dadosParaAtualizar);
+        await this.usuarioService.editarUsuario(userId, dadosParaAtualizar);
 
         return { message: 'Senha redefinida com sucesso!' };
 
