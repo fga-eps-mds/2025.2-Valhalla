@@ -95,8 +95,20 @@ constructor(private prisma: PrismaService) {}
 
     async procurarPorEmail(email: string) {
     return this.prisma.usuario.findFirst({ where: { email } });
-  }
+    }
 
+
+
+    async encontrarUsuarioAuth(id: number){
+        
+        const usuario = await this.prisma.usuario.findUnique({where:{id}});
+        
+        if(!usuario) {
+            throw new NotFoundException("Usuário não encontrado!")
+        }
+
+        return usuario;
+    }
 
     private async definirHierarquia(idUsuario: number, idAlvo: number, idTipo: TipoUsuario){
         

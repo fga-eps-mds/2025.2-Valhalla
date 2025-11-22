@@ -55,7 +55,7 @@ export class AuthService {
 
 
     async mudarSenha(usuarioId, senhaAntiga: string, senhaNova: string){
-        const usuario = await this.usuarioService.encontrarUsuario(usuarioId)
+        const usuario = await this.usuarioService.encontrarUsuarioAuth(usuarioId)
         if (!usuario){
             throw new NotFoundException("usuario não encontrado")
         }

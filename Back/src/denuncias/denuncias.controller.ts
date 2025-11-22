@@ -31,22 +31,22 @@ export class DenunciasController {
         return this.denunciasService.editarDenuncia(id, req.user.id, data);
     }
 
-    @Delete(':id')
+    @Delete('delete-permanente/:id')
     @UseGuards(JwtAuthGuard)
     async deletarDenuncia(
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
     ) {
-        return this.denunciasService.deletarDenuncia(id, req.user.id);
+        return this.denunciasService.deletarDenuncia(id, req.user.id, req.user.tipo);
     }
 
-    @Patch('soft-delete/:id')
+    @Patch(':id')
     @UseGuards(JwtAuthGuard)
     async desativarDenuncia(
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
     ) {
-        return this.denunciasService.desativarDenuncia(id, req.user.id);
+        return this.denunciasService.desativarDenuncia(id, req.user.id, req.user.tipo);
     }
     
     @IsPublic()

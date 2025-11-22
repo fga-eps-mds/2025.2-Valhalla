@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { DenunciaDto } from './dto/denuncia.dto';
 import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { TipoUsuario } from '@prisma/client';
 
 @Injectable()
 export class DenunciasService{
@@ -25,11 +27,14 @@ export class DenunciasService{
             where: { id },
         })
         if (!existeDenuncia) {
-            throw new Error('Denúncia não encontrada!');
+            throw new NotFoundException('Denúncia não encontrada!');
         }
         
         if (existeDenuncia.idUsuario !== idUsuario) {
-            throw new Error('Usuário não autorizado a editar esta denúncia!');
+            throw new ForbiddenException('Usuário não autorizado a editar esta denúncia!');
+        }
+        if (existeDenuncia.dataDelete) {
+            throw new ForbiddenException('Não é possível editar uma denúncia desativada!');
         }
 
         return await this.prisma.denuncia.update({
@@ -43,35 +48,17 @@ export class DenunciasService{
         });
     }
 
-    async deletarDenuncia (id: number, idUsuario: number){
-        const existeDenuncia = await this.prisma.denuncia.findUnique({
-            where: { id },
-        })
-        if (!existeDenuncia) {
-            throw new Error('Denúncia não encontrada!');
-        }
-        
-        if (existeDenuncia.idUsuario !== idUsuario) {
-            throw new Error('Usuário não autorizado a deletar esta denúncia!');
-        }
+    async deletarDenuncia (id: number, idUsuario: number, idTipo: TipoUsuario){
+        await this.definirHierarquia(id, idUsuario, idTipo);
         
         return await this.prisma.denuncia.delete({
             where: { id },
         });
     }
 
-    async desativarDenuncia (id: number, idUsuario: number){
-        const existeDenuncia = await this.prisma.denuncia.findUnique({
-            where: { id },
-        })
-        if (!existeDenuncia) {
-            throw new Error('Denúncia não encontrada!');
-        }
+    async desativarDenuncia (id: number, idUsuario: number, idTipo: TipoUsuario){
+        await this.definirHierarquia(id, idUsuario, idTipo);
 
-        if (existeDenuncia.idUsuario !== idUsuario) {
-            throw new Error('Usuário não autorizado a deletar esta denúncia!');
-        }
-        
         return await this.prisma.denuncia.update({
             where: { id },
             data: {
@@ -81,16 +68,70 @@ export class DenunciasService{
     }
 
     async encontrarDenuncia(id: number) {
-        if (!id) {
-            throw new Error('Denuncia não Encontrada!');
-        }
-        return this.prisma.denuncia.findUnique({
+        const denuncia = await this.prisma.denuncia.findUnique({
             where: { id },
         });
+        
+        if (!denuncia || denuncia.dataDelete) {
+            throw new NotFoundException('Denuncia não Encontrada!');
+        }
+        return denuncia;
     }
 
     async listarDenuncias() {
-        return this.prisma.denuncia.findMany();
+        return this.prisma.denuncia.findMany({where: {dataDelete: null}, orderBy: {id: 'desc'}});
+    }
+
+    private async definirHierarquia(idDenuncia: number, idRequisitor: number, idTipo: TipoUsuario){
+        
+        const denuncia = await this.prisma.denuncia.findUnique({
+            where: {
+                id: idDenuncia,
+            }
+        });
+
+        if (!denuncia) {
+            throw new NotFoundException("Denuncia Não Encontrado!")
+        }
+
+        const usuarioDenuncia = await this.prisma.usuario.findUnique({
+            where: {
+                id: denuncia.idUsuario,
+            }
+        });
+
+        if (!usuarioDenuncia) {
+            throw new NotFoundException("Usuário Não Encontrado!")
+        }
+
+        if (idRequisitor === denuncia.idUsuario) {
+            return true;
+        }
+
+        switch (idTipo){
+            case TipoUsuario.COMUM :
+                throw new ForbiddenException("Ação não autorizada!");
+
+            case TipoUsuario.ADMIN :
+                if (usuarioDenuncia.tipo === TipoUsuario.ADMINMASTER){
+                    throw new ForbiddenException("Ação não autorizada!");
+                }
+                if (usuarioDenuncia.tipo === TipoUsuario.ADMIN && usuarioDenuncia.id !== idRequisitor){
+                    throw new ForbiddenException("Ação não autorizada!");
+                }
+                if (usuarioDenuncia.tipo === TipoUsuario.COMUM){
+                    return true;
+                }
+                break;
+
+            case TipoUsuario.ADMINMASTER :
+                return true;
+
+            default:
+                throw new ForbiddenException("Ação não autorizada!");
+        }
+
+        throw new ForbiddenException("Ação não autorizada!");
     }
 
 }
