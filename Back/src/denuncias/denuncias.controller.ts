@@ -40,7 +40,7 @@ export class DenunciasController {
         return this.denunciasService.deletarDenuncia(id, req.user.id, req.user.tipo);
     }
 
-    @Patch(':id')
+    @Delete(':id')
     @UseGuards(JwtAuthGuard)
     async desativarDenuncia(
       @Param('id', ParseIntPipe) id: number,
