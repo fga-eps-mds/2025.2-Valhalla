@@ -4,166 +4,177 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from '../mail/mail.service';
 import { ConfigService } from '@nestjs/config';
+import { BadRequestException, ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { UnauthorizedException, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Usuario } from '@prisma/client';
 
+// --- MOCKS ---
+const mockUsuario = {
+  id: 1,
+  nome: 'Teste',
+  email: 'teste@unb.br',
+  senha: 'hashed_password',
+  tipo: 'COMUM',
+  mediaSrc: null,
+} as Usuario;
 
-jest.mock('bcrypt', () => ({
-  compare: jest.fn(),
-  hash: jest.fn(),
-}));
+const mockUsuarioService = {
+  procurarPorEmail: jest.fn(),
+  encontrarUsuarioAuth: jest.fn(),
+  editarUsuario: jest.fn(),
+};
+
+const mockJwtService = {
+  sign: jest.fn().mockReturnValue('token_jwt_assinado'),
+  verify: jest.fn(),
+};
+
+const mockMailService = {
+  sendPasswordResetEmail: jest.fn(),
+};
+
+const mockConfigService = {
+  get: jest.fn().mockReturnValue('segredo_teste'),
+};
 
 describe('AuthService', () => {
-  let authService: AuthService;
-  
-  let usuarioService: UsuarioService;
-  let jwtService: JwtService;
-  let mailService: MailService;
-  let configService: ConfigService;
+  let service: AuthService;
+  let usuarioService: typeof mockUsuarioService;
+  let jwtService: typeof mockJwtService;
+  let mailService: typeof mockMailService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
-
-        {
-          provide: UsuarioService,
-          useValue: {
-            procurarPorEmail: jest.fn(),
-            encontrarUsuario: jest.fn(),
-            editarUsuario: jest.fn(),
-          },
-        },
-        {
-          provide: JwtService,
-          useValue: {
-            sign: jest.fn(),
-            verify: jest.fn(),
-          },
-        },
-        {
-          provide: MailService,
-          useValue: {
-            sendPasswordResetEmail: jest.fn(),
-          },
-        },
-        {
-          provide: ConfigService,
-          useValue: {
-            get: jest.fn().mockReturnValue('segredo-teste'),
-          },
-        },
+        { provide: UsuarioService, useValue: mockUsuarioService },
+        { provide: JwtService, useValue: mockJwtService },
+        { provide: MailService, useValue: mockMailService },
+        { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
-    authService = module.get<AuthService>(AuthService);
-    usuarioService = module.get<UsuarioService>(UsuarioService);
-    jwtService = module.get<JwtService>(JwtService);
-    mailService = module.get<MailService>(MailService);
-    configService = module.get<ConfigService>(ConfigService);
-  });
-
-  afterEach(() => {
+    service = module.get<AuthService>(AuthService);
+    usuarioService = module.get(UsuarioService);
+    jwtService = module.get(JwtService);
+    mailService = module.get(MailService);
+    
     jest.clearAllMocks();
+    
+    // Mock do Bcrypt para evitar processamento real
+    jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(true));
+    jest.spyOn(bcrypt, 'hash').mockImplementation(() => Promise.resolve('novo_hash'));
   });
 
   it('deve estar definido', () => {
-    expect(authService).toBeDefined();
+    expect(service).toBeDefined();
   });
 
-
-  describe('login', () => {
-    it('deve retornar um objeto com access_token', async () => {
-      const usuarioDtoMock = { id: 1, email: 'teste@teste.com', nome: 'Teste' };
-      
-      jest.spyOn(jwtService, 'sign').mockReturnValue('token-falso');
-
-      const result = authService.login(usuarioDtoMock as any);
-
-      expect(result).toEqual({ access_token: 'token-falso' });
-      expect(jwtService.sign).toHaveBeenCalled(); 
-    });
-  });
-
-
+  // --- VALIDATE USER ---
   describe('validateUser', () => {
-    it('deve validar o usuário corretamente', async () => {
-      const usuarioMock = { id: 1, email: 'a@a.com', senha: 'hash_senha' };
-      
-      jest.spyOn(usuarioService, 'procurarPorEmail').mockResolvedValue(usuarioMock as any);
+    it('deve validar usuário com credenciais corretas', async () => {
+      usuarioService.procurarPorEmail.mockResolvedValue(mockUsuario);
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
-      const result = await authService.validateUser('a@a.com', '123456');
+      const result = await service.validateUser('teste@unb.br', '123');
 
-      expect(result).toHaveProperty('id');
-      expect(result.senha).toBeUndefined();
+      expect(result).toEqual(expect.objectContaining({ email: 'teste@unb.br' }));
+      expect(result).not.toHaveProperty('senha'); // Garante que removeu a senha
     });
 
-    it('deve lançar erro se usuário não existir', async () => {
-      jest.spyOn(usuarioService, 'procurarPorEmail').mockResolvedValue(null);
+    it('deve retornar null se senha estiver incorreta', async () => {
+      usuarioService.procurarPorEmail.mockResolvedValue(mockUsuario);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
-      await expect(authService.validateUser('a@a.com', '123456'))
-        .rejects.toThrow('email ou senha inválidas');
+      const result = await service.validateUser('teste@unb.br', 'senha_errada');
+      expect(result).toBeNull();
     });
 
-    it('deve lançar erro se a senha estiver errada', async () => {
-        const usuarioMock = { id: 1, email: 'a@a.com', senha: 'hash_senha' };
-        jest.spyOn(usuarioService, 'procurarPorEmail').mockResolvedValue(usuarioMock as any);
-        (bcrypt.compare as jest.Mock).mockResolvedValue(false);
-  
-        await expect(authService.validateUser('a@a.com', 'senha_errada'))
-          .rejects.toThrow('email ou senha inválidas');
-      });
+    it('deve retornar null se usuário não existir', async () => {
+      usuarioService.procurarPorEmail.mockResolvedValue(null);
+      const result = await service.validateUser('inexistente@unb.br', '123');
+      expect(result).toBeNull();
+    });
   });
 
+  // --- LOGIN ---
+  describe('login', () => {
+    it('deve retornar o objeto de token formatado', () => {
+      const result = service.login(mockUsuario);
+
+      expect(result).toHaveProperty('access_token', 'token_jwt_assinado');
+      expect(result.user).toHaveProperty('email', mockUsuario.email);
+      expect(jwtService.sign).toHaveBeenCalled();
+    });
+  });
+
+  // --- MUDAR SENHA ---
   describe('mudarSenha', () => {
-    it('deve mudar a senha com sucesso', async () => {
-       const usuarioMock = { id: 1, senha: 'hash_antiga' };
-       jest.spyOn(usuarioService, 'encontrarUsuario').mockResolvedValue(usuarioMock as any);
-       (bcrypt.compare as jest.Mock).mockResolvedValue(true); 
-       (bcrypt.hash as jest.Mock).mockResolvedValue('novo_hash'); 
+    it('deve alterar a senha com sucesso', async () => {
+      usuarioService.encontrarUsuarioAuth.mockResolvedValue(mockUsuario);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true); // Senha antiga ok
 
-       await authService.mudarSenha(1, 'antiga', 'nova');
+      await service.mudarSenha(1, 'senha_antiga', 'senha_nova');
 
-       expect(usuarioService.editarUsuario).toHaveBeenCalledWith(1, expect.objectContaining({ senha: 'novo_hash' }));
+      expect(bcrypt.hash).toHaveBeenCalledWith('senha_nova', 10);
+      expect(usuarioService.editarUsuario).toHaveBeenCalledWith(1, expect.objectContaining({ senha: 'novo_hash' }));
     });
 
     it('deve lançar NotFoundException se usuário não existir', async () => {
-        jest.spyOn(usuarioService, 'encontrarUsuario').mockResolvedValue(null);
-        
-        await expect(authService.mudarSenha(1, 'antiga', 'nova'))
-            .rejects.toThrow(NotFoundException);
+      usuarioService.encontrarUsuarioAuth.mockResolvedValue(null);
+      await expect(service.mudarSenha(1, 'a', 'b')).rejects.toThrow(NotFoundException);
     });
 
-    it('deve lançar UnauthorizedException se senha antiga for inválida', async () => {
-        const usuarioMock = { id: 1, senha: 'hash_antiga' };
-        jest.spyOn(usuarioService, 'encontrarUsuario').mockResolvedValue(usuarioMock as any);
-        (bcrypt.compare as jest.Mock).mockResolvedValue(false); // Senha antiga errada
+    it('deve lançar UnauthorizedException se senha antiga estiver errada', async () => {
+      usuarioService.encontrarUsuarioAuth.mockResolvedValue(mockUsuario);
+      (bcrypt.compare as jest.Mock).mockResolvedValue(false); // Senha errada
 
-        await expect(authService.mudarSenha(1, 'errada', 'nova'))
-            .rejects.toThrow(UnauthorizedException);
+      await expect(service.mudarSenha(1, 'errada', 'nova')).rejects.toThrow(UnauthorizedException);
     });
   });
 
+  // --- ESQUECI SENHA ---
   describe('esqueciSenha', () => {
-      it('deve enviar email se usuário existir', async () => {
-          const usuarioMock = { id: 1, email: 'test@test.com', nome: 'Test' };
-          jest.spyOn(usuarioService, 'procurarPorEmail').mockResolvedValue(usuarioMock as any);
-          jest.spyOn(jwtService, 'sign').mockReturnValue('token-reset');
-          
-          const result = await authService.esqueciSenha('test@test.com');
+    it('deve enviar email se usuário existir', async () => {
+      usuarioService.procurarPorEmail.mockResolvedValue(mockUsuario);
 
-          expect(mailService.sendPasswordResetEmail).toHaveBeenCalledWith(usuarioMock, 'token-reset');
-          expect(result.message).toContain('Se um utilizador com esse email existir');
-      });
+      await service.esqueciSenha('teste@unb.br');
 
-      it('não deve enviar email se usuário não existir, mas retornar mensagem segura', async () => {
-        jest.spyOn(usuarioService, 'procurarPorEmail').mockResolvedValue(null);
+      expect(mailService.sendPasswordResetEmail).toHaveBeenCalled();
+    });
 
-        const result = await authService.esqueciSenha('naoexiste@test.com');
+    it('deve retornar mensagem de sucesso mesmo se usuário não existir (Segurança)', async () => {
+      usuarioService.procurarPorEmail.mockResolvedValue(null);
 
-        expect(mailService.sendPasswordResetEmail).not.toHaveBeenCalled();
-        expect(result.message).toContain('Se um utilizador com esse email existir');
-      });
+      const result = await service.esqueciSenha('naoexiste@unb.br');
+      
+      expect(mailService.sendPasswordResetEmail).not.toHaveBeenCalled();
+      expect(result.message).toContain('link de redefinição será enviado');
+    });
+
+    it('deve lançar BadRequestException se o envio de email falhar', async () => {
+      usuarioService.procurarPorEmail.mockResolvedValue(mockUsuario);
+      mailService.sendPasswordResetEmail.mockRejectedValue(new Error('Erro SMTP'));
+
+      await expect(service.esqueciSenha('teste@unb.br')).rejects.toThrow(BadRequestException);
+    });
+  });
+
+  // --- RESET SENHA ---
+  describe('resetSenha', () => {
+    it('deve redefinir a senha com token válido', async () => {
+      jwtService.verify.mockReturnValue({ sub: 1 }); // Token decodificado
+      
+      await service.resetSenha('token_valido', 'nova_senha_reset');
+
+      expect(bcrypt.hash).toHaveBeenCalledWith('nova_senha_reset', 10);
+      expect(usuarioService.editarUsuario).toHaveBeenCalledWith(1, expect.objectContaining({ senha: 'novo_hash' }));
+    });
+
+    it('deve lançar ForbiddenException se token for inválido', async () => {
+      jwtService.verify.mockImplementation(() => { throw new Error() });
+
+      await expect(service.resetSenha('token_invalido', 'nova')).rejects.toThrow(ForbiddenException);
+    });
   });
 });
