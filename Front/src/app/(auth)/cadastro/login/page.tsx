@@ -59,7 +59,7 @@ export default function Login() {
                 </Link>
 
                 <Image 
-                    src="/Corujuda.svg"
+                    src="/Corujuda - Contorno.svg"
                     alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
                     width={120}
                     height={120}
@@ -122,7 +122,7 @@ export default function Login() {
                                 </span>
                             </button>
                         </div>
-                        <Link href="/esqueci-senha" className="text-sm text-blue-600 hover:underline"> 
+                        <Link href="/recuperacao-senha" className="text-sm text-blue-600 hover:underline"> 
                             Esqueci a senha
                         </Link>
                     </div>
