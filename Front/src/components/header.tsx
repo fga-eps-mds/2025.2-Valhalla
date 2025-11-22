@@ -3,8 +3,9 @@ import Link from "next/link";
 
 export default function Header() {
   return (
+    
     <header className="bg-texto-corpo h-17 shadow-md flex items-center justify-between px-5 pl-5 pr-15">
-      {/*Conteúdo do header*/} {/*Esquerda: Logo e Título */}
+      {/*Conteúdo do header*/} {/*Esquerda: Logo e Título */} {/* Priorizar a responsividade aqui*/}
       <Link href="/" className="flex items-center space-x-3">
         <>
           <Image

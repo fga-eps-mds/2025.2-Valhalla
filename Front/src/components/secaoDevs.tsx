@@ -29,7 +29,7 @@ const developers: Dev[] = [
   },
   {
     name: "Laura Rogelin",
-    photo: "/devs/dev5.jpg",
+    photo: "/devs/laura.jpg",
     github: "https://github.com/laurarogelin",
   },
   {
@@ -61,7 +61,7 @@ const developers: Dev[] = [
 
 export default function SecaoDesenvolvedores() {
   return (
-    <section className="mt-90 px- 10 py-10">
+    <section className="mt-10 px- 10 py-10 bg-blue-400">
 
       <h2 className="text-center text-display mb-8 mt-0 cursor-default">
         Desenvolvedores
