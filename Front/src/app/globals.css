@@ -3,6 +3,7 @@
 @theme {
 
     --color-azul-principal: #3060BF;
+    --color-azul-hover: #4E82F0;
     --color-azul-dark: #1A2A4A;
     --color-azul-light: #67A8FF;
     --color-branco: #FFFFFF;
@@ -78,6 +79,39 @@
         text-align: center;
         letter-spacing: 0.7px;
     }
+    .text-medium {
+        font-family: var(--font-body), sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 400 !important;
+        line-height: 24px !important;
+        color: var(--color-texto-corpo);
+        text-align: center;
+        letter-spacing: 0.7px;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* track */
+::-webkit-scrollbar-track {
+  background: #82a8f3;
+}
+
+/* handle */
+::-webkit-scrollbar-thumb {
+  background: #5181d4;
+  background-size:contain;
+  background-position:center;
+}
+
+/* handle hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1153d7;
+  background-size:contain;
+  background-position:center;
 }
 
 @layer base {

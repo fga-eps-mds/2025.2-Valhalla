@@ -55,7 +55,7 @@ export default function Login() {
             <div className="w-[640px] min-h-[730px] rounded-2xl bg-white border border-gray-200 shadow-xl absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8"> 
                 
                 <Link href="/" className="absolute top-6 left-6">
-                    <ArrowLeftIcon className="w-10 h-10 text-[#1A2A4A] cursor-pointer hover:text-blue-600 transition" />
+                    <ArrowLeftIcon className="w-10 h-10 text-azul-dark cursor-pointer hover:text-blue-600 transition" />
                 </Link>
 
                 <Image 
@@ -66,10 +66,9 @@ export default function Login() {
                     className="mt-2" 
                 />
                 
-                <h1 className='text-[36px] text-[#050505] mb-10 font-bold font-[var(--fonte-primaria)]'>
+                <h1 className='text-[36px] text-texto-primario mb-10 font-bold font-[var(--fonte-primaria)]'>
                     Login
                 </h1>
-
 
                 <form className="w-full max-w-sm flex flex-col items-center" onSubmit={handleLogin}>
                     
@@ -78,14 +77,14 @@ export default function Login() {
                             E-mail
                         </label>
                         <div className="relative">
-                            <UserCircleIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
+                            <UserCircleIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark" />
                             <input 
                                 type="email" 
                                 id="email" 
                                 value={email}
                                 onChange= {(e) => setEmail(e.target.value)}
                                 placeholder="Digite aqui seu Email" 
-                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-[#1A2A4A] font-[var(--fonte-primaria)]"
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-azul-dark font-[var(--fonte-primaria)]"
                             />
                         </div>
                     </div>
@@ -95,14 +94,14 @@ export default function Login() {
                             Senha
                         </label>
                         <div className="relative">
-                            <KeyIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
+                            <KeyIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark" />
                             <input 
                                 type="password" 
                                 id="password" 
                                 placeholder="Digite aqui sua senha" 
                                 value={senha}
                                 onChange={(e) => setSenha(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-[#1A2A4A] font-[var(--fonte-primaria)]"
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-azul-dark font-[var(--fonte-primaria)]"
                             />
                         </div>
                     </div>
@@ -116,8 +115,8 @@ export default function Login() {
                     <div className="w-full flex justify-around items-center mb-8">
                         <div className="flex items-center">
                             <button type="button" className="flex items-center">
-                                <CheckCircleIcon className="w-5 h-5 text-[#1A2A4A]" />
-                                <span className="ml-2 block text-sm text-[#1A2A4A]"> 
+                                <CheckCircleIcon className="w-5 h-5 text-azul-dark" />
+                                <span className="ml-2 block text-sm text-azul-dark"> 
                                     Lembrar-me
                                 </span>
                             </button>
@@ -129,7 +128,7 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="flex items-center justify-center border border-[#1A2A4A] rounded-xl py-3 gap-2 bg-[#3060BF] w-[240px] text-white hover:bg-[#254c9b] transition font-semibold">
+                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-[240px] text-white hover:bg-[#254c9b] transition font-semibold">
                         LOGIN
                         <ArrowRightEndOnRectangleIcon className='size-5'/>
                     </button>
@@ -139,7 +138,7 @@ export default function Login() {
                     <Image src="/google.png" alt="Login com Google" width={48} height={48} /> 
                 </button>
 
-                <p className="mt-6 text-sm text-[#1A2A4A]">
+                <p className="mt-6 text-sm text-azul-dark">
                     Novo por aqui ?  {'   '}
                     <Link href="/cadastro/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
                         Crie sua conta
