@@ -34,3 +34,5 @@ export const resetarSenha = async (token: string, senha: string) => {
   const response = await api.post('/auth/reset-password',  {token: token, novaSenha: senha}); 
   return response.data;
 };
+
+export default api;

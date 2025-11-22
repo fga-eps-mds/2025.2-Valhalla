@@ -11,7 +11,7 @@ export default function Cadastro() {
             </Link>
 
             <Image 
-            src="/Corujuda.svg"
+            src="/Corujuda - Contorno.svg"
             alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
             width={160}
             height={160}
