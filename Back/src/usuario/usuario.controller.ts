@@ -1,32 +1,43 @@
-import { Controller, Body, Post, Delete, Param, UseGuards, Get, Patch, ParseIntPipe } from '@nestjs/common';
-import { UsuarioDto } from './dto/usuario.dto';
+import { Controller, Body, Post, Delete, Param, UseGuards, Get, Patch, ParseIntPipe, Request } from '@nestjs/common';
+import { CriacaoUsuarioDto } from './dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
-import { updateUsuarioDto } from './dto/edicao.usuario.dto';
+import { EdicaoUsuarioDto } from './dto/edicao.usuario.dto';
 import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+import { AuthRequest } from 'src/auth/models/authRequest';
 
-@Controller('Usuario')
+@Controller('usuarios')
 export class UsuarioController {
     
     constructor (private readonly usuarioService: UsuarioService){}
 
     @IsPublic()
     @Post()
-    async criarUsuario(@Body() data:UsuarioDto){
+    async criarUsuario(@Body() data:CriacaoUsuarioDto){
         return this.usuarioService.criarUsuario(data);
     }
         
-    @Delete(":id")
-    async deletarUsuario(@Param("id") id:number) {
-        return this.usuarioService.deletarUsuario(Number(id));
+    @Delete("delete-permanente/:id")
+    @UseGuards(JwtAuthGuard)
+    async deletarUsuario(
+        @Request() req: AuthRequest,
+        @Param("id", ParseIntPipe) id:number,
+    ){
+        return this.usuarioService.deletarUsuario(req.user.id, id, req.user.tipo);
     }
 
-    @Delete("soft-delete/:id")
-    async desativarUsuario(@Param("id") id:number){
-        return this.usuarioService.desativarUsuario(Number(id))
+    @Delete(":id")
+    @UseGuards(JwtAuthGuard)
+    async desativarUsuario(
+        @Request() req: AuthRequest,
+        @Param("id", ParseIntPipe) id:number,
+    ){
+        return this.usuarioService.desativarUsuario(req.user.id, id, req.user.tipo);
     }
+
     @IsPublic()
     @Get(":id")
-    async encontrarUsuario(@Param("id") id:number) {
+    async encontrarUsuario(@Param("id", ParseIntPipe) id:number) {
         return this.usuarioService.encontrarUsuario(Number(id));
     }
     @IsPublic()
@@ -35,12 +46,13 @@ export class UsuarioController {
         return this.usuarioService.listarUsuario();
     }
 
-    @Patch(':id')
+    @Patch()
+    @UseGuards(JwtAuthGuard)
     async editarUsuario(
-        @Param('id', ParseIntPipe) id: number,
-        @Body() updateData: updateUsuarioDto,
+        @Request() req: AuthRequest,
+        @Body() updateData: EdicaoUsuarioDto,
     ) {
-        return this.usuarioService.editarUsuario(id, updateData);
+        return this.usuarioService.editarUsuario(req.user.id, updateData);
     };
 }
 

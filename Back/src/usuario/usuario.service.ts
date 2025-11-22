@@ -1,94 +1,148 @@
 import { Injectable } from '@nestjs/common';
-import { UsuarioDto } from './dto/usuario.dto';
+import { CriacaoUsuarioDto } from './dto/usuario.dto';
 import { PrismaService } from '../database/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { updateUsuarioDto } from './dto/edicao.usuario.dto';
-import { CargoUsuario } from '@prisma/client';
+import { EdicaoUsuarioDto } from './dto/edicao.usuario.dto';
+import { CargoUsuario, TipoUsuario } from '@prisma/client';
+import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common/exceptions';
+
+const usuarioSelect = {
+    id: true,
+    nome: true,
+    email: true,
+    cargo: true,
+    tipo: true,
+    mediaSrc: true,
+    dataCriacao: true,
+    dataUpdate: true,
+};
 
 @Injectable()
 export class UsuarioService {
-
+    
 constructor(private prisma: PrismaService) {}
 
-    async criarUsuario(DadosUsuario: UsuarioDto){
+
+    async criarUsuario(DadosUsuario: CriacaoUsuarioDto){
+
         const SenhaHash = await bcrypt.hash(DadosUsuario.senha, 10 )
-        const CriacaoDeUsuario = await this.prisma.usuario.create({
+        
+        try {
+        return await this.prisma.usuario.create({
             data:{
                 nome: DadosUsuario.nome,
                 email: DadosUsuario.email,
                 senha: SenhaHash,
                 cargo: DadosUsuario.cargo as CargoUsuario,
-                mediasrc: DadosUsuario.mediasrc,
-                isAdmin: false,
-                admMaster: false
+                tipo: DadosUsuario.tipo as TipoUsuario,
+                mediaSrc: DadosUsuario.mediaSrc,
             },
+            select: usuarioSelect,
         });
-        const{senha, ...result} = CriacaoDeUsuario;
-        return result;
         
+        } catch (error) {
+            if (error.code === 'P2002') {
+                throw new ConflictException('Email já está em uso!');
+            }
+            throw new Error('Erro ao criar usuário: ' + error.message);
+        }
     }
 
-    async deletarUsuario(id: number){
-        const UsuarioExiste = await this.prisma.usuario.findUnique({
-            where: {
-                id,
-            }
-        });
-
-        if (!UsuarioExiste) {
-            throw new Error("Usuário Não Encontrado!")
-        }
-        
-        return await this.prisma.usuario.delete({
-            where: {
-                id,
-            }
-        })
+    async deletarUsuario(idUsuario: number, idAlvo: number, idTipo: TipoUsuario){
+        await this.definirHierarquia(idUsuario, idAlvo, idTipo);
+        return await this.prisma.usuario.delete({where: {id: idAlvo}});
     }
 
-    async desativarUsuario(id: number){
-        const UsuarioExiste = await this.prisma.usuario.findUnique({
-            where: {
-                id,
-            }
-        });
 
-        if (!UsuarioExiste) {
-            throw new Error("Usuário Não Encontrado!")
-        }
-        
-        return await this.prisma.usuario.update({
-            where: { id },
-            data: {
-                dataDelete: new Date()
-            }
-        })
+    async desativarUsuario(idUsuario: number, idAlvo: number, idTipo: TipoUsuario){
+        await this.definirHierarquia(idUsuario, idAlvo, idTipo);
+        return await this.prisma.usuario.update({where: {id: idAlvo,}, data: {dataDelete: new Date()}});
     }
     
-    async encontrarUsuario(id: number){
-        if(!id) {
-            throw new Error("Usuário não encontrado!")
-        }
 
-        return await this.prisma.usuario.findUnique({where:{id}})
-    }
-    
     async listarUsuario() {
-        return this.prisma.usuario.findMany();
+        const usuarios = await this.prisma.usuario.findMany({where: {dataDelete: null}, select: usuarioSelect});
+        return usuarios;
     }
-    async editarUsuario(id:number, data: updateUsuarioDto){
+    
+
+    async encontrarUsuario(id: number){
+        
+        const usuario = await this.prisma.usuario.findUnique({where:{id}, select: usuarioSelect});
+        
+        if(!usuario) {
+            throw new NotFoundException("Usuário não encontrado!")
+        }
+
+        return usuario;
+    }
+
+
+    async editarUsuario(id:number, data: EdicaoUsuarioDto){
         const usuario = await this.prisma.usuario.findUnique({
             where:{ id }
         })
         if(!usuario) {
-            throw new Error("Usuário não encontrado!")
+            throw new NotFoundException("Usuário não encontrado!")
         }
         return await this.prisma.usuario.update({
+            where:{ id },
             data,
-            where:{ id }
+            select: usuarioSelect,
         })
     }
-    procurarPorEmail(email: string) {
+
+
+    async procurarPorEmail(email: string) {
     return this.prisma.usuario.findFirst({ where: { email } });
   }
+
+
+    private async definirHierarquia(idUsuario: number, idAlvo: number, idTipo: TipoUsuario){
+        
+        const UsuarioAlvo = await this.prisma.usuario.findUnique({
+            where: {
+                id: idAlvo,
+            }
+        });
+
+        if (!UsuarioAlvo) {
+            throw new NotFoundException("Usuário Não Encontrado!")
+        }
+
+        if (idUsuario === idAlvo && idTipo !== TipoUsuario.ADMINMASTER ) {
+            return true;
+        }
+
+        switch (idTipo){
+            case TipoUsuario.COMUM :
+                throw new ForbiddenException("Ação não autorizada!");
+
+            case TipoUsuario.ADMIN :
+                if (UsuarioAlvo.tipo === TipoUsuario.ADMINMASTER){
+                    throw new ForbiddenException("Ação não autorizada!");
+                }
+                if (UsuarioAlvo.tipo === TipoUsuario.ADMIN && UsuarioAlvo.id !== idUsuario){
+                    throw new ForbiddenException("Ação não autorizada!");
+                }
+                if (UsuarioAlvo.tipo === TipoUsuario.COMUM){
+                    return true;
+                }
+                break;
+
+            case TipoUsuario.ADMINMASTER :
+                if (idUsuario === idAlvo){ 
+                    throw new ForbiddenException("Ação não autorizada!");
+                }
+                if (UsuarioAlvo.tipo !== TipoUsuario.ADMINMASTER){
+                    return true;
+                }
+                break;
+
+            default:
+                throw new ForbiddenException("Ação não autorizada!");
+        }
+
+        throw new ForbiddenException("Ação não autorizada!");
+    }
 }

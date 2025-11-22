@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 import { UsuarioPayload } from './models/usuarioPayload';
 import { UsuarioToken } from './models/usuarioToken';
-import { updateUsuarioDto } from 'src/usuario/dto/edicao.usuario.dto';
+import { EdicaoUsuarioDto } from 'src/usuario/dto/edicao.usuario.dto';
 import { MailService } from 'src/mail/mail.service';
 import { ConfigService } from '@nestjs/config';
 import { Usuario } from '@prisma/client';
@@ -68,7 +68,7 @@ export class AuthService {
         const novaSenhahash = await bcrypt.hash(senhaNova, 10);
         usuario.senha = novaSenhahash;
             
-        const dadosParaAtualizar = new updateUsuarioDto();
+        const dadosParaAtualizar = new EdicaoUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash
 
         await this.usuarioService.editarUsuario(usuario.id, dadosParaAtualizar);
@@ -122,7 +122,7 @@ export class AuthService {
 
         const novaSenhahash = await bcrypt.hash(novaSenha, 10);
 
-        const dadosParaAtualizar = new updateUsuarioDto();
+        const dadosParaAtualizar = new EdicaoUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash;
 
         await this.usuarioService.editarUsuario(userId, dadosParaAtualizar);
