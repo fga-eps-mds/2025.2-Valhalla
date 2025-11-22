@@ -2,10 +2,6 @@ import { IsString, IsNotEmpty, IsInt, IsOptional, IsBoolean } from 'class-valida
 
 export class DenunciaDto {
 
-    @IsInt({ message: 'O idCategoria deve ser um numero.' }) // Perguntar pro Pedrão
-    @IsNotEmpty({ message: 'O idCategoria não pode estar vazio.' }) // Perguntar pro Pedrão
-    idUsuario: number;
-
     @IsString({ message: 'A descrição deve ser um texto.' })
     @IsNotEmpty({ message: 'A descrição não pode estar vazia.' })
     descricao: string;
@@ -14,9 +10,9 @@ export class DenunciaDto {
     @IsNotEmpty({ message: 'O idCategoria não pode estar vazio.' })
     idCategoria: number;
 
-    @IsString({ message: 'A mediasrc deve ser um texto.' })
+    @IsString({ message: 'A mediaSrc deve ser um texto.' })
     @IsOptional()    
-    mediasrc?: string;
+    mediaSrc?: string;
 
     @IsBoolean({ message: 'O anonimato deve ser um booleano.' })
     @IsOptional()
