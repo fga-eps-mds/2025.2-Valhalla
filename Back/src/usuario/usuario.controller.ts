@@ -2,7 +2,7 @@ import { Controller, Body, Post, Delete, Param, UseGuards, Get, Patch, ParseIntP
 import { UsuarioDto } from './dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
 import { updateUsuarioDto } from './dto/edicao.usuario.dto';
-import { IsPublic } from 'src/auth/decorators/is-public.decorator';
+import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('Usuario')
 export class UsuarioController {

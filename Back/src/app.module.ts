@@ -11,7 +11,7 @@ import { CategoriasModule } from './categorias/categorias.module';
 
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt.auth.guard';
 import { UsuarioModule } from './usuario/usuario.module'; 
 import { UsuarioController } from './usuario/usuario.controller';
 import { UsuarioService } from './usuario/usuario.service';
