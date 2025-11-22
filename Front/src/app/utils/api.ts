@@ -24,3 +24,13 @@ export const getOneUsuario = async (id: number) => {
   const response = await api.get(`/Usuario/${id}`); 
   return response.data;
 };
+
+export const EmailRecuperação = async (email: string) => {
+  const response = await api.post('/auth/esqueci-senha/', {email}); 
+  return response.data;
+};
+
+export const resetarSenha = async (token: string, senha: string) => {
+  const response = await api.post('/auth/reset-password',  {token: token, novaSenha: senha}); 
+  return response.data;
+};
