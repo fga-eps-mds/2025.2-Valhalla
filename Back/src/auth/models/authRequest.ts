@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { UsuarioDto } from "src/usuario/dto/usuario.dto";
+import { Usuario } from "@prisma/client";
 
 export class AuthRequest extends Request{
-    user: UsuarioDto
+    user: Usuario; // Busca diretamente do banco de dados
 }
