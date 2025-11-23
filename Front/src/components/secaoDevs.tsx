@@ -34,7 +34,7 @@ const developers: Dev[] = [
   },
   {
     name: "Lucas Alves",
-    photo: "/devs/dev6.jpg",
+    photo: "/devs/gepeto.jpg",
     github: "https://github.com/xLucasMelo",
   },
   {
