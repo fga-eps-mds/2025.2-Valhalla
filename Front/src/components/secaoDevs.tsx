@@ -43,14 +43,14 @@ const developers: Dev[] = [
     github: "https://github.com/dev-LucasDpaula",
   },
   {
-    name: "Pedro Henrique",
-    photo: "/devs/americo.jpeg",
-    github: "https://github.com/dev-americo",
-  },
-  {
     name: "Pedro Ian",
     photo: "/devs/ian.jpeg",
     github: "https://github.com/pedroiaan",
+  },
+  {
+    name: "Pedro Henrique",
+    photo: "/devs/americo.jpeg",
+    github: "https://github.com/dev-americo",
   },
   {
     name: "Pedro Lucas",
@@ -61,21 +61,27 @@ const developers: Dev[] = [
 
 export default function SecaoDesenvolvedores() {
   return (
-    <section className="mt-10 px- 10 py-10 bg-blue-400">
+    <section className="px-8 py-8">
 
-      <h2 className="text-center text-display mb-8 mt-0 cursor-default">
+      <h2 className="text-center text-display mb-8 cursor-default">
         Desenvolvedores
       </h2>
 
-      <div className="grid grid-cols-5 gap-20 place-items-center">
+      <div className="gap-10 place-items-center
+        grid
+        grid-cols-1
+        sm:grid-cols-2
+        md:grid-cols-3
+        lg:grid-cols-5 "
+        >
         {developers.map((dev, idx) => (
           <div
             key={idx}
-            className="flex flex-col items-center gap-1.5 hover:scale-110 transition">
+            className="flex flex-col items-center gap-2 hover:scale-110 transition">
             <img
               src={dev.photo}
               alt={dev.name}
-              className="w-30 h-30 rounded-full object-cover shadow-lg"
+              className="w-30 h-30 rounded-full object-cover shadow-lg sm:w-32 sm:h-32 "
             />
 
             <p className="text-lg font-medium hover:cursor-default">
@@ -86,13 +92,14 @@ export default function SecaoDesenvolvedores() {
               href={dev.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black hover:text-gray-400 "
+              className="text-black hover:text-gray-600 "
             >
               <FaGithub size={28} />
             </a>
           </div>
         ))}
       </div>
+
     </section>
   );
 }
