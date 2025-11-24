@@ -20,15 +20,16 @@ export class AuthService {
       private readonly configService: ConfigService){}
 
 
-     login(usuario: Usuario): UsuarioToken {
+     login(usuario: Usuario, lembrar?: boolean): UsuarioToken {
         const payload: UsuarioPayload = {
             sub: usuario.id!,
             email: usuario.email,
-            nome: usuario.nome,
-            tipo: usuario.tipo as string,
         };
-        const jwtToken = this.jwtService.sign(payload);
         
+        const tempoExpiracao = lembrar ? '90d' : '12h';
+
+        const jwtToken = this.jwtService.sign(payload, { expiresIn: tempoExpiracao });
+
         return {
             access_token: jwtToken,
             user: {
@@ -86,8 +87,6 @@ export class AuthService {
       const payload: UsuarioPayload = { 
         sub: usuario.id!,
         email: usuario.email,
-        nome: usuario.nome,
-        tipo: usuario.tipo as string,
       };
       
       const resetSecret = this.configService.get<string>('JWT_PASSWORD_RESET_SECRET');

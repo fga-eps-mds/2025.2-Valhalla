@@ -21,8 +21,6 @@ super({
     return {
       id: payload.sub,
       email: payload.email,
-      nome: payload.nome,
-      tipo: payload.tipo,
     };
   }
 }

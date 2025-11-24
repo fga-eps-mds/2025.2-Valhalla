@@ -7,6 +7,7 @@ import { JwtAuthGuard } from './guards/jwt.auth.guard';
 import { MudarSenhaDto } from './models/mudarSenha.dto';
 import { ResetPasswordDto } from './models/resetPassword.dto';
 import { esqueciSenhaDto } from './models/esqueciSenha.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,8 +17,8 @@ export class AuthController {
     @Post('login')
     @HttpCode(HttpStatus.OK)
     @UseGuards(LocalAuthGuard)
-    login(@Request() req: AuthRequest){
-        return this.authService.login(req.user);
+    login(@Request() req: AuthRequest , @Body() loginDto: LoginDto) {
+        return this.authService.login(req.user, loginDto.lembrar);
     }
 
     @UseGuards(JwtAuthGuard)

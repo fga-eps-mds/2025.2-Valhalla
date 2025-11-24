@@ -17,6 +17,9 @@ import { UsuarioController } from './usuario/usuario.controller';
 import { UsuarioService } from './usuario/usuario.service';
 import { DenunciasController } from './denuncias/denuncias.controller';
 import { DenunciasService } from './denuncias/denuncias.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+
 @Module({
   imports: [
     DenunciasModule,
@@ -29,13 +32,15 @@ import { DenunciasService } from './denuncias/denuncias.service';
     DenunciasController,
     AppController,
     CategoriasController, 
-    UsuarioController    
+    UsuarioController,
+    AuthController    
   ],
   providers: [
     DenunciasService,
     AppService,
     CategoriasService, 
     UsuarioService,    
+    //AuthService,    
     {                  
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

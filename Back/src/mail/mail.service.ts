@@ -14,7 +14,7 @@ export class MailService {
 
     const frontendUrl = this.configService.get<string>('FRONT_URL') || 'http://localhost:3000';
     
-    const resetUrl = `${frontendUrl}/redefinir-senha?token=${token}`;
+    const resetUrl = `${frontendUrl}/redefinit-senha?token=${token}`;
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
