@@ -7,7 +7,7 @@ import { UsuarioToken } from './models/usuarioToken';
 import { EdicaoUsuarioDto } from 'src/usuario/dto/edicao.usuario.dto';
 import { MailService } from 'src/mail/mail.service';
 import { ConfigService } from '@nestjs/config';
-import { Usuario } from '@prisma/client';
+import { TipoUsuario, Usuario } from '@prisma/client';
 
 
 @Injectable()
@@ -24,6 +24,8 @@ export class AuthService {
         const payload: UsuarioPayload = {
             sub: usuario.id!,
             email: usuario.email,
+            tipo: usuario.tipo as TipoUsuario,
+            mediaSrc: usuario.mediaSrc,
         };
         
         const tempoExpiracao = lembrar ? '90d' : '12h';
@@ -36,7 +38,7 @@ export class AuthService {
                 id: usuario.id!,
                 nome: usuario.nome,
                 email: usuario.email,
-                tipo: usuario.tipo as string,
+                tipo: usuario.tipo as TipoUsuario,
                 mediaSrc: usuario.mediaSrc,
             },
         }
@@ -87,6 +89,8 @@ export class AuthService {
       const payload: UsuarioPayload = { 
         sub: usuario.id!,
         email: usuario.email,
+        tipo: usuario.tipo as TipoUsuario,
+        mediaSrc: usuario.mediaSrc,
       };
       
       const resetSecret = this.configService.get<string>('JWT_PASSWORD_RESET_SECRET');

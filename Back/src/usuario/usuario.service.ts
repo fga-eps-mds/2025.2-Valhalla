@@ -13,8 +13,8 @@ const usuarioSelect = {
     cargo: true,
     tipo: true,
     mediaSrc: true,
-    dataCriacao: true,
-    dataUpdate: true,
+    //dataCriacao: true,
+    //dataUpdate: true,
 };
 
 @Injectable()
@@ -23,7 +23,30 @@ export class UsuarioService {
 constructor(private prisma: PrismaService) {}
 
 
-    async criarUsuario(DadosUsuario: CriacaoUsuarioDto){
+    async criarUsuario(DadosUsuario: CriacaoUsuarioDto, UsuarioSolicitante?: {tipo: TipoUsuario}) {
+
+        if (DadosUsuario.tipo && DadosUsuario.tipo !== TipoUsuario.COMUM) {
+
+            if (!UsuarioSolicitante) {
+                throw new ForbiddenException("Ação não autorizada!");
+            }
+
+            if (UsuarioSolicitante.tipo !== TipoUsuario.ADMINMASTER) {
+                throw new ForbiddenException("Ação não autorizada! Somente ADMINMASTER pode criar usuários com privilégios elevados.");
+            }
+        }
+
+        const existeAdminMaster = await this.prisma.usuario.findFirst({
+            where: { tipo: TipoUsuario.ADMINMASTER }
+        });
+
+        if (existeAdminMaster !== null && DadosUsuario.tipo === TipoUsuario.ADMINMASTER) {
+            throw new ForbiddenException("Já existe um ADMINMASTER cadastrado no sistema!");
+        }
+
+        //if (!UsuarioSolicitante){
+        //    DadosUsuario.tipo = TipoUsuario.COMUM;
+        //}
 
         const SenhaHash = await bcrypt.hash(DadosUsuario.senha, 10 )
         
@@ -94,10 +117,8 @@ constructor(private prisma: PrismaService) {}
 
 
     async procurarPorEmail(email: string) {
-    return this.prisma.usuario.findFirst({ where: { email } });
+        return this.prisma.usuario.findFirst({ where: { email } });
     }
-
-
 
     async encontrarUsuarioAuth(id: number){
         

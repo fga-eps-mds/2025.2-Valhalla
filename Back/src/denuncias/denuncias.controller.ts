@@ -13,7 +13,6 @@ export class DenunciasController {
 
     
     @Post()
-    @UseGuards(JwtAuthGuard)
     async criarDenuncia(
       @Request() req: AuthRequest,
       @Body() data: DenunciaDto
@@ -22,7 +21,6 @@ export class DenunciasController {
     }
 
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
     async editarDenuncia(
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
@@ -32,7 +30,6 @@ export class DenunciasController {
     }
 
     @Delete('delete-permanente/:id')
-    @UseGuards(JwtAuthGuard)
     async deletarDenuncia(
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
@@ -41,7 +38,6 @@ export class DenunciasController {
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
     async desativarDenuncia(
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,

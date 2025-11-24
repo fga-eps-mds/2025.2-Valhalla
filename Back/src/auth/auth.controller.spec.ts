@@ -2,9 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AuthRequest } from './models/authRequest';
-import { MudarSenhaDto } from './models/mudarSenha.dto';
-import { esqueciSenhaDto } from './models/esqueciSenha.dto';
-import { ResetPasswordDto } from './models/resetPassword.dto';
+import { MudarSenhaDto } from './dto/mudarSenha.dto';
+import { esqueciSenhaDto } from './dto/esqueciSenha.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { LoginDto } from './dto/login.dto';
 
 // Mock do AuthService
 const mockAuthService = {

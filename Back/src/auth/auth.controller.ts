@@ -4,9 +4,9 @@ import { LocalAuthGuard } from './guards/local.auth.guard';
 import { AuthRequest } from './models/authRequest';
 import { IsPublic } from './decorators/isPublic.decorator';
 import { JwtAuthGuard } from './guards/jwt.auth.guard';
-import { MudarSenhaDto } from './models/mudarSenha.dto';
-import { ResetPasswordDto } from './models/resetPassword.dto';
-import { esqueciSenhaDto } from './models/esqueciSenha.dto';
+import { MudarSenhaDto } from './dto/mudarSenha.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { esqueciSenhaDto } from './dto/esqueciSenha.dto';
 import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')

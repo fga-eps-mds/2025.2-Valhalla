@@ -11,7 +11,6 @@ export class CategoriasController {
     constructor(private readonly categoriasService: CategoriasService) {}
 
     @Post()
-    @UseGuards(JwtAuthGuard)
     async criarCategorias (
         @Body() data: criarCategoriasDto,
         @Request() req: AuthRequest,
@@ -20,7 +19,6 @@ export class CategoriasController {
     }
     
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
     async editarCategoria(
         @Param ('id', ParseIntPipe) id: number,
         @Body() data: edicaoCategoriasDto,
@@ -30,7 +28,6 @@ export class CategoriasController {
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
     async deletarCategoria(
         @Param('id', ParseIntPipe) id: number,   
         @Request() req: AuthRequest,
@@ -38,6 +35,7 @@ export class CategoriasController {
         return this.categoriasService.deletarCategorias(id, req.user.tipo);
     }
 
+    @IsPublic()
     @Get(':id')
     async encontrarCategorias(
       @Param('id', ParseIntPipe) id: number,

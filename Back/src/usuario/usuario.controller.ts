@@ -16,9 +16,16 @@ export class UsuarioController {
     async criarUsuario(@Body() data:CriacaoUsuarioDto){
         return this.usuarioService.criarUsuario(data);
     }
+
+    @Post('admin')
+    async criarAdmin(
+        @Body() data:CriacaoUsuarioDto,
+        @Request() req: AuthRequest
+    ){
+        return this.usuarioService.criarUsuario(data, {tipo: req.user.tipo});
+    }
         
     @Delete("delete-permanente/:id")
-    @UseGuards(JwtAuthGuard)
     async deletarUsuario(
         @Request() req: AuthRequest,
         @Param("id", ParseIntPipe) id:number,
@@ -27,7 +34,6 @@ export class UsuarioController {
     }
 
     @Delete(":id")
-    @UseGuards(JwtAuthGuard)
     async desativarUsuario(
         @Request() req: AuthRequest,
         @Param("id", ParseIntPipe) id:number,
@@ -47,7 +53,6 @@ export class UsuarioController {
     }
 
     @Patch()
-    @UseGuards(JwtAuthGuard)
     async editarUsuario(
         @Request() req: AuthRequest,
         @Body() updateData: EdicaoUsuarioDto,
