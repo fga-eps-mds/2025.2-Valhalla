@@ -73,7 +73,7 @@ export class AuthService {
         const dadosParaAtualizar = new EdicaoUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash
 
-        await this.usuarioService.editarUsuario(usuario.id, dadosParaAtualizar);
+        await this.usuarioService.editarUsuario(usuario.id, dadosParaAtualizar, {senha: true});
         
     }
 

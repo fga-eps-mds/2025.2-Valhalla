@@ -104,18 +104,34 @@ constructor(private prisma: PrismaService) {}
     }
 
 
-    async editarUsuario(id:number, data: EdicaoUsuarioDto){
+    async editarUsuario(id:number, data: EdicaoUsuarioDto, editarSenha?: {senha: boolean}) {
+        
         const usuario = await this.prisma.usuario.findUnique({
             where:{ id }
         })
-        if(!usuario) {
+        
+        if(!usuario || usuario.dataDelete !== null) {
             throw new NotFoundException("Usuário não encontrado!")
         }
+
+        if (!editarSenha?.senha && data.senha) {
+            delete data.senha;
+            throw new ForbiddenException("Ação não autorizada! Para editar a senha, utilize o meio apropriado.");
+        }
+
+        try {
         return await this.prisma.usuario.update({
             where:{ id },
             data,
             select: usuarioSelect,
-        })
+        }); 
+        }catch (error) {
+            // Tratamento de e-mail duplicado na edição
+            if (error.code === 'P2002') {
+                throw new ConflictException('Este e-mail já está em uso por outro usuário.');
+            }
+            throw error;
+        }
     }
 
 

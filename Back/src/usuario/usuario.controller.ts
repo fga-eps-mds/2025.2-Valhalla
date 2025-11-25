@@ -58,7 +58,7 @@ export class UsuarioController {
         @Request() req: AuthRequest,
         @Body() updateData: EdicaoUsuarioDto,
     ) {
-        return this.usuarioService.editarUsuario(req.user.id, updateData);
+        return this.usuarioService.editarUsuario(req.user.id, updateData, {senha: false});
     };
 }
 
