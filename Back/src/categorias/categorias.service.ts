@@ -72,7 +72,7 @@ export class CategoriasService{
     }
     
     async listarCategorias() {
-        const categorias = await this.prisma.categoria.findMany();
+        const categorias = await this.prisma.categoria.findMany({orderBy: { nome: 'asc' }});
         
         if(!categorias || categorias.length === 0) {
             throw new NotFoundException('Nenhuma categoria encontrada!');
