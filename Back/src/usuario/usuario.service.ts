@@ -78,6 +78,9 @@ constructor(private prisma: PrismaService) {}
 
     async desativarUsuario(idUsuario: number, idAlvo: number, idTipo: TipoUsuario){
         await this.definirHierarquia(idUsuario, idAlvo, idTipo);
+        if (await this.prisma.usuario.findUnique({where: {id: idAlvo, dataDelete: {not: null}}})){
+            throw new NotFoundException("Usuário não encontrado!");
+        }
         return await this.prisma.usuario.update({where: {id: idAlvo,}, data: {dataDelete: new Date()}});
     }
     
@@ -136,7 +139,7 @@ constructor(private prisma: PrismaService) {}
 
 
     async procurarPorEmail(email: string) {
-        return this.prisma.usuario.findFirst({ where: { email } });
+        return this.prisma.usuario.findFirst({ where: { email, dataDelete: null } });
     }
 
     async encontrarUsuarioAuth(id: number){
@@ -168,14 +171,14 @@ constructor(private prisma: PrismaService) {}
 
         switch (idTipo){
             case TipoUsuario.COMUM :
-                throw new ForbiddenException("Ação não autorizada!");
+                throw new ForbiddenException("Ação não autorizada! Não possui privilégios suficientes.");
 
             case TipoUsuario.ADMIN :
                 if (UsuarioAlvo.tipo === TipoUsuario.ADMINMASTER){
-                    throw new ForbiddenException("Ação não autorizada!");
+                    throw new ForbiddenException("Ação não autorizada! Não possui privilégios suficientes.");
                 }
                 if (UsuarioAlvo.tipo === TipoUsuario.ADMIN && UsuarioAlvo.id !== idUsuario){
-                    throw new ForbiddenException("Ação não autorizada!");
+                    throw new ForbiddenException("Ação não autorizada! Não possui privilégios suficientes.");
                 }
                 if (UsuarioAlvo.tipo === TipoUsuario.COMUM){
                     return true;
@@ -184,7 +187,7 @@ constructor(private prisma: PrismaService) {}
 
             case TipoUsuario.ADMINMASTER :
                 if (idUsuario === idAlvo){ 
-                    throw new ForbiddenException("Ação não autorizada!");
+                    throw new ForbiddenException("Ação não autorizada! Admin Master não pode ser deletado");
                 }
                 if (UsuarioAlvo.tipo !== TipoUsuario.ADMINMASTER){
                     return true;
