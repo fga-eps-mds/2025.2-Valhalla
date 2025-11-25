@@ -11,6 +11,15 @@ export class DenunciasService{
     constructor (private prisma: PrismaService){}
 
     async criarDenuncia (idUsuario: number, data: DenunciaDto){
+
+        const categoria = await this.prisma.categoria.findUnique({
+            where: { id: data.idCategoria },
+        });
+
+        if (!categoria) {
+            throw new NotFoundException('Categoria não encontrada!');
+        }
+
         const criacaoDenuncia = await this.prisma.denuncia.create({
             data: {
                 idUsuario: idUsuario,
@@ -58,6 +67,10 @@ export class DenunciasService{
 
     async desativarDenuncia (id: number, idUsuario: number, idTipo: TipoUsuario){
         await this.definirHierarquia(id, idUsuario, idTipo);
+
+        if (await this.prisma.denuncia.findUnique({where: {id, dataDelete: {not: null}}})){
+            throw new NotFoundException("Denuncia não encontrada!");
+        }
 
         return await this.prisma.denuncia.update({
             where: { id },
