@@ -25,7 +25,6 @@ export class AuthService {
             sub: usuario.id!,
             email: usuario.email,
             tipo: usuario.tipo as TipoUsuario,
-            mediaSrc: usuario.mediaSrc,
         };
         
         const tempoExpiracao = lembrar ? '90d' : '12h';
@@ -90,7 +89,6 @@ export class AuthService {
         sub: usuario.id!,
         email: usuario.email,
         tipo: usuario.tipo as TipoUsuario,
-        mediaSrc: usuario.mediaSrc,
       };
       
       const resetSecret = this.configService.get<string>('JWT_PASSWORD_RESET_SECRET');

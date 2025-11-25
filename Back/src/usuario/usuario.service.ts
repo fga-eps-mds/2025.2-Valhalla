@@ -13,8 +13,9 @@ const usuarioSelect = {
     cargo: true,
     tipo: true,
     mediaSrc: true,
-    //dataCriacao: true,
-    //dataUpdate: true,
+    dataCriacao: true,
+    dataUpdate: true,
+    dataDelete: true,
 };
 
 @Injectable()
@@ -44,11 +45,9 @@ constructor(private prisma: PrismaService) {}
             throw new ForbiddenException("Já existe um ADMINMASTER cadastrado no sistema!");
         }
 
-        //if (!UsuarioSolicitante){
-        //    DadosUsuario.tipo = TipoUsuario.COMUM;
-        //}
-
         const SenhaHash = await bcrypt.hash(DadosUsuario.senha, 10 )
+
+        const { dataCriacao, dataUpdate, dataDelete, ...usuarioSemData } = usuarioSelect;
         
         try {
         return await this.prisma.usuario.create({
@@ -60,7 +59,7 @@ constructor(private prisma: PrismaService) {}
                 tipo: DadosUsuario.tipo as TipoUsuario,
                 mediaSrc: DadosUsuario.mediaSrc,
             },
-            select: usuarioSelect,
+            select: usuarioSemData,
         });
         
         } catch (error) {
@@ -94,6 +93,10 @@ constructor(private prisma: PrismaService) {}
         const usuario = await this.prisma.usuario.findUnique({where:{id}, select: usuarioSelect});
         
         if(!usuario) {
+            throw new NotFoundException("Usuário não encontrado!")
+        }
+
+        if(usuario.dataDelete !== null) {
             throw new NotFoundException("Usuário não encontrado!")
         }
 

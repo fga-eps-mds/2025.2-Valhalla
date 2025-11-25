@@ -46,6 +46,7 @@ export class UsuarioController {
     async encontrarUsuario(@Param("id", ParseIntPipe) id:number) {
         return this.usuarioService.encontrarUsuario(Number(id));
     }
+    
     @IsPublic()
     @Get()
     async listarUsuario() {
