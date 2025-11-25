@@ -63,7 +63,12 @@ export class CategoriasService{
     }
 
     async encontrarCategorias(id: number) {
-        if(!id) {
+        
+        const idCategoria = await this.prisma.categoria.findUnique({
+            where: { id },
+        });
+
+        if(!idCategoria) {
             throw new NotFoundException('Categoria não encontrada!');
         }
         return this.prisma.categoria.findUnique({
