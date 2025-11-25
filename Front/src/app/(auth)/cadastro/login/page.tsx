@@ -59,8 +59,8 @@ export default function Login() {
                 </Link>
 
                 <Image 
-                    src="/Corujuda - Contorno.svg"
-                    alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
+                    src="/logos/Corujuda-Contorno.svg"
+                    alt="Logo do Guardiões da Universidade."
                     width={120}
                     height={120}
                     className="mt-2" 
@@ -128,7 +128,7 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-[240px] text-white hover:bg-[#254c9b] transition font-semibold">
+                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-semibold">
                         LOGIN
                         <ArrowRightEndOnRectangleIcon className='size-5'/>
                     </button>
