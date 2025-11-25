@@ -3,7 +3,6 @@ import { CriacaoUsuarioDto } from './dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
 import { EdicaoUsuarioDto } from './dto/edicao.usuario.dto';
 import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { AuthRequest } from 'src/auth/models/authRequest';
 
 @Controller('usuarios')

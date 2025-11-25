@@ -1,9 +1,8 @@
-import { Body, Controller, Post, UseGuards, Param, ParseIntPipe, Patch, Delete, Get, Request} from '@nestjs/common';
+import { Body, Controller, Post, Param, ParseIntPipe, Patch, Delete, Get, Request} from '@nestjs/common';
 import { IsPublic } from '../auth/decorators/isPublic.decorator';
 import { criarCategoriasDto } from './dto/create_categorias.dto';
 import { edicaoCategoriasDto } from './dto/edicao_categorias.dto';
 import { CategoriasService } from './categorias.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { AuthRequest } from 'src/auth/models/authRequest';
 
 @Controller('categorias')

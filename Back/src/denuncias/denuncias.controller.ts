@@ -3,8 +3,6 @@ import { DenunciaDto } from './dto/denuncia.dto';
 import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
 import { DenunciasService } from './denuncias.service';
 import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
-import { Usuario } from 'generated/prisma';
 import { AuthRequest } from 'src/auth/models/authRequest';
 
 @Controller('denuncias')
