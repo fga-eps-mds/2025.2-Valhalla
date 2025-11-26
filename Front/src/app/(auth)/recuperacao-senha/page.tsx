@@ -53,7 +53,7 @@ export default function RecuperarSenha() {
                 </Link>
                 {/* arrumar a logo*/}
                 <Image 
-                    src="/Corujuda - contorno.svg"    
+                    src="/logos/Corujuda.svg"    
                     alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
                     width={120}
                     height={120}

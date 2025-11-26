@@ -11,9 +11,10 @@ import {
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import Image from "next/image";
 import Link from "next/link";
-import { jwtDecode } from 'jwt-decode';
-import { useAuth } from '../../../contexts/AuthContext';
-import { loginUsuario, getOneUsuario } from '../../../utils/api';
+//import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../../contexts/AuthContext';
+//import { loginUsuario, getOneUsuario } from '../../utils/api';
+import { loginUsuario } from '@/app/utils/api';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -32,17 +33,15 @@ export default function Login() {
         }
         try {
             const response = await loginUsuario(email, senha);
-            const token = response.access_token;
+            
+            const {acess_token, user} = response;
 
-            localStorage.setItem("token", token);
+            localStorage.setItem("token", acess_token);
 
-            const decoded: { sub?: string } = jwtDecode(token);
-            if (decoded.sub) {
-                const userData = await getOneUsuario(Number(decoded.sub));
-                setLoggedInUser(userData);
-            }
+            setLoggedInUser(user);
 
-            router.push('/');
+            router.push('/denuncia');
+
         } catch (error) {
             console.error('ERRO DETALHADO DO LOGIN:', error);
             console.error('Erro ao fazer login:', error);
