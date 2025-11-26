@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { getCategorias, Categoria } from '@/app/services/categoriaService';
-import { criarDenuncia } from '../../services/denunciaService'; 
+import { useState, useEffect } from 'react';
 import { 
   CameraIcon, 
   ArrowLeftIcon
@@ -11,24 +9,55 @@ import {
   ChevronUpDownIcon,
   PlusIcon
 } from '@heroicons/react/24/solid';
+import api from '@/utils/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
-interface DenunciaModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-
-  descricao: string;
-  setDescricao: (text: string) => void;
-
-  categoria: string;
-  setCategoria: (text: string) => void;
-
-  anonimato: boolean | null;
-  setAnonimato: (valor: boolean) => void;
-
+interface Categoria {
+  id: number;
+  nome: string;
 }
 
-export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao, categoria, setCategoria, anonimato, setAnonimato}:DenunciaModalProps) {
+const getCategorias = async (): Promise<Categoria[]> => {
+  try {
+    const response = await api.get('/categorias');
+    return response.data;
+  } catch (error) {
+    toast.error("Erro ao buscar categorias.");
+    console.error("Erro ao buscar categorias:", error);
+    return [];
+  }
+};
+
+interface CriarDenunciaDados {
+  descricao: string;
+  idCategoria: number;
+  anonimato?: boolean;
+  mediaSrc?: string;
+}
+
+const criarDenuncia = async (dados: CriarDenunciaDados) => {
+  try {
+    const response = await api.post('/denuncias', dados);
+    return response.data;
+  } catch (error) {
+    toast.error("Erro ao criar denúncia.");
+    console.error("Erro ao criar denúncia:", error);
+    throw error; 
+  }
+};
+
+export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   
+
+  const [descricao, setDescricao] = useState('');
+  const [idCategoria, setIdCategoria] = useState('');
+  const [anonimato, setAnonimato] = useState<boolean | null>(null);
+  const [mediaSrc, setMediaSrc] = useState<string>('');
+  const {user} = useAuth();
+
+  const idUsuario = user?.id;
+
     // Estado local para guardar a LISTA CATEGORIA
     const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
 
@@ -43,24 +72,44 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
     // Função que é chamada ao clicar em PUBLICAR
     const publicarDenuncia = async () => {
       
-      if (!descricao || !categoria) {
-        alert("Por favor, preencha a descrição e selecione uma categoria.");
+      if (!descricao || !idCategoria) {
+        toast.error("Por favor, preencha a descrição e selecione uma categoria.");
         return;}
 
       try {
+
+        if (!idUsuario) {
+          toast.error("Usuário não autenticado.");
+          return;
+        }
+
+        if (anonimato === null) {
+          toast.error("Por favor, selecione o tipo de denúncia (Anônima ou Pública).");
+          return;
+        }
+
+        if (!descricao.trim()) {
+          toast.error("A descrição não pode estar vazia.");
+          return;
+        }
+
+        if (!idCategoria) {
+          toast.error("Por favor, selecione uma categoria.");
+          return;
+        }
+
         await criarDenuncia({
           descricao: descricao,
-          idCategoria: Number(categoria), 
-          anonimato: anonimato ?? false, 
-          // idUsuario: 1 ID FIXO PARA TESTE (ALTERAR)
-          idUsuario: 1 
+          idCategoria: Number(idCategoria), 
+          anonimato: anonimato as boolean, 
+          mediaSrc: mediaSrc,
         });
 
-        alert("Denúncia realizada com sucesso!");
+        toast.success("Denúncia realizada com sucesso!");
         onClose();
 
       } catch (error) {
-        alert("Erro ao publicar denúncia. Verifique o console.");
+        toast.error("Erro ao publicar denúncia. Verifique o console.");
         console.error(error);
       }
     };
@@ -70,6 +119,7 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
         return (
           <>
             <div 
+
               onClick={onClose}
               className='fixed inset-0 z-[999999] bg-black/40 flex items-center justify-center'>
                   <div 
@@ -118,12 +168,14 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
                     </div>
                     
                     {/*Campo de CATEGORIA*/}
-                    <div className='w-[366px] h-[52px] border border-[var(--color-bordas)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
+                    <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
                     <ChevronUpDownIcon className='size-[24px]'/>
                     <select 
-                      className='flex items-center mx-[5px] text-small cursor-pointer'
-                      value={categoria}
-                      onChange={(e) => setCategoria(e.target.value)}
+                      className='w-full h-full 
+                        px-[16px] text-small cursor-pointer bg-white
+                        appearance-none focus:outline-none focus:border-[var(--color-azul-principal)'
+                      value={idCategoria}
+                      onChange={(e) => setIdCategoria(e.target.value)}
                     >
                               <option value="" disabled>Selecione a Categoria</option>
                               
@@ -136,7 +188,7 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
                           </select>
                     </div>
                     
-                    {/*Campo de INSERÇÃO DE IMAGEM*/}
+                    {/*Campo de INSERÇÃO DE IMAGEM
                     <div 
                       className='
                         w-[256px] h-[159px] shrink-0 
@@ -152,10 +204,11 @@ export default function ModalDenuncia ({isOpen, onClose, descricao, setDescricao
                       <CameraIcon className='size-[74px] text-[var(--color-azul-principal)] group-hover:text-[var(--color-azul-light)] transition-colors duration-300'/>
                       <div
                         className='size-[39px] text-[var(--color-branco)] absolute bottom-[30.84px] right-[70px] bg-[var(--color-azul-principal)] rounded-full flex items-center justify-center group-hover:bg-[var(--color-azul-light)] transition-colors duration-300'>
-                        {/*Ícone "+"*/}
+                        {/*Ícone "+"
                         <PlusIcon className='size-[23px] text-[var(--color-branco)] ' />
                       </div>
                     </div>
+                    */}
 
                     {/*Campo DESCRIÇÃO*/} 
                     <div>
