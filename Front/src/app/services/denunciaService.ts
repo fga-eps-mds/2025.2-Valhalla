@@ -1,4 +1,4 @@
-import api from '../utils/api';
+import api from '../../utils/api';
 
 // Define o formato que o Back espera receber
 export interface CriarDenunciaDados {

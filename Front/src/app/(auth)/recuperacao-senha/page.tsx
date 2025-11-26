@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import Link from "next/link";
-import { EmailRecuperação } from '@/app/utils/api';
+import { EmailRecuperação } from '@/utils/api';
 
 export default function RecuperarSenha() {
     const [email, setEmail] = useState ('');

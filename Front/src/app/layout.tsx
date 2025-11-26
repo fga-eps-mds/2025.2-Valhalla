@@ -1,21 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Merriweather, Geist_Mono, Lato } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider } from "../contexts/AuthContext";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "GdU",
+  title: "Guardioes",
   description: "Guardiões da Universidade",
 };
 

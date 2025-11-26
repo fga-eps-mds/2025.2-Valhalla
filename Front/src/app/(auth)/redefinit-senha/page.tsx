@@ -6,7 +6,7 @@ import {
     ArrowLeftIcon, 
     LockClosedIcon 
 } from '@heroicons/react/24/outline';
-import { resetarSenha } from '@/app/utils/api';
+import { resetarSenha } from '@/utils/api';
 
 
 function FormularioRedefinicao() {

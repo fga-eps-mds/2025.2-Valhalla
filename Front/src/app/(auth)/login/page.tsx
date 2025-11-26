@@ -11,17 +11,15 @@ import {
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import Image from "next/image";
 import Link from "next/link";
-//import { jwtDecode } from 'jwt-decode';
-import { useAuth } from '../../contexts/AuthContext';
-//import { loginUsuario, getOneUsuario } from '../../utils/api';
-import { loginUsuario } from '@/app/utils/api';
+import { useAuth } from '../../../contexts/AuthContext';
+import { loginUsuario } from '@/utils/api';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [erro, setErro] = useState<string | null>(null);
     const router = useRouter();
-    const { setLoggedInUser } = useAuth();
+    const { login } = useAuth();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,11 +32,7 @@ export default function Login() {
         try {
             const response = await loginUsuario(email, senha);
             
-            const {acess_token, user} = response;
-
-            localStorage.setItem("token", acess_token);
-
-            setLoggedInUser(user);
+            login(response.access_token, response.user);
 
             router.push('/denuncia');
 

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import ModalDenuncia from '@/app/components/modalDenuncia/modalDenuncia';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Imports VISUAIS
 import {
@@ -26,6 +27,8 @@ export default function PaginaDenuncias() {
   const [categoria, setCategoria] = useState('');
   const [anonimato, setAnonimato] = useState<boolean | null>(null);
 
+  const {user} = useAuth();
+
   return (
     // Container principal da página
     <div className="bg-white min-h-screen relative">
@@ -44,6 +47,9 @@ export default function PaginaDenuncias() {
           />
           <h1 className="text-white text-3xl font-bold">
             Guardiões da Universidade</h1>
+          <p className="text-white text-lg italic">
+            {user ? `Bem-vindo, ${user.nome}` : 'Bem-vindo'}
+          </p>
         </div>
 
         {/*Direita: Ícones de Navegação */}

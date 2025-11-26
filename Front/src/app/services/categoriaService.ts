@@ -1,4 +1,4 @@
-import api from '../utils/api'; // Importa configuração do axios
+import api from '../../utils/api'; // Importa configuração do axios
 
 // Define o formato dos dados que o Back-end entrega
 export interface Categoria {
