@@ -105,23 +105,27 @@ export default function Login() {
                         </p>
                     )}
 
-                   <div className="w-full flex justify-around items-center mb-8">
-                        <div className="flex items-center gap-2">
-                            <input 
-                            type="checkbox" 
-                            id="termos"
-                            checked={lembrar}
-                            onChange={() => setLembrar(!lembrar)}
-                            className=" bg-azul-principal" />
-                            <label htmlFor="termos" className="text-sm text-texto-corpo">
-                                Lembrar-me
-                            </label>
-                        <Link href="/recuperacao-senha" className="font-medium text-blue-600 hover:underline"> 
-                            Esqueci a senha
-                        </Link>
+                        <div className="w-full flex items-center justify-between mb-8">
+                            
+                            {/* Lado ESQUERDO: Checkbox + Texto */}
+                            <div className="flex items-center gap-2">
+                                <input 
+                                    type="checkbox" 
+                                    id="lembrar"
+                                    checked={lembrar}
+                                    onChange={() => setLembrar(!lembrar)}
+                                    className="w-4 h-4 text-azul-principal border-gray-300 rounded focus:ring-azul-light cursor-pointer" 
+                                />
+                                <label htmlFor="lembrar" className="text-sm text-gray-600 cursor-pointer select-none">
+                                    Lembrar-me
+                                </label>
+                            </div>
+
+                            {/* Lado DIREITO: Link */}
+                            <Link href="/recuperacao-senha" className="text-sm text-azul-principal hover:underline font-medium"> 
+                                Esqueci a senha
+                            </Link>
                         </div>
-                    </div>
-                    
                     <button
                         type="submit"
                         className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-semibold">

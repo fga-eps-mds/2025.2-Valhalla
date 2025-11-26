@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
 import { TipoUsuario } from '../types';
 import { toast } from 'sonner';
+import { jwtDecode } from 'jwt-decode';
 
 interface RoleGuardProps {
   children: React.ReactNode;
@@ -12,17 +13,45 @@ interface RoleGuardProps {
 }
 
 export default function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
-  const { user, isLoading, isAuthenticated } = useAuth();
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
   const router = useRouter();
+  const token = typeof window !== 'undefined' ? localStorage.getItem('valhalla_token') : null;
 
   useEffect(() => {
 
     if (isLoading) return;
 
+    if (!token) {
+        router.push('/login');
+    }
+
     if (!isAuthenticated) {
       router.push('/');
       return;
     }
+
+    try {
+
+        const decoded: { exp: number } = jwtDecode(token as string);
+        
+        const currentTime = Date.now() / 1000;
+
+        if (decoded.exp < currentTime) {
+            console.warn("Token expirado detectado no Guard.");
+            
+            toast.warning('Sessão expirada.', {
+                description: 'Por favor, faça login novamente.'
+            });
+            
+            logout();
+            return;
+        }
+
+      } catch (error) {
+        console.error("Token inválido:", error);
+        logout();
+        return;
+      }
 
     if (allowedRoles && user && !allowedRoles.includes(user.tipo)) {
 
