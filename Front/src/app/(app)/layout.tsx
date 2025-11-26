@@ -9,8 +9,7 @@ export default function RootLayout({
   return (
     <RoleGuard allowedRoles={['COMUM', 'ADMIN', 'ADMINMASTER']}>
     <html lang="pt-br">
-      <body
-      >
+      <body>
         {children} 
       </body>
     </html>

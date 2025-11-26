@@ -28,10 +28,10 @@ export default function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
 
         toast.error('Acesso Negado!', {
         description: 'Você não tem permissão para acessar essa área.',
-        duration: 4000, // Fica 4 segundos na tela
+        duration: 4000,
     });
 
-        router.push('/paginaDenuncia'); 
+        router.push('/'); 
     }
   }, [isAuthenticated, isLoading, user, router, allowedRoles]);
 

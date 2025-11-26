@@ -7,3 +7,5 @@ export interface Usuario {
   tipo: TipoUsuario;
   mediaSrc: string | null;
 }
+
+export type CargoUsuario = 'ESTUDANTE' | 'SERVIDOR' | 'OUTRO';
