@@ -8,7 +8,7 @@ import {
     ArrowLeftIcon, 
     KeyIcon
 } from '@heroicons/react/24/outline';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { CheckIcon } from '@heroicons/react/24/solid';
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from '../../../contexts/AuthContext';
@@ -17,6 +17,7 @@ import { loginUsuario } from '@/utils/api';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [lembrar, setLembrar] = useState(false);
     const [erro, setErro] = useState<string | null>(null);
     const router = useRouter();
     const { login } = useAuth();
@@ -30,8 +31,7 @@ export default function Login() {
             return;
         }
         try {
-            const response = await loginUsuario(email, senha);
-            
+            const response = await loginUsuario(email, senha, lembrar);
             login(response.access_token, response.user);
 
             router.push('/denuncia');
@@ -105,11 +105,23 @@ export default function Login() {
                         </p>
                     )}
 
-                    <div className="w-full flex justify-around items-center mb-8">
+                   <div className="w-full flex justify-around items-center mb-8">
                         <div className="flex items-center">
-                            <button type="button" className="flex items-center">
-                                <CheckCircleIcon className="w-5 h-5 text-azul-dark" />
-                                <span className="ml-2 block text-sm text-azul-dark"> 
+                            <button 
+                                type="button"
+                                onClick={() => setLembrar(!lembrar)}
+                                className="flex items-center group focus:outline-none"
+                            >
+                                {/* Renderização Condicional do Ícone */}
+                                {lembrar ? (
+                                    // ESTADO ATIVO (Marcado): Ícone Sólido e Azul
+                                    <CheckIcon className="w-6 h-6 text-azul-principal transition-colors duration-200" />
+                                ) : (
+                                    // ESTADO INATIVO (Desmarcado): Ícone Outline (ou círculo vazio) Cinza/Azul Escuro
+                                    <div className="w-5 h-5 rounded-full border-2 border-azul-dark group-hover:border-azul-principal transition-colors duration-200"></div>
+                                )}
+
+                                <span className={`ml-2 block text-sm transition-colors duration-200 ${lembrar ? 'text-azul-principal font-semibold' : 'text-azul-dark'}`}> 
                                     Lembrar-me
                                 </span>
                             </button>

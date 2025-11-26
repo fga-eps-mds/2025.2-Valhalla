@@ -1,5 +1,5 @@
 import "../globals.css";
-import RoleGuard from '../../contexts/RoleGuard';
+import RoleGuard from '@/contexts/RoleGuard';
 
 export default function RootLayout({
   children,
@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <RoleGuard allowedRoles={['COMUM', 'ADMIN', 'ADMINMASTER']}>
+    <RoleGuard allowedRoles={['ADMIN', 'ADMINMASTER']}>
         {children} 
     </RoleGuard>
   );
