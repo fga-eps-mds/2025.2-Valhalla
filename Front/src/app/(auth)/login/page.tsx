@@ -8,19 +8,19 @@ import {
     ArrowLeftIcon, 
     KeyIcon
 } from '@heroicons/react/24/outline';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { CheckIcon } from '@heroicons/react/24/solid';
 import Image from "next/image";
 import Link from "next/link";
-import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../../../contexts/AuthContext';
-import { loginUsuario, getOneUsuario } from '../../../utils/api';
+import { loginUsuario } from '@/utils/api';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [lembrar, setLembrar] = useState(false);
     const [erro, setErro] = useState<string | null>(null);
     const router = useRouter();
-    const { setLoggedInUser } = useAuth();
+    const { login } = useAuth();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,18 +31,11 @@ export default function Login() {
             return;
         }
         try {
-            const response = await loginUsuario(email, senha);
-            const token = response.access_token;
+            const response = await loginUsuario(email, senha, lembrar);
+            login(response.access_token, response.user);
 
-            localStorage.setItem("token", token);
+            router.push('/denuncia');
 
-            const decoded: { sub?: string } = jwtDecode(token);
-            if (decoded.sub) {
-                const userData = await getOneUsuario(Number(decoded.sub));
-                setLoggedInUser(userData);
-            }
-
-            router.push('/');
         } catch (error) {
             console.error('ERRO DETALHADO DO LOGIN:', error);
             console.error('Erro ao fazer login:', error);
@@ -112,20 +105,27 @@ export default function Login() {
                         </p>
                     )}
 
-                    <div className="w-full flex justify-around items-center mb-8">
-                        <div className="flex items-center">
-                            <button type="button" className="flex items-center">
-                                <CheckCircleIcon className="w-5 h-5 text-azul-dark" />
-                                <span className="ml-2 block text-sm text-azul-dark"> 
+                        <div className="w-full flex items-center justify-between mb-8">
+                            
+                            {/* Lado ESQUERDO: Checkbox + Texto */}
+                            <div className="flex items-center gap-2">
+                                <input 
+                                    type="checkbox" 
+                                    id="lembrar"
+                                    checked={lembrar}
+                                    onChange={() => setLembrar(!lembrar)}
+                                    className="w-4 h-4 text-azul-principal border-gray-300 rounded focus:ring-azul-light cursor-pointer" 
+                                />
+                                <label htmlFor="lembrar" className="text-sm text-gray-600 cursor-pointer select-none">
                                     Lembrar-me
-                                </span>
-                            </button>
-                        </div>
-                        <Link href="/recuperacao-senha" className="text-sm text-blue-600 hover:underline"> 
-                            Esqueci a senha
-                        </Link>
-                    </div>
+                                </label>
+                            </div>
 
+                            {/* Lado DIREITO: Link */}
+                            <Link href="/recuperacao-senha" className="text-sm text-azul-principal hover:underline font-medium"> 
+                                Esqueci a senha
+                            </Link>
+                        </div>
                     <button
                         type="submit"
                         className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-semibold">
@@ -140,7 +140,7 @@ export default function Login() {
 
                 <p className="mt-6 text-sm text-azul-dark">
                     Novo por aqui ?  {'   '}
-                    <Link href="/cadastro/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
+                    <Link href="/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
                         Crie sua conta
                     </Link>
                 </p>

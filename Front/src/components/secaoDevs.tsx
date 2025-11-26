@@ -19,7 +19,7 @@ const developers: Dev[] = [
   },
   {
     name: "Gustavo Bonifacio",
-    photo: "/devs/bonifacio.jpg",
+    photo: "/devs/Bonifacio.jpg",
     github: "https://github.com/Gustavo2703",
   },
   {

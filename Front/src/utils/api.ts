@@ -8,15 +8,15 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = typeof window !== 'undefined' ? localStorage.getItem('valhalla_token') : null;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-export const loginUsuario = async (email: string, senha: string) => {
-  const response = await api.post("/auth/login", { email, senha }); 
+export const loginUsuario = async (email: string, senha: string, lembrar: boolean) => {
+  const response = await api.post("/auth/login", { email, senha, lembrar });
   return response.data;
 };
 

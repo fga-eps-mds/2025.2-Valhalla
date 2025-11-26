@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import Link from "next/link";
-import { EmailRecuperação } from '@/app/utils/api';
+import { EmailRecuperação } from '@/utils/api';
 
 export default function RecuperarSenha() {
     const [email, setEmail] = useState ('');
@@ -53,7 +53,7 @@ export default function RecuperarSenha() {
                 </Link>
                 {/* arrumar a logo*/}
                 <Image 
-                    src="/Corujuda - contorno.svg"    
+                    src="/logos/Corujuda.svg"    
                     alt='Logo do Guardiões da Universidade. Uma coruja com pelagem azul'
                     width={120}
                     height={120}
