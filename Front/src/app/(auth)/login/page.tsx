@@ -106,31 +106,22 @@ export default function Login() {
                     )}
 
                    <div className="w-full flex justify-around items-center mb-8">
-                        <div className="flex items-center">
-                            <button 
-                                type="button"
-                                onClick={() => setLembrar(!lembrar)}
-                                className="flex items-center group focus:outline-none"
-                            >
-                                {/* Renderização Condicional do Ícone */}
-                                {lembrar ? (
-                                    // ESTADO ATIVO (Marcado): Ícone Sólido e Azul
-                                    <CheckIcon className="w-6 h-6 text-azul-principal transition-colors duration-200" />
-                                ) : (
-                                    // ESTADO INATIVO (Desmarcado): Ícone Outline (ou círculo vazio) Cinza/Azul Escuro
-                                    <div className="w-5 h-5 rounded-full border-2 border-azul-dark group-hover:border-azul-principal transition-colors duration-200"></div>
-                                )}
-
-                                <span className={`ml-2 block text-sm transition-colors duration-200 ${lembrar ? 'text-azul-principal font-semibold' : 'text-azul-dark'}`}> 
-                                    Lembrar-me
-                                </span>
-                            </button>
-                        </div>
-                        <Link href="/recuperacao-senha" className="text-sm text-blue-600 hover:underline"> 
+                        <div className="flex items-center gap-2">
+                            <input 
+                            type="checkbox" 
+                            id="termos"
+                            checked={lembrar}
+                            onChange={() => setLembrar(!lembrar)}
+                            className=" bg-azul-principal" />
+                            <label htmlFor="termos" className="text-sm text-texto-corpo">
+                                Lembrar-me
+                            </label>
+                        <Link href="/recuperacao-senha" className="font-medium text-blue-600 hover:underline"> 
                             Esqueci a senha
                         </Link>
+                        </div>
                     </div>
-
+                    
                     <button
                         type="submit"
                         className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-semibold">
@@ -145,7 +136,7 @@ export default function Login() {
 
                 <p className="mt-6 text-sm text-azul-dark">
                     Novo por aqui ?  {'   '}
-                    <Link href="/cadastro/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
+                    <Link href="/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
                         Crie sua conta
                     </Link>
                 </p>
