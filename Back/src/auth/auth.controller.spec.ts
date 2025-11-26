@@ -1,29 +1,35 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { AuthRequest } from './models/authRequest';
+import { MudarSenhaDto } from './dto/mudarSenha.dto';
+import { esqueciSenhaDto } from './dto/esqueciSenha.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { LoginDto } from './dto/login.dto';
+
+// Mock do AuthService
+const mockAuthService = {
+  login: jest.fn(),
+  mudarSenha: jest.fn(),
+  esqueciSenha: jest.fn(),
+  resetSenha: jest.fn(),
+};
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let authService: AuthService;
+  let service: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
       providers: [
-        {
-          provide: AuthService,
-          useValue: {
-            login: jest.fn(),
-            mudarSenha: jest.fn(),
-            esqueciSenha: jest.fn(),
-            resetSenha: jest.fn(),
-          },
-        },
+        { provide: AuthService, useValue: mockAuthService },
       ],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    authService = module.get<AuthService>(AuthService);
+    service = module.get<AuthService>(AuthService);
+    jest.clearAllMocks();
   });
 
   it('deve estar definido', () => {
@@ -31,51 +37,41 @@ describe('AuthController', () => {
   });
 
   describe('login', () => {
-    it('deve chamar authService.login com o usuário da requisição', async () => {
-      // Cenário
-      const reqMock = { user: { email: 'teste@teste.com' } };
-      const resultadoEsperado = { access_token: 'token123' };
-      
-      // Simulação
-      jest.spyOn(authService, 'login').mockReturnValue(resultadoEsperado as any);
+    it('deve chamar authService.login com o usuário do request', async () => {
+      const req = { user: { id: 1, email: 'teste@unb.br' } } as AuthRequest;
+      mockAuthService.login.mockReturnValue({ access_token: 'token' });
 
-      // Execução
-      const result = controller.login(reqMock as any);
+      const result = await controller.login(req);
 
-      // Verificação
-      expect(result).toEqual(resultadoEsperado);
-      expect(authService.login).toHaveBeenCalledWith(reqMock.user);
+      expect(service.login).toHaveBeenCalledWith(req.user);
+      expect(result).toEqual({ access_token: 'token' });
     });
   });
 
   describe('mudarSenha', () => {
-    it('deve chamar authService.mudarSenha com os parâmetros corretos', async () => {
-      const reqMock = { user: { id: 1 } };
-      const bodyMock = { senhaAntiga: 'old', senhaNova: 'new' };
-      
-      await controller.mudarSenha(reqMock, bodyMock);
+    it('deve extrair ID do usuário e chamar mudarSenha', async () => {
+      const req = { user: { id: 1 } };
+      const dto: MudarSenhaDto = { senhaAntiga: 'old', senhaNova: 'new' };
 
-      expect(authService.mudarSenha).toHaveBeenCalledWith(1, 'old', 'new');
+      await controller.mudarSenha(req, dto);
+
+      expect(service.mudarSenha).toHaveBeenCalledWith(1, 'old', 'new');
     });
   });
 
   describe('esqueciSenha', () => {
-    it('deve chamar authService.esqueciSenha', async () => {
-      const bodyMock = { email: 'teste@teste.com' };
-      
-      await controller.esqueciSenha(bodyMock);
-
-      expect(authService.esqueciSenha).toHaveBeenCalledWith('teste@teste.com');
+    it('deve chamar service.esqueciSenha', async () => {
+      const dto: esqueciSenhaDto = { email: 'teste@unb.br' };
+      await controller.esqueciSenha(dto);
+      expect(service.esqueciSenha).toHaveBeenCalledWith(dto.email);
     });
   });
 
   describe('resetPassword', () => {
-    it('deve chamar authService.resetSenha', async () => {
-      const bodyMock = { token: 'token123', novaSenha: 'nova' };
-      
-      await controller.resetPassword(bodyMock);
-
-      expect(authService.resetSenha).toHaveBeenCalledWith('token123', 'nova');
+    it('deve chamar service.resetSenha', async () => {
+      const dto: ResetPasswordDto = { token: 'token123', novaSenha: 'new' };
+      await controller.resetPassword(dto);
+      expect(service.resetSenha).toHaveBeenCalledWith(dto.token, dto.novaSenha);
     });
   });
 });

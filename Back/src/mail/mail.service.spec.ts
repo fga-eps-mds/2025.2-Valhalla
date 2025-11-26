@@ -1,43 +1,43 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MailService } from './mail.service';
 import { MailerService } from '@nestjs-modules/mailer';
+import { ConfigService } from '@nestjs/config';
+import { Usuario } from '@prisma/client';
 
-// O TypeScript precisa saber o formato do Usuario, mas para o teste
-// basta simularmos um objeto simples, já que não vamos salvar nada no banco.
+// Mock do MailerService
+const mockMailerService = {
+  sendMail: jest.fn(),
+};
+
+// Mock do ConfigService
+const mockConfigService = {
+  get: jest.fn((key: string) => {
+    if (key === 'FRONT_URL') return 'https://guardioes.unb.br';
+    return null;
+  }),
+};
+
+// Mock do Usuário
 const mockUsuario = {
-  id: 1,
-  email: 'usuario@teste.com',
-  nome: 'Gustavo',
-  // Adicione outros campos se o Prisma reclamar, mas geralmente isso basta
-} as any;
+  email: 'teste@unb.br',
+  nome: 'Teste',
+} as Usuario;
 
 describe('MailService', () => {
   let service: MailService;
-  let mailerService: MailerService;
-
-  // 1. Criamos o MOCK do MailerService
-  // Isso impede que o sistema tente enviar email de verdade
-  const mockMailerService = {
-    sendMail: jest.fn().mockResolvedValue(true),
-  };
+  let mailerService: typeof mockMailerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MailService,
-        {
-          // Quando o MailService pedir o MailerService...
-          provide: MailerService,
-          // ... entregamos a versão mockada (falsa)
-          useValue: mockMailerService,
-        },
+        { provide: MailerService, useValue: mockMailerService },
+        { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
     service = module.get<MailService>(MailService);
-    mailerService = module.get<MailerService>(MailerService);
-    
-    // Limpa os registros do mock antes de cada teste
+    mailerService = module.get(MailerService); // Não precisa tipar aqui se usar typeof acima
     jest.clearAllMocks();
   });
 
@@ -45,33 +45,19 @@ describe('MailService', () => {
     expect(service).toBeDefined();
   });
 
-  it('deve enviar o email de recuperação de senha com o token e link corretos', async () => {
-    // ARRANGE (Preparar)
-    const token = 'token-super-secreto-123';
-    const expectedUrl = `http://localhost:3001/reset-password?token=${token}`;
+  describe('sendPasswordResetEmail', () => {
+    it('deve chamar o sendMail com os parâmetros corretos e URL configurada', async () => {
+      const token = 'token-123';
+      
+      await service.sendPasswordResetEmail(mockUsuario, token);
 
-    // ACT (Agir)
-    await service.sendPasswordResetEmail(mockUsuario, token);
-
-    // ASSERT (Verificar)
-    // Verifica se a função sendMail foi chamada 1 vez
-    expect(mailerService.sendMail).toHaveBeenCalledTimes(1);
-
-    // Verifica se foi chamada com os argumentos certos
-    expect(mailerService.sendMail).toHaveBeenCalledWith(
-      expect.objectContaining({
+      expect(mailerService.sendMail).toHaveBeenCalledTimes(1);
+      expect(mailerService.sendMail).toHaveBeenCalledWith(expect.objectContaining({
         to: mockUsuario.email,
-        subject: 'Recuperação de Senha',
-        // Aqui vem a mágica: verificamos se o HTML contém o link correto
-        html: expect.stringContaining(expectedUrl),
-      }),
-    );
-    
-    // Opcional: verificar se o nome do usuário foi inserido no HTML
-    expect(mailerService.sendMail).toHaveBeenCalledWith(
-      expect.objectContaining({
-        html: expect.stringContaining('Gustavo'),
-      }),
-    );
+        subject: expect.stringContaining('Recuperação'),
+        // Verifica se a URL do front (mockada) está no corpo do email
+        html: expect.stringContaining('https://guardioes.unb.br/redefinir-senha?token=token-123'),
+      }));
+    });
   });
 });

@@ -1,48 +1,63 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsuarioService } from 'src/usuario/usuario.service';
 import * as bcrypt from 'bcrypt';
-import { UsuarioDto } from 'src/usuario/dto/usuario.dto';
 import { JwtService } from "@nestjs/jwt";
-import { UsuarioPayload } from './models/UsuarioPayload';
-import { UsuarioToken } from './models/UsuarioToken';
-import { updateUsuarioDto } from 'src/usuario/dto/edicao.usuario.dto';
+import { UsuarioPayload } from './models/usuarioPayload';
+import { UsuarioToken } from './models/usuarioToken';
+import { EdicaoUsuarioDto } from 'src/usuario/dto/edicao.usuario.dto';
 import { MailService } from 'src/mail/mail.service';
 import { ConfigService } from '@nestjs/config';
+import { TipoUsuario, Usuario } from '@prisma/client';
+
+
 @Injectable()
+
 export class AuthService {
-    constructor(private readonly usuarioService: UsuarioService, private readonly jwtService: JwtService, private readonly mailService: MailService,
+    constructor(
+      private readonly usuarioService: UsuarioService, 
+      private readonly jwtService: JwtService, 
+      private readonly mailService: MailService,
       private readonly configService: ConfigService){}
 
-     login(usuario: UsuarioDto): UsuarioToken {
+
+     login(usuario: Usuario, lembrar?: boolean): UsuarioToken {
         const payload: UsuarioPayload = {
             sub: usuario.id!,
             email: usuario.email,
-            nome: usuario.nome,
+            tipo: usuario.tipo as TipoUsuario,
         };
-        const jwtToken = this.jwtService.sign(payload);
-        
+
+        const tempoExpiracao = lembrar ? '90d' : '12h';
+
+        const jwtToken = this.jwtService.sign(payload, { expiresIn: tempoExpiracao });
+
         return {
             access_token: jwtToken,
+            user: {
+                id: usuario.id!,
+                nome: usuario.nome,
+                email: usuario.email,
+                tipo: usuario.tipo as TipoUsuario,
+                mediaSrc: usuario.mediaSrc,
+            },
         }
     }
     
-    async validateUser(email: string, senha: string) {
-        const usuario = await this.usuarioService.procurarPorEmail(email);
+
+    async validateUser(email: string, senha: string): Promise<any> {
         
-        if (usuario) {
-            const senhaValida = await bcrypt.compare(senha, usuario.senha)
-            if (senhaValida){
-            return {
-                ...usuario,
-                senha: undefined,
-            }
+      const usuario = await this.usuarioService.procurarPorEmail(email);
+        
+        if (usuario && (await bcrypt.compare(senha, usuario.senha))) {
+          const {senha, ...result} = usuario;
+          return result;
         };
-        }
-        throw new Error('email ou senha inválidas')
+        return null;
     }
 
+
     async mudarSenha(usuarioId, senhaAntiga: string, senhaNova: string){
-        const usuario = await this.usuarioService.encontrarUsuario(usuarioId)
+        const usuario = await this.usuarioService.encontrarUsuarioAuth(usuarioId)
         if (!usuario){
             throw new NotFoundException("usuario não encontrado")
         }
@@ -55,12 +70,14 @@ export class AuthService {
         const novaSenhahash = await bcrypt.hash(senhaNova, 10);
         usuario.senha = novaSenhahash;
             
-        const dadosParaAtualizar = new updateUsuarioDto();
+        const dadosParaAtualizar = new EdicaoUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash
 
-        await this.usuarioService.editarUsuario(usuario.id, dadosParaAtualizar);
+        await this.usuarioService.editarUsuario(usuario.id, dadosParaAtualizar, {senha: true});
         
     }
+
+
     async esqueciSenha(email: string): Promise<{ message: string }> {
       const usuario = await this.usuarioService.procurarPorEmail(email);
 
@@ -71,7 +88,7 @@ export class AuthService {
       const payload: UsuarioPayload = { 
         sub: usuario.id!,
         email: usuario.email,
-        nome: usuario.nome
+        tipo: usuario.tipo as TipoUsuario,
       };
       
       const resetSecret = this.configService.get<string>('JWT_PASSWORD_RESET_SECRET');
@@ -91,6 +108,8 @@ export class AuthService {
 
       return { message: 'Se um utilizador com esse email existir, um link de redefinição será enviado.' };
     }
+
+
     async resetSenha(token: string, novaSenha: string): Promise<{ message: string }> {
       const resetSecret = this.configService.get<string>('JWT_PASSWORD_RESET_SECRET');
 
@@ -104,7 +123,7 @@ export class AuthService {
 
         const novaSenhahash = await bcrypt.hash(novaSenha, 10);
 
-        const dadosParaAtualizar = new updateUsuarioDto();
+        const dadosParaAtualizar = new EdicaoUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash;
 
         await this.usuarioService.editarUsuario(userId, dadosParaAtualizar);

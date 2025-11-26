@@ -1,12 +1,13 @@
 import { Body, Controller, HttpCode, HttpStatus, Patch, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LocalAuthGuard } from './guards/local.auth.guard';
 import { AuthRequest } from './models/authRequest';
-import { IsPublic } from './decorators/is-public.decorator';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { MudarSenhaDto } from './models/mudar-senhaDto';
-import { ResetPasswordDto } from './models/reset-password.dto';
-import { esqueciSenhaDto } from './models/esqueci-senha.dto';
+import { IsPublic } from './decorators/isPublic.decorator';
+import { JwtAuthGuard } from './guards/jwt.auth.guard';
+import { MudarSenhaDto } from './dto/mudarSenha.dto';
+import { ResetPasswordDto } from './dto/resetPassword.dto';
+import { esqueciSenhaDto } from './dto/esqueciSenha.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,8 +17,8 @@ export class AuthController {
     @Post('login')
     @HttpCode(HttpStatus.OK)
     @UseGuards(LocalAuthGuard)
-    login(@Request() req: AuthRequest){
-        return this.authService.login(req.user);
+    login(@Request() req: AuthRequest , @Body() loginDto: LoginDto) {
+        return this.authService.login(req.user, loginDto.lembrar);
     }
 
     @UseGuards(JwtAuthGuard)

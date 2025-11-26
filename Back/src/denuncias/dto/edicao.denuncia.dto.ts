@@ -10,9 +10,9 @@ export class edicaoDenunciaDto {
     @IsOptional()  
     idCategoria?: number;
 
-    @IsString({ message: 'A mediasrc deve ser um texto.' })
+    @IsString({ message: 'A mediaSrc deve ser um texto.' })
     @IsOptional()    
-    mediasrc?: string;
+    mediaSrc?: string;
 
     @IsBoolean({ message: 'O anonimato deve ser um booleano.' })
     @IsOptional()

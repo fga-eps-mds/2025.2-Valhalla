@@ -2,17 +2,22 @@ import  { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { criarCategoriasDto } from './dto/create_categorias.dto';
 import { edicaoCategoriasDto } from './dto/edicao_categorias.dto';
-import { dot } from 'node:test/reporters';
+import { ForbiddenException, NotFoundException } from '@nestjs/common/exceptions';
+import { TipoUsuario } from '@prisma/client';
 
 @Injectable()
 export class CategoriasService{
 
     constructor( private prisma: PrismaService){}
 
-    async criarCategorias (data: criarCategoriasDto){
+    async criarCategorias (data: criarCategoriasDto, tipo: TipoUsuario){
+
+        if (tipo !== TipoUsuario.ADMINMASTER ){
+            throw new ForbiddenException('Usuário não autorizado a criar categorias!');
+        }
+
         const criarCategorias = await this.prisma.categoria.create ({
             data: {
-                id: data.id,
                 nome: data.nome,
             }
 
@@ -20,12 +25,17 @@ export class CategoriasService{
         return criarCategorias;
     }
     
-    async editarCategorias(id: number, data: edicaoCategoriasDto){
+    async editarCategorias(id: number, data: edicaoCategoriasDto, tipo: TipoUsuario){
+        
+        if (tipo !== TipoUsuario.ADMINMASTER){
+            throw new ForbiddenException('Usuário não autorizado a editar categorias!');
+        }
+
         const existeCategorias = await this.prisma.categoria.findUnique({
             where: { id },
         })
         if (!existeCategorias){
-            throw new Error('Categoria não encontrada!');
+            throw new NotFoundException('Categoria não encontrada!');
         }
         return await this.prisma.categoria.update({
             where: { id },
@@ -35,12 +45,17 @@ export class CategoriasService{
         });
     }
     
-    async deletarCategorias (id: number){
+    async deletarCategorias (id: number, tipo: TipoUsuario){
+        
+        if (tipo !== TipoUsuario.ADMINMASTER){
+            throw new ForbiddenException('Usuário não autorizado a deletar categorias!');
+        }
+
         const existeCategorias = await this.prisma.categoria.findUnique({
             where: { id },
         })
         if (!existeCategorias) {
-            throw new Error('Denúncia não encontrada!');
+            throw new NotFoundException('Categoria não encontrada!');
         }
         return await this.prisma.categoria.delete({
             where: { id },
@@ -48,8 +63,13 @@ export class CategoriasService{
     }
 
     async encontrarCategorias(id: number) {
-        if(!id) {
-            throw new Error('Categoria não encontrada!');
+        
+        const idCategoria = await this.prisma.categoria.findUnique({
+            where: { id },
+        });
+
+        if(!idCategoria) {
+            throw new NotFoundException('Categoria não encontrada!');
         }
         return this.prisma.categoria.findUnique({
             where: { id },
@@ -57,6 +77,12 @@ export class CategoriasService{
     }
     
     async listarCategorias() {
-        return this.prisma.categoria.findMany();
+        const categorias = await this.prisma.categoria.findMany({orderBy: { nome: 'asc' }});
+        
+        if(!categorias || categorias.length === 0) {
+            throw new NotFoundException('Nenhuma categoria encontrada!');
+        }
+
+        return categorias;
     }
 }
