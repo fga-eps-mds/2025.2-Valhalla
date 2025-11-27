@@ -35,4 +35,9 @@ export const resetarSenha = async (token: string, senha: string) => {
   return response.data;
 };
 
+export const mudarSenha = async (senhaAntiga: string, senhaNova: string) => {
+  const response = await api.patch('/auth/mudar-senha',  {senhaAntiga: senhaAntiga, senhaNova: senhaNova}); 
+  return response.data;
+};
+
 export default api;
