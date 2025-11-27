@@ -43,7 +43,7 @@ export default function PaginaDenuncias() {
   const [listagemDenuncias, setListagemDenuncias] = useState<Denuncia[]>([]);
   const [totalDePaginas, setTotalDePaginas] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limite, setLimite] = useState(3);
+  const [limite, setLimite] = useState(20);
 
   const [isLoading, setIsloading] = useState(false);
 
