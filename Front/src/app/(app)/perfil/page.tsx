@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     UserIcon, 
     AcademicCapIcon, 
@@ -11,11 +11,13 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext'; 
+import { useAuth } from '@/contexts/AuthContext';
+import ModalEditarSenha from '@/components/modalEditarSenha'; 
 
 export default function Perfil() {
     const { user, logout, isLoading } = useAuth(); 
     const router = useRouter();
+    const [isModalSenhaOpen, setIsModalSenhaOpen] = useState(false);
 
     useEffect(() => {
         if (!isLoading && !user) {
@@ -67,14 +69,15 @@ export default function Perfil() {
                     </span>
                 </button>
 
-                <Link href="/recuperacao-senha/email" className="w-full"> 
-                    <button className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
+                
+                    <button onClick={() => setIsModalSenhaOpen(true)}
+                    className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
                         <KeyIcon className="w-6 h-6 text-[#1A2A4A] mr-4" />
                         <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900">
                             Clique aqui para alterar sua senha
                         </span>
                     </button>
-                </Link>
+                
 
                 <button 
                     onClick={logout} 
@@ -92,6 +95,10 @@ export default function Perfil() {
                 )}
 
             </div>
+            <ModalEditarSenha 
+        isOpen={isModalSenhaOpen} 
+        onClose={() => setIsModalSenhaOpen(false)} 
+    />
         </div>
     );
 }
