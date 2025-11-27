@@ -91,8 +91,64 @@ export class DenunciasService{
         return denuncia;
     }
 
-    async listarDenuncias() {
-        return this.prisma.denuncia.findMany({where: {dataDelete: null}, orderBy: {id: 'desc'}});
+    async listarDenuncias(page: number, limit: number) {
+
+        const skip = (page - 1) * limit;
+
+        const denuncias = await this.prisma.denuncia.findMany({
+            where: {dataDelete: null}, 
+            orderBy: {id: 'desc'},
+            skip: skip,
+            take: limit,
+            select: {
+                id: true,
+                descricao: true,
+                idCategoria: true,
+                mediaSrc: true,
+                anonimato: true,
+                dataCriacao: true,
+                dataUpdate: true,
+                idUsuario: true,
+                usuario: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        mediaSrc: true,
+                    }
+                }
+            }
+        });
+        return denuncias;
+    }
+
+    async listarDenunciasPorUsuario(idUsuario: number, page: number, limit: number) {
+
+        const skip = (page - 1) * limit;
+
+        const denuncias = await this.prisma.denuncia.findMany({
+            where: {dataDelete: null, idUsuario: idUsuario},
+            orderBy: {id: 'desc'},
+            skip: skip,
+            take: limit,
+            select: {
+                id: true,
+                descricao: true,
+                idCategoria: true,
+                mediaSrc: true,
+                anonimato: true,
+                dataCriacao: true,
+                dataUpdate: true,
+                idUsuario: true,
+                usuario: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        mediaSrc: true,
+                    }
+                }
+            }
+        });
+        return denuncias;
     }
 
     private async definirHierarquia(idDenuncia: number, idRequisitor: number, idTipo: TipoUsuario){
