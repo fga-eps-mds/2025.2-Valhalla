@@ -43,7 +43,7 @@ export default function PaginaDenuncias() {
   const [listagemDenuncias, setListagemDenuncias] = useState<Denuncia[]>([]);
   const [totalDePaginas, setTotalDePaginas] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limite, setLimite] = useState(15);
+  const [limite, setLimite] = useState(3);
 
   const [isLoading, setIsloading] = useState(false);
 
@@ -55,7 +55,7 @@ export default function PaginaDenuncias() {
 
         const response = await api.get(`/denuncias?page=${currentPage}&limit=${limite}`);
 
-        const denunciasFormatadas: Denuncia[] = response.data.map((denuncia: DenunciaBackend) => ({
+        const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
           id: denuncia.id,
           nomeUsuario: denuncia.usuario?.nome,
           fotoUsuario: denuncia.usuario?.mediaSrc,
@@ -70,7 +70,7 @@ export default function PaginaDenuncias() {
         }));
 
         setListagemDenuncias(denunciasFormatadas);
-        const totalDeItens = response.data.totalCount;
+        const totalDeItens = response.data.totalDenuncias;
         setTotalDePaginas(Math.ceil(totalDeItens / limite));
 
       } catch (error) {
@@ -97,7 +97,7 @@ export default function PaginaDenuncias() {
               <>
                 <section>
                   <div className="container mx-auto max-w-7xl p-4 md:p-8">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+                    <div className="grid grid-cols-1 gap-4 md:gap-6">
                       {listagemDenuncias.length > 0 ? (
                         listagemDenuncias.map(denuncia => {
                           return (

@@ -21,10 +21,10 @@ export default function CardDenuncia({
 
   // Lógica de Anonimato
   const displayName = anonimato ? "Anônimo" : nomeUsuario;
-  const showPhoto = !anonimato && fotoUsuario;
+  const showPhoto = !anonimato && fotoUsuario !== null && fotoUsuario !== undefined;
 
   return (
-    <div className="w-full text-branco border-2 border-azul-dark rounded-[20px] p-6 shadow-sm mb-4">
+    <div className="w-full text-branco border-2 border-azul-principal rounded-[20px] p-6 shadow-sm mb-4">
       
       {/* --- HEADER (Flexbox para separar Esquerda e Direita) --- */}
       <div className="flex justify-between items-start mb-2">
@@ -44,29 +44,29 @@ export default function CardDenuncia({
                     className="rounded-full object-cover border border-gray-200"
                     />
                 ) : (
-                    // Placeholder cinza (#D9D9D9)
-                    <div className="w-full h-full rounded-full bg-bordas flex items-center justify-center">
-                        {!anonimato && <UserCircleIcon className="w-8 h-8 text-gray-500 opacity-20" />}
+                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                        {<UserCircleIcon className="w-8 h-8 text-azul-dark opacity-80" />}
                     </div>
                 )}
                 </div>
 
                 {/* Nome (Fonte Primária/Serifa) */}
-                <h3 className="text-h2">
+                <h3 className="text-h3">
                     {displayName}
                 </h3>
             </div>
 
-            {/* Data (Abaixo do avatar/nome) */}
-            <span className="text-[12px] text-small mt-1 ml-1">
-                {data}
-            </span>
+
         </div>
 
         {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
-        <div>
-            <span className="text-h3">
+        <div className="flex flex-col items-end">
+            <span className="text-body">
                 {categoria}
+            </span>
+            {/* Data (Abaixo do avatar/nome) */}
+            <span className="text-[12px] text-small mt-1 ml-1">
+                {data}
             </span>
         </div>
 
@@ -74,7 +74,7 @@ export default function CardDenuncia({
 
       {/* --- DESCRIÇÃO --- */}
       {/* Margem top para separar da data */}
-      <div className="mt-4 text-body text-base leading-relaxed wrap-break-words whitespace-pre-wrap">
+      <div className="mt-4 text-body leading-relaxed break-words whitespace-pre-wrap text-left">
         {descricao}
       </div>
 

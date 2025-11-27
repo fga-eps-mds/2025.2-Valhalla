@@ -122,7 +122,12 @@ export class DenunciasService{
                 }
             }
         });
-        return denuncias;
+
+        const totalDenuncias = await this.prisma.denuncia.count({
+            where: {dataDelete: null},
+        });
+
+        return { denuncias, totalDenuncias };
     }
 
     async listarDenunciasPorUsuario(idUsuario: number, page: number, limit: number) {
