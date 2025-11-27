@@ -85,11 +85,25 @@ constructor(private prisma: PrismaService) {}
     }
     
 
-    async listarUsuario() {
-        const usuarios = await this.prisma.usuario.findMany({where: {dataDelete: null}, select: usuarioSelect});
-        return usuarios;
+    async listarUsuario(page: number, limit: number) {
+
+        const skip = (page - 1) * limit;
+
+        const usuarios = await this.prisma.usuario.findMany({
+            where: {dataDelete: null},
+            orderBy: {id: 'desc'},
+            skip: skip,
+            take: limit,
+            select: usuarioSelect});
+        
+        const totalUsuarios = await this.prisma.usuario.count({
+            where: {dataDelete: null},
+        });
+        return { usuarios, totalUsuarios };
+
+        
+
     }
-    
 
     async encontrarUsuario(id: number){
         

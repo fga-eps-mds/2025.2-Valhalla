@@ -68,6 +68,11 @@ export default function Cadastro() {
       toast.error('Senha inválida. Deve ter 8+ caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial (ex: @$!%*?&.).', { id: 'err-segura' });
       return;
     }
+
+    if (!termosAceitos) {
+      toast.error('Você deve aceitar os termos de uso para continuar.', { id: 'err-termos' });
+      return;
+    }
     
     return handleCadastro();
   };

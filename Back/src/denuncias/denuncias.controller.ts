@@ -4,6 +4,8 @@ import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
 import { DenunciasService } from './denuncias.service';
 import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
 import { AuthRequest } from 'src/auth/models/authRequest';
+import { DefaultValuePipe } from '@nestjs/common/pipes/default-value.pipe';
+import { Query } from '@nestjs/common/decorators/http/route-params.decorator';
 
 @Controller('denuncias')
 export class DenunciasController {
@@ -53,8 +55,20 @@ export class DenunciasController {
     
     @IsPublic()
     @Get()
-    async listarDenuncias() {
-        return this.denunciasService.listarDenuncias();
+    async listarDenuncias(
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+      @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+    ) {
+      return this.denunciasService.listarDenuncias(page, limit);
     }
 
+    @IsPublic()
+    @Get(':id')
+    async listarDenunciasPorCategoria(
+      @Param('id', ParseIntPipe) id: number,
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+      @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+    ) {
+      return this.denunciasService.listarDenunciasPorUsuario(id, page, limit);
+    }
 }

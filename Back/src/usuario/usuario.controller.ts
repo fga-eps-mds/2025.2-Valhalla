@@ -4,6 +4,8 @@ import { UsuarioService } from './usuario.service';
 import { EdicaoUsuarioDto } from './dto/edicao.usuario.dto';
 import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
 import { AuthRequest } from 'src/auth/models/authRequest';
+import { DefaultValuePipe } from '@nestjs/common/pipes/default-value.pipe';
+import { Query } from '@nestjs/common/decorators/http/route-params.decorator';
 
 @Controller('usuarios')
 export class UsuarioController {
@@ -48,8 +50,11 @@ export class UsuarioController {
     
     @IsPublic()
     @Get()
-    async listarUsuario() {
-        return this.usuarioService.listarUsuario();
+    async listarUsuario(
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+        @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+    ) {
+        return this.usuarioService.listarUsuario(page, limit);
     }
 
     @Patch()
