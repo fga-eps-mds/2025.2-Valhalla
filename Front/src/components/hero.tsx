@@ -23,7 +23,7 @@ export default function Hero() {
                 Nosso Time
               </button>
             </a>
-            <Link href="/cadastro/cadastro">
+            <Link href="/cadastro">
               <button className="text-sm w-36 h-12 bg-azul-principal hover:bg-azul-hover text-off-white rounded-xl cursor-pointer shadow-sm hover:shadow-md transition">
                 Denuncie
               </button>

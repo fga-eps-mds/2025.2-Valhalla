@@ -2,7 +2,7 @@
 
 import SecaoDesenvolvedores from "@/components/secaoDevs";
 import Footer from "@/components/footer";
-import Header from "@/components/header"
+import Header from "@/components/navbar"
 import InfoCards from "@/components/secaoInfo";
 import Hero from "@/components/hero"
 
