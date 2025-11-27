@@ -111,9 +111,13 @@ export class DenunciasService{
                 idUsuario: true,
                 usuario: {
                     select: {
-                        id: true,
                         nome: true,
                         mediaSrc: true,
+                    }
+                },
+                categoria: {
+                    select: {
+                        nome: true,
                     }
                 }
             }
