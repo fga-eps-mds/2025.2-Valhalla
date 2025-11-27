@@ -6,6 +6,7 @@ import "./globals.css";
 import Footer from "@/components/footer";
 import { Toaster } from "sonner";
 
+
 export const metadata: Metadata = {
   title: "Guardioes",
   description: "Guardiões da Universidade",
