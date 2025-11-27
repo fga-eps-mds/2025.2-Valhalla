@@ -157,7 +157,12 @@ export class DenunciasService{
                 }
             }
         });
-        return denuncias;
+
+        const totalDenuncias = await this.prisma.denuncia.count({
+            where: {dataDelete: null, idUsuario: idUsuario},
+        });
+
+        return { denuncias, totalDenuncias };
     }
 
     private async definirHierarquia(idDenuncia: number, idRequisitor: number, idTipo: TipoUsuario){

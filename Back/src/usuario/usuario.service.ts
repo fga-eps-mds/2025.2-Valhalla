@@ -96,7 +96,13 @@ constructor(private prisma: PrismaService) {}
             take: limit,
             select: usuarioSelect});
         
-        return usuarios;
+        const totalUsuarios = await this.prisma.usuario.count({
+            where: {dataDelete: null},
+        });
+        return { usuarios, totalUsuarios };
+
+        
+
     }
 
     async encontrarUsuario(id: number){
