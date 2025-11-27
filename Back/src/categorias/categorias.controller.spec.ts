@@ -1,55 +1,36 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CategoriasController } from '../categorias.controller';
 import { CategoriasService } from '../categorias.service';
-import { PrismaService } from 'src/database/prisma.service';
-import { ForbiddenException } from '@nestjs/common';
+import { edicaoCategoriasDto } from '../dto/edicao_categorias.dto';
 import { TipoUsuario } from '@prisma/client';
 
-// Mock categoria
-const mockCategoria = { id: 1, nome: 'Infraestrutura' };
-
-// Mock Prisma
-const mockPrismaService = {
-  categoria: {
-    create: jest.fn().mockResolvedValue(mockCategoria),
-  },
-};
-
-describe('CategoriasService - criarCategorias', () => {
-  let service: CategoriasService;
+describe('CategoriasController - editarCategoria', () => {
+  let controller: CategoriasController;
+  let service: Partial<Record<keyof CategoriasService, jest.Mock>>;
 
   beforeEach(async () => {
+    service = {
+      editarCategorias: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [CategoriasController],
       providers: [
-        CategoriasService,
-        { provide: PrismaService, useValue: mockPrismaService },
+        { provide: CategoriasService, useValue: service },
       ],
     }).compile();
 
-    service = module.get<CategoriasService>(CategoriasService);
-    jest.clearAllMocks();
+    controller = module.get<CategoriasController>(CategoriasController);
   });
 
-  it('[Sucesso] Deve criar categoria quando for ADMINMASTER', async () => {
-    const data = { nome: 'Nova Categoria' };
+  it('Deve chamar o service com ID, DTO e tipo do usuário', async () => {
+    const dto: edicaoCategoriasDto = { nome: 'Editado' };
+    const req = { user: { tipo: TipoUsuario.ADMINMASTER } } as any;
+    service.editarCategorias.mockResolvedValue({ id: 1, nome: 'Editado' });
 
-    const result = await service.criarCategorias(data, TipoUsuario.ADMINMASTER);
+    const result = await controller.editarCategoria(1, dto, req);
 
-    expect(result).toEqual(mockCategoria);
-    expect(mockPrismaService.categoria.create).toHaveBeenCalledTimes(1);
-    expect(mockPrismaService.categoria.create).toHaveBeenCalledWith({ data });
-  });
-
-  it('[Erro] Deve lançar ForbiddenException se não for ADMINMASTER', async () => {
-    const data = { nome: 'Nova Categoria' };
-
-    await expect(
-      service.criarCategorias(data, TipoUsuario.ADMIN),
-    ).rejects.toThrow(ForbiddenException);
-
-    await expect(
-      service.criarCategorias(data, TipoUsuario.COMUM),
-    ).rejects.toThrow(ForbiddenException);
-
-    expect(mockPrismaService.categoria.create).not.toHaveBeenCalled();
+    expect(service.editarCategorias).toHaveBeenCalledWith(1, dto, req.user.tipo);
+    expect(result).toEqual({ id: 1, nome: 'Editado' });
   });
 });
