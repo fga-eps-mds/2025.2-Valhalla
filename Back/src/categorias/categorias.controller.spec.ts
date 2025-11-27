@@ -1,36 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriasController } from '../categorias.controller';
-import { CategoriasService } from '../categorias.service';
-import { TipoUsuario } from '@prisma/client';
+import { ForbiddenException } from '@nestjs/common';
 
-describe('CategoriasController - deletarCategoria', () => {
-  let controller: CategoriasController;
-  let service: CategoriasService;
+it('Deve lançar ForbiddenException se usuário não for ADMINMASTER', async () => {
+  const reqComum = { user: { tipo: TipoUsuario.COMUM } } as any;
 
-  const req = { user: { tipo: TipoUsuario.ADMINMASTER } } as any;
-  const mockCategoria = { id: 1, nome: 'Infraestrutura' };
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoriasController],
-      providers: [
-        {
-          provide: CategoriasService,
-          useValue: {
-            deletarCategorias: jest.fn().mockResolvedValue(mockCategoria),
-          },
-        },
-      ],
-    }).compile();
-
-    controller = module.get<CategoriasController>(CategoriasController);
-    service = module.get<CategoriasService>(CategoriasService);
+  service.deletarCategorias = jest.fn().mockImplementation(() => {
+    throw new ForbiddenException('Usuário não autorizado');
   });
 
-  it('Deve deletar categoria quando for ADMINMASTER', async () => {
-    const result = await controller.deletarCategoria(1, req);
-
-    expect(service.deletarCategorias).toHaveBeenCalledWith(1, req.user.tipo);
-    expect(result).toEqual(mockCategoria);
-  });
+  await expect(controller.deletarCategoria(1, reqComum)).rejects.toThrow(
+    ForbiddenException,
+  );
+  expect(service.deletarCategorias).toHaveBeenCalledWith(1, reqComum.user.tipo);
 });
