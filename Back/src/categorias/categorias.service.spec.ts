@@ -133,6 +133,9 @@ describe('CategoriasService', () => {
     });
   });
 
+
+
+
   // --- ENCONTRAR UM ---
   describe('encontrarCategorias', () => {
     it('deve retornar uma categoria pelo ID', async () => {
@@ -144,7 +147,9 @@ describe('CategoriasService', () => {
 
     it('deve lançar NotFoundException se ID for inválido (0)', async () => {
        // Testando o if(!id) do seu código
-       await expect(service.encontrarCategorias(0))
+      prisma.categoria.findUnique.mockResolvedValue(null);
+      
+      await expect(service.encontrarCategorias(2))
          .rejects.toThrow(NotFoundException);
     });
   });
