@@ -13,11 +13,15 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import ModalEditarSenha from '@/components/modalEditarSenha'; 
+import ModalExcluirConta from '@/components/ModalExcluirContaSoft';
 
 export default function Perfil() {
     const { user, logout, isLoading } = useAuth(); 
     const router = useRouter();
     const [isModalSenhaOpen, setIsModalSenhaOpen] = useState(false);
+    const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
+    
+    
 
     useEffect(() => {
         if (!isLoading && !user) {
@@ -88,7 +92,8 @@ export default function Perfil() {
                 </button>
 
                 {user.tipo !== 'ADMIN' &&user.tipo !== 'ADMINMASTER' && (
-                    <button className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]">
+                    <button onClick={() => setIsModalExcluirOpen(true)}
+                    className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]">
                         EXCLUIR CONTA
                         <TrashIcon className="w-5 h-5" />
                     </button>
@@ -99,6 +104,10 @@ export default function Perfil() {
         isOpen={isModalSenhaOpen} 
         onClose={() => setIsModalSenhaOpen(false)} 
     />
+    <ModalExcluirConta 
+                isOpen={isModalExcluirOpen} 
+                onClose={() => setIsModalExcluirOpen(false)} 
+            />
         </div>
     );
 }
