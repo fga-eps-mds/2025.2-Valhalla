@@ -27,7 +27,7 @@ export class AuthService {
             tipo: usuario.tipo as TipoUsuario,
         };
 
-        const tempoExpiracao = lembrar ? '90d' : '12h';
+        const tempoExpiracao = lembrar ? '90d' : '6h';
 
         const jwtToken = this.jwtService.sign(payload, { expiresIn: tempoExpiracao });
 
