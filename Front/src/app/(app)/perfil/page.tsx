@@ -76,20 +76,20 @@ export default function Perfil() {
                     </button>
                 </Link>
 
-                {user.tipo !== 'ADMIN' && user.tipo !== 'ADMINMASTER' && (
+                <button 
+                    onClick={logout} 
+                    className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#3060BF] text-white hover:bg-[#254c9b] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]"
+                >
+                    LOGOUT
+                    <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
+                </button>
+
+                {user.tipo !== 'ADMIN' &&user.tipo !== 'ADMINMASTER' && (
                     <button className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]">
                         EXCLUIR CONTA
                         <TrashIcon className="w-5 h-5" />
                     </button>
                 )}
-
-                <button                     className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#254c9b] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]"
->
-                    
-                    
-                        EXCLUIR CONTA
-                        <TrashIcon className="w-5 h-5" />
-                </button>
 
             </div>
         </div>
