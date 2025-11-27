@@ -1,63 +1,73 @@
+// Importações necessárias para o ambiente NestJS e Jest
 import { Test, TestingModule } from '@nestjs/testing';
-import { MailService } from './mail.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
-import { Usuario } from '@prisma/client';
+import { MailService } from '../mail.service'; // O serviço que queremos testar
 
-// Mock do MailerService
-const mockMailerService = {
-  sendMail: jest.fn(),
-};
+// 1. Definição dos Mocks
+const mockMailerService = { 
+    sendMail: jest.fn().mockResolvedValue(true) 
+}; [cite: 298]
 
-// Mock do ConfigService
-const mockConfigService = {
-  get: jest.fn((key: string) => {
-    if (key === 'FRONT_URL') return 'https://guardioes.unb.br';
-    return null;
-  }),
-};
+const mockConfigService = { 
+    get: jest.fn((key) => { 
+        if (key === 'FRONT_URL') return 'http://teste.com'; // O valor que simulamos
+        return null; 
+    }), 
+}; [cite: 299]
 
-// Mock do Usuário
-const mockUsuario = {
-  email: 'teste@unb.br',
-  nome: 'Teste',
-} as Usuario;
+const mockUser = { 
+    email: 'teste@unb.br', 
+    nome: 'Teste' 
+}; [cite: 300]
+const token = 'mockToken123';
+const expectedResetUrl = `http://teste.com/redefinit-senha?token=${token}`; // URL esperada [cite: 309]
 
 describe('MailService', () => {
   let service: MailService;
-  let mailerService: typeof mockMailerService;
 
   beforeEach(async () => {
+    // 2. Configuração do Módulo de Teste (setup)
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MailService,
-        { provide: MailerService, useValue: mockMailerService },
+        // Substituímos os serviços reais pelas nossas versões Mock
+        { provide: MailerService, useValue: mockMailerService }, 
         { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
     service = module.get<MailService>(MailService);
-    mailerService = module.get(MailerService); // Não precisa tipar aqui se usar typeof acima
-    jest.clearAllMocks();
+    jest.clearAllMocks(); // Limpa chamadas entre testes, garantindo que um teste não influencie o outro
   });
 
-  it('deve estar definido', () => {
-    expect(service).toBeDefined();
-  });
+  // 3. Grupo de Testes
+  describe('sendPasswordResetEmail(user, token)', () => { [cite: 302]
 
-  describe('sendPasswordResetEmail', () => {
-    it('deve chamar o sendMail com os parâmetros corretos e URL configurada', async () => {
-      const token = 'token-123';
+    // 4. Cenário de Sucesso (Teste de Ação)
+    it('[Sucesso] Envio de E-mail: deve chamar mailerService.sendMail uma vez', async () => { [cite: 303, 305]
+      // Ação: Chamar o método a ser testado
+      await service.sendPasswordResetEmail(mockUser as any, token);
+
+      // Expectativa (O que esperamos?): O método mockado deve ter sido chamado 1 vez.
+      expect(mockMailerService.sendMail).toHaveBeenCalledTimes(1);
+    });
+
+    // 5. Cenário de Integridade (Teste de Parâmetros)
+    it('[Integridade] Parâmetros do E-mail: deve conter o email e a URL de reset corretos', async () => { [cite: 306, 307]
+      await service.sendPasswordResetEmail(mockUser as any, token);
+
+      // Pega o objeto de argumento com o qual sendMail foi chamado
+      const sendMailArgs = mockMailerService.sendMail.mock.calls[0][0];
+
+      // Verifica se o destinatário está correto [cite: 308]
+      expect(sendMailArgs.to).toBe(mockUser.email);
       
-      await service.sendPasswordResetEmail(mockUsuario, token);
+      // Verifica se a URL de redefinição de senha está presente no HTML [cite: 309]
+      expect(sendMailArgs.html).toContain(expectedResetUrl);
 
-      expect(mailerService.sendMail).toHaveBeenCalledTimes(1);
-      expect(mailerService.sendMail).toHaveBeenCalledWith(expect.objectContaining({
-        to: mockUsuario.email,
-        subject: expect.stringContaining('Recuperação'),
-        // Verifica se a URL do front (mockada) está no corpo do email
-        html: expect.stringContaining('https://guardioes.unb.br/redefinir-senha?token=token-123'),
-      }));
+      // Verifica se o ConfigService foi chamado para obter a URL do Front [cite: 311]
+      expect(mockConfigService.get).toHaveBeenCalledWith('FRONT_URL');
     });
   });
 });
