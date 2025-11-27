@@ -4,15 +4,15 @@ import { PrismaService } from 'src/database/prisma.service';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { TipoUsuario } from '@prisma/client';
 
-// Mocks dos tipos de usuário
+// Mock dos tipos
 const ADMINMASTER = 'ADMINMASTER' as TipoUsuario;
 const ADMIN = 'ADMIN' as TipoUsuario;
 const COMUM = 'COMUM' as TipoUsuario;
 
-// Mock de categoria
+// Mock categoria
 const mockCategoria = { id: 1, nome: 'Infraestrutura' };
 
-// Mock do Prisma
+// Mock Prisma
 const mockPrismaService = {
   categoria: {
     create: jest.fn().mockResolvedValue(mockCategoria),
@@ -38,8 +38,8 @@ describe('CategoriasService', () => {
     jest.clearAllMocks();
   });
 
+  // --- Grupo 1: criarCategorias ---
   describe('criarCategorias', () => {
     const data = { nome: 'Nova Categoria' };
 
-    it('[Sucesso] Criação por Admin Master: deve criar e retornar a categoria', async () => {
-      const result = await s
+    it('[Sucesso] Deve c
