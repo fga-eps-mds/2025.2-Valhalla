@@ -39,5 +39,8 @@ export const mudarSenha = async (senhaAntiga: string, senhaNova: string) => {
   const response = await api.patch('/auth/mudar-senha',  {senhaAntiga: senhaAntiga, senhaNova: senhaNova}); 
   return response.data;
 };
-
+export const excluirContaSoft = async (id: number) => {
+  const response = await api.delete(`/Usuario/${id}`); 
+  return response.data;
+};
 export default api;
