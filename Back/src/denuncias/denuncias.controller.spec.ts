@@ -57,5 +57,9 @@ describe('DenunciasController', () => {
       await controller.editarDenuncia(mockDenunciaId, req, mockEdicaoDto as any);
       expect(mockDenunciasService.editarDenuncia).toHaveBeenCalledWith(mockDenunciaId, mockUserId, mockEdicaoDto);
     });
+    it('[Integração] Deletar: Deve chamar service.deletarDenuncia passando id, req.user.id e req.user.tipo', async () => {
+      await controller.deletarDenuncia(mockDenunciaId, req);
+      expect(mockDenunciasService.deletarDenuncia).toHaveBeenCalledWith(mockDenunciaId, mockUserId, TipoUsuario.COMUM);
+    });
  });
 });
