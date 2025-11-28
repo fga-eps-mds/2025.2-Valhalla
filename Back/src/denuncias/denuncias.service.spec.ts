@@ -132,5 +132,26 @@ describe('DenunciasService', () => {
       );
     }); 
   }); 
+  describe('listarDenuncias', () => {
+    it('[Sucesso] Deve listar com paginação e retornar total', async () => {
+      const page = 2;
+      const limit = 10;
+      const skipExpected = (page - 1) * limit; // 10
+
+      const result = await service.listarDenuncias(page, limit);
+
+      expect(mockPrismaService.denuncia.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          skip: skipExpected,
+          take: limit,
+          where: { dataDelete: null }
+        })
+      );
+      expect(mockPrismaService.denuncia.count).toHaveBeenCalled();
+      
+      expect(result).toHaveProperty('denuncias');
+      expect(result).toHaveProperty('totalDenuncias');
+    });
+  });
   });
 });
