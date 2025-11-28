@@ -14,12 +14,14 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import ModalEditarSenha from '@/components/modalEditarSenha'; 
 import ModalExcluirConta from '@/components/ModalExcluirContaSoft';
+import ModalEditarPerfil from '@/components/ModalEditarPerfil';
 
 export default function Perfil() {
     const { user, logout, isLoading } = useAuth(); 
     const router = useRouter();
     const [isModalSenhaOpen, setIsModalSenhaOpen] = useState(false);
     const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
+    const [isModalPerfilOpen, setIsModalPerfilOpen] = useState(false);
     
     
 
@@ -66,7 +68,8 @@ export default function Perfil() {
 
             <div className="w-full max-w-[500px] flex flex-col gap-5 items-center">
 
-                <button className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
+                <button onClick={() => setIsModalPerfilOpen(true)}
+                className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
                     <AcademicCapIcon className="w-6 h-6 text-[#1A2A4A] mr-4" />
                     <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900">
                         Clique aqui para editar seu perfil
@@ -107,6 +110,10 @@ export default function Perfil() {
     <ModalExcluirConta 
                 isOpen={isModalExcluirOpen} 
                 onClose={() => setIsModalExcluirOpen(false)} 
+            />
+    <ModalEditarPerfil 
+                isOpen={isModalPerfilOpen} 
+                onClose={() => setIsModalPerfilOpen(false)} 
             />
         </div>
     );
