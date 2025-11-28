@@ -38,7 +38,7 @@ export default function RootLayout({
       >
         <AuthProvider>
 
-        <main className="flex-1 w-full pt-20 bg-gray-50">
+        <main className="flex-1 w-full bg-gray-50">
           {children}
         </main>
         

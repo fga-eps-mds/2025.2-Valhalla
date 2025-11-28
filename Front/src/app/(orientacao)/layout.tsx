@@ -8,12 +8,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <RoleGuard allowedRoles={['COMUM', 'ADMIN', 'ADMINMASTER']}>
+    <>
       <Navbar />
-
-      <main className="flex-1 w-full pt-20 bg-gray-50">
-        {children} 
-      </main>
-    </RoleGuard>
+      <main className="flex-1 w-full pt-20 bg-gray-50">{children}</main>
+    </>
   );
 }
