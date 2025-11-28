@@ -53,5 +53,9 @@ describe('DenunciasController', () => {
       await controller.criarDenuncia(req, mockDto as any);
       expect(mockDenunciasService.criarDenuncia).toHaveBeenCalledWith(mockUserId, mockDto);
     });
+    it('[Integração] Editar: Deve chamar service.editarDenuncia passando id, req.user.id e DTO', async () => {
+      await controller.editarDenuncia(mockDenunciaId, req, mockEdicaoDto as any);
+      expect(mockDenunciasService.editarDenuncia).toHaveBeenCalledWith(mockDenunciaId, mockUserId, mockEdicaoDto);
+    });
  });
 });
