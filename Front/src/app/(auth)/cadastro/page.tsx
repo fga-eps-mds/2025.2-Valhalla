@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import api from '@/utils/api';
 import { CargoUsuario } from '../../../types';
 
-// Ícones
+
 import { 
     AcademicCapIcon, 
     UserCircleIcon, 
@@ -28,12 +28,11 @@ export default function Cadastro() {
     const [confirmaSenha, setConfirmaSenha] = useState('');
     const [cargo, setCargo] = useState<CargoUsuario | ''>('');
     const [termosAceitos, setTermosAceitos] = useState(false);
-    const [mostrarSenha, setMostrarSenha] = useState(false); // Novo estado
-    const [loading, setLoading] = useState(false); // Novo estado
+    const [mostrarSenha, setMostrarSenha] = useState(false); 
+    const [loading, setLoading] = useState(false); 
 
     const router = useRouter();
 
-    // --- Lógica de Força da Senha (Padronizada) ---
     const calcularForcaSenha = (pass: string) => {
         let pontuacao = 0;
         if (!pass) return 0;
@@ -56,16 +55,14 @@ export default function Cadastro() {
         }
     };
     const infoForca = getForcaInfo();
-    // ---------------------------------------------
+    
 
-    // --- Funções de Validação Auxiliares ---
     const validarNome = (nome: string) => /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(nome.trim());
     const validarEmail = (email: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.trim());
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // 1. Validações Básicas
         if (!nome || !email || !senha || !confirmaSenha || !cargo) {
             toast.error('Por favor, preencha todos os campos.');
             return;
@@ -83,7 +80,6 @@ export default function Cadastro() {
             return;
         }
 
-        // 2. Validação Rigorosa da Senha (Igual à redefinição)
         if (senha !== confirmaSenha) {
             toast.error('As senhas não coincidem.');
             return;
@@ -105,7 +101,6 @@ export default function Cadastro() {
             return;
         }
 
-        // 3. Envio para API
         setLoading(true);
         try {
             await api.post('/usuarios', {
@@ -118,7 +113,6 @@ export default function Cadastro() {
             router.push('/login');
         } catch (error: any) {
             const mensagemErro = error.response?.data?.message || 'Erro ao realizar cadastro.';
-            // Se vier um array de mensagens (ex: class-validator), pega a primeira
             const msgFinal = Array.isArray(mensagemErro) ? mensagemErro[0] : mensagemErro;
             toast.error(msgFinal);
             console.error('Log de Erro:', error);
@@ -129,15 +123,12 @@ export default function Cadastro() {
 
     return (
         <>
-            {/* O Card agora flutua no centro exato da tela */}
             <div className="w-[640px] min-h-[730px] rounded-2xl bg-white border border-gray-200 shadow-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8">
                 
-                {/* Botão Voltar */}
                 <Link href="/" className="absolute top-6 left-6">
                     <ArrowLeftIcon className="w-10 h-10 text-[#1A2A4A] cursor-pointer hover:text-[#3060BF] transition" />
                 </Link>
 
-                {/* Logo */}
                 <Image 
                     src="/logos/Corujuda.svg"
                     alt="Logo do Guardiões da Universidade"
@@ -152,7 +143,6 @@ export default function Cadastro() {
 
                 <form onSubmit={handleSubmit} className='w-full max-w-sm flex flex-col gap-4'>
                     
-                    {/* Input Nome */}
                     <div className='relative'>
                         <UserCircleIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
                         <input 
@@ -164,7 +154,6 @@ export default function Cadastro() {
                         />
                     </div>
                     
-                    {/* Input Email */}
                     <div className='relative'>
                         <AcademicCapIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
                         <input 
@@ -176,7 +165,6 @@ export default function Cadastro() {
                         />
                     </div>
                     
-                    {/* Input Senha */}
                     <div className='relative'>
                         <KeyIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
                         <input 
@@ -195,7 +183,6 @@ export default function Cadastro() {
                         </button>
                     </div>
 
-                    {/* Medidor de Força */}
                     {senha && (
                         <div className="w-full -mt-2 px-1 mb-2">
                             <div className="flex justify-between items-center mb-1">
@@ -219,7 +206,6 @@ export default function Cadastro() {
                         </div>
                     )}
                     
-                    {/* Input Confirmação */}
                     <div className='relative'>
                         <KeyIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
                         <input 
@@ -236,7 +222,6 @@ export default function Cadastro() {
                         <p className="text-xs text-red-500 -mt-2 ml-1">As senhas não coincidem</p>
                     )}
                     
-                    {/* Select Cargo */}
                     <div className='relative'>
                         <ChevronUpDownIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
                         <select 
@@ -251,7 +236,6 @@ export default function Cadastro() {
                         </select>
                     </div>
 
-                    {/* Botão Cadastrar */}
                     <button
                         type="submit"
                         disabled={loading}
@@ -261,7 +245,6 @@ export default function Cadastro() {
                         {!loading && <ArrowRightEndOnRectangleIcon className='size-5'/>}
                     </button>
 
-                    {/* Termos de Uso */}
                     <div className="flex items-center justify-center gap-2 mt-2">
                         <input 
                             type="checkbox" 
