@@ -202,6 +202,11 @@ describe('DenunciasService', () => {
         service.deletarDenuncia(idDenuncia, 25, TipoUsuario.ADMIN as any) // Outro Admin tentando
       ).rejects.toThrow(ForbiddenException);
     });
+    it('[Sucesso] Master pode deletar denúncia de Admin', async () => {
+      setupRBAC(mockDenunciaAdmin, mockUsuarioAdmin);
+      await service.deletarDenuncia(idDenuncia, 30, TipoUsuario.ADMINMASTER as any);
+      expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
+    });
   });
   });
 });
