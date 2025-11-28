@@ -124,7 +124,7 @@ export class DenunciasService{
         });
 
         const totalDenuncias = await this.prisma.denuncia.count({
-            where: {dataDelete: null},
+            where: {dataDelete: null, usuario: {dataDelete: null}},
         });
 
         return { denuncias, totalDenuncias };
