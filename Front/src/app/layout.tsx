@@ -13,14 +13,14 @@ export const metadata: Metadata = {
 };
 
 
-export const merriweather = Merriweather({
+const merriweather = Merriweather({
   subsets: ["latin"],
   weight: ["700"],
   style:["normal"],
   variable: "--fonte-primaria",
   });
 
-export const lato = Lato({
+const lato = Lato({
   subsets: ["latin"],
   weight: ["400","700"],
   style:["normal"],
