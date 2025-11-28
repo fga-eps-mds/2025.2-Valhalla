@@ -1,63 +1,110 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MailService } from './mail.service';
-import { MailerService } from '@nestjs-modules/mailer';
+import { MailerService } from '@nestjs-modules/mailer';//
 import { ConfigService } from '@nestjs/config';
-import { Usuario } from '@prisma/client';
+import { MailService } from './mail.service';
 
-// Mock do MailerService
-const mockMailerService = {
-  sendMail: jest.fn(),
+// Mocks de Dados
+const mockMailerService = { 
+    sendMail: jest.fn().mockResolvedValue(true) 
 };
 
-// Mock do ConfigService
-const mockConfigService = {
-  get: jest.fn((key: string) => {
-    if (key === 'FRONT_URL') return 'https://guardioes.unb.br';
-    return null;
-  }),
+const mockConfigService = { 
+    get: jest.fn((key) => { 
+        if (key === 'FRONT_URL') return 'http://teste.com';
+        return null; 
+    }), 
 };
 
-// Mock do Usuário
-const mockUsuario = {
-  email: 'teste@unb.br',
-  nome: 'Teste',
-} as Usuario;
+const mockUser = { 
+    email: 'teste@unb.br', 
+    nome: 'Teste' 
+};
+const token = 'mockToken123';
+const expectedResetUrl = `http://teste.com/redefinit-senha?token=${token}`;
 
+// --- Enviar email ---
 describe('MailService', () => {
   let service: MailService;
-  let mailerService: typeof mockMailerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MailService,
-        { provide: MailerService, useValue: mockMailerService },
+        { provide: MailerService, useValue: mockMailerService }, 
         { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
     service = module.get<MailService>(MailService);
-    mailerService = module.get(MailerService); // Não precisa tipar aqui se usar typeof acima
     jest.clearAllMocks();
   });
 
-  it('deve estar definido', () => {
-    expect(service).toBeDefined();
-  });
+// --- Recuperar senha ---
+  describe('sendPasswordResetEmail(user, token)', () => {
+    it('[Sucesso] Envio de E-mail: deve chamar mailerService.sendMail uma vez', async () => {
+      await service.sendPasswordResetEmail(mockUser as any, token);
 
-  describe('sendPasswordResetEmail', () => {
-    it('deve chamar o sendMail com os parâmetros corretos e URL configurada', async () => {
-      const token = 'token-123';
+      expect(mockMailerService.sendMail).toHaveBeenCalledTimes(1);
+    });
+
+    it('[Integridade] Parâmetros do E-mail: deve conter o email e a URL de reset corretos', async () => {
+      await service.sendPasswordResetEmail(mockUser as any, token);
+
+      const sendMailArgs = mockMailerService.sendMail.mock.calls[0][0];
+
+      expect(sendMailArgs.to).toBe(mockUser.email);      
+      expect(sendMailArgs.html).toContain(expectedResetUrl);
+      expect(mockConfigService.get).toHaveBeenCalledWith('FRONT_URL');
+    });
+
+    it('[Integridade] HTML deve conter o nome do usuário', async () => {
+      await service.sendPasswordResetEmail(mockUser as any, token);
+
+      const sendMailArgs = mockMailerService.sendMail.mock.calls[0][0];
       
-      await service.sendPasswordResetEmail(mockUsuario, token);
+      expect(sendMailArgs.html).toContain(mockUser.nome);
+    });
 
-      expect(mailerService.sendMail).toHaveBeenCalledTimes(1);
-      expect(mailerService.sendMail).toHaveBeenCalledWith(expect.objectContaining({
-        to: mockUsuario.email,
-        subject: expect.stringContaining('Recuperação'),
-        // Verifica se a URL do front (mockada) está no corpo do email
-        html: expect.stringContaining('https://guardioes.unb.br/redefinir-senha?token=token-123'),
-      }));
+    it('[Integridade] Subject do e-mail deve estar correto', async () => {
+      await service.sendPasswordResetEmail(mockUser as any, token);
+
+      const sendMailArgs = mockMailerService.sendMail.mock.calls[0][0];
+      
+      expect(sendMailArgs.subject).toBe('Recuperação de Senha - Guardiões');
+    });
+
+    it('[Fallback] Deve usar localhost:3000 quando FRONT_URL não estiver definido', async () => {
+      const mockConfigServiceWithoutUrl = {
+        get: jest.fn((key) => {
+          if (key === 'FRONT_URL') return null;
+          return null;
+        }),
+      };
+
+      const moduleWithFallback: TestingModule = await Test.createTestingModule({
+        providers: [
+          MailService,
+          { provide: MailerService, useValue: mockMailerService },
+          { provide: ConfigService, useValue: mockConfigServiceWithoutUrl },
+        ],
+      }).compile();
+
+      const serviceWithFallback = moduleWithFallback.get<MailService>(MailService);
+      jest.clearAllMocks();
+
+      await serviceWithFallback.sendPasswordResetEmail(mockUser as any, token);
+
+      const sendMailArgs = mockMailerService.sendMail.mock.calls[0][0];
+      const fallbackUrl = `http://localhost:3000/redefinit-senha?token=${token}`;
+      
+      expect(sendMailArgs.html).toContain(fallbackUrl);
+    });
+
+    it('[Erro] Deve propagar erro quando mailerService.sendMail falha', async () => {
+      const error = new Error('Erro ao enviar email');
+      mockMailerService.sendMail.mockRejectedValueOnce(error);
+
+      await expect(service.sendPasswordResetEmail(mockUser as any, token)).rejects.toThrow('Erro ao enviar email');
     });
   });
 });

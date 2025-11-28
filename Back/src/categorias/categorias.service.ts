@@ -71,9 +71,7 @@ export class CategoriasService{
         if(!idCategoria) {
             throw new NotFoundException('Categoria não encontrada!');
         }
-        return this.prisma.categoria.findUnique({
-            where: { id },
-        });
+        return idCategoria;
     }
     
     async listarCategorias() {
