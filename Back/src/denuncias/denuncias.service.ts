@@ -96,7 +96,7 @@ export class DenunciasService{
         const skip = (page - 1) * limit;
 
         const denuncias = await this.prisma.denuncia.findMany({
-            where: {dataDelete: null}, 
+            where: {dataDelete: null, usuario: {dataDelete: null}}, 
             orderBy: {id: 'desc'},
             skip: skip,
             take: limit,
