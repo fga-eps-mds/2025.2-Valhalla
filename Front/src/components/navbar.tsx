@@ -91,11 +91,11 @@ export default function Navbar() {
           `}/>
         </Link>
 
-        {/* ÍCONE 4: HISTÓRICO */}
-        <Link href="/historico" aria-label="Histórico" className="group">
+        {/* ÍCONE 4: GERENCIA */}
+        <Link href="/gerencia" aria-label="Gerencia" className="group">
           <ArchiveBoxIcon className={`
             h-8 w-8 transition-colors duration-200
-            ${pathname === '/historico' 
+            ${pathname === '/gerencia' 
               ? 'text-amarelo' 
               : 'text-branco group-hover:text-azul-light'}
           `}/>

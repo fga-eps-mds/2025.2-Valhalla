@@ -64,7 +64,7 @@ export class DenunciasController {
 
     @IsPublic()
     @Get(':id')
-    async listarDenunciasPorCategoria(
+    async listarDenunciasPorUsuario(
       @Param('id', ParseIntPipe) id: number,
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
       @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,

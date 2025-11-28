@@ -13,14 +13,14 @@ export const metadata: Metadata = {
 };
 
 
-export const merriweather = Merriweather({
+const merriweather = Merriweather({
   subsets: ["latin"],
   weight: ["700"],
   style:["normal"],
   variable: "--fonte-primaria",
   });
 
-export const lato = Lato({
+const lato = Lato({
   subsets: ["latin"],
   weight: ["400","700"],
   style:["normal"],
@@ -38,7 +38,7 @@ export default function RootLayout({
       >
         <AuthProvider>
 
-        <main className="flex-1 w-full pt-20 bg-gray-50">
+        <main className="flex-1 w-full bg-gray-50">
           {children}
         </main>
         
