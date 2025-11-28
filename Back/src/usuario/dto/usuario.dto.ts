@@ -17,11 +17,11 @@ export class CriacaoUsuarioDto {
     @Matches(/(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais.'})
     senha: string;
 
-    @IsEnum(CargoUsuario)
+    @IsEnum(CargoUsuario, {message: 'O cargo fornecido é inválido.'})
     @IsNotEmpty()
     cargo: CargoUsuario;
 
-    @IsEnum(TipoUsuario)
+    @IsEnum(TipoUsuario, { message: 'O tipo de usuário fornecido é inválido.' })
     @IsOptional()
     tipo?: TipoUsuario; //Padrão do DB é COMUM
 
