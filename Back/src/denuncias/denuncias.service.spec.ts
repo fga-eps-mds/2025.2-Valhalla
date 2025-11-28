@@ -116,6 +116,21 @@ describe('DenunciasService', () => {
       const res = await service.encontrarDenuncia(1);
       expect(res).toEqual(mockDenuncia);
     });
+    it('[Erro] Deve lançar NotFoundException se denúncia não existe (null)', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(null);
+      
+      await expect(service.encontrarDenuncia(1)).rejects.toThrow(
+        new NotFoundException('Denuncia não Encontrada!'),
+      );
+    });
+
+    it('[Erro] Deve lançar NotFoundException se denúncia foi deletada', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenunciaDeletada);
+      
+      await expect(service.encontrarDenuncia(1)).rejects.toThrow(
+        new NotFoundException('Denuncia não Encontrada!'),
+      );
+    }); 
   }); 
   });
 });
