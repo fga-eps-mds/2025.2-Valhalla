@@ -118,7 +118,6 @@ export class AuthService {
           secret: resetSecret,
         }) as UsuarioPayload; 
 
-
         const userId = payload.sub;
 
         const novaSenhahash = await bcrypt.hash(novaSenha, 10);
@@ -126,11 +125,15 @@ export class AuthService {
         const dadosParaAtualizar = new EdicaoUsuarioDto();
         dadosParaAtualizar.senha = novaSenhahash;
 
-        await this.usuarioService.editarUsuario(userId, dadosParaAtualizar);
+
+        await this.usuarioService.editarUsuario(userId, dadosParaAtualizar, { senha: true });
 
         return { message: 'Senha redefinida com sucesso!' };
 
       } catch (error) {
+        if (error.message.includes('Ação não autorizada')) {
+            throw error;
+        }
         throw new ForbiddenException('Token inválido ou expirado.');
       }
     }

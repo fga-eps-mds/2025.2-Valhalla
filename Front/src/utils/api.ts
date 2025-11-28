@@ -21,7 +21,7 @@ export const loginUsuario = async (email: string, senha: string, lembrar: boolea
 };
 
 export const getOneUsuario = async (id: number) => {
-  const response = await api.get(`/Usuario/${id}`); 
+  const response = await api.get(`/usuarios/${id}`); 
   return response.data;
 };
 
@@ -35,4 +35,22 @@ export const resetarSenha = async (token: string, senha: string) => {
   return response.data;
 };
 
+export const mudarSenha = async (senhaAntiga: string, senhaNova: string) => {
+  const response = await api.patch('/auth/mudar-senha',  {senhaAntiga: senhaAntiga, senhaNova: senhaNova}); 
+  return response.data;
+};
+export const excluirContaSoft = async (id: number) => {
+  const response = await api.delete(`/usuarios/${id}`); 
+  return response.data;
+};
+
+interface DadosEdicao {
+  nome?: string;
+  mediaSrc?: string;
+}
+
+export const editarUsuario = async (dados: DadosEdicao) => {
+  const response = await api.patch('/usuarios', dados); 
+  return response.data;
+};
 export default api;
