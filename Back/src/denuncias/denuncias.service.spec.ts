@@ -86,6 +86,14 @@ describe('DenunciasService', () => {
       await service.editarDenuncia(idDenuncia, 10, mockDto as any); // Usuário 10 é o dono no mockDenuncia
 
       expect(mockPrismaService.denuncia.update).toHaveBeenCalled();
-    });
+     });
+    it('[Erro] Deve lançar NotFoundException se Denúncia não existe', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(null);
+      
+      await expect(service.editarDenuncia(idDenuncia, 10, mockDto as any)).rejects.toThrow(
+        new NotFoundException('Denúncia não encontrada!'),
+      );
+    });
+    })
   });
 });
