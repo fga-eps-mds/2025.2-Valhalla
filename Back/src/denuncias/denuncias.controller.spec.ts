@@ -1,0 +1,50 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { DenunciasController } from '../denuncias.controller';
+import { DenunciasService } from '../denuncias.service';
+import { TipoUsuario } from '@prisma/client';
+
+// Mock do Serviço
+const mockDenunciasService = {
+  criarDenuncia: jest.fn(),
+  editarDenuncia: jest.fn(),
+  deletarDenuncia: jest.fn(),
+  desativarDenuncia: jest.fn(),
+  encontrarDenuncia: jest.fn(),
+  listarDenuncias: jest.fn().mockResolvedValue({denuncias: [], totalDenuncias: 0}),
+  listarDenunciasPorUsuario: jest.fn().mockResolvedValue({denuncias: [], totalDenuncias: 0}),
+};
+
+// Dados Mocks
+const mockUserId = 10;
+const mockDenunciaId = 1;
+const mockDto = { descricao: 'Descrição Teste', idCategoria: 1, anonimato: false };
+const mockEdicaoDto = { descricao: 'Edição Teste' };
+const mockListResult = { denuncias: [{id: 1}], totalDenuncias: 1 };
+
+const mockRequest = (tipo: TipoUsuario, userId: number = mockUserId) => ({
+  user: {
+    id: userId,
+    tipo: tipo,
+  },
+} as any);
+
+
+describe('DenunciasController', () => {
+  let controller: DenunciasController;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [DenunciasController],
+      providers: [
+        {
+          provide: DenunciasService,
+          useValue: mockDenunciasService,
+        },
+      ],
+    }).compile();
+
+    controller = module.get<DenunciasController>(DenunciasController);
+    jest.clearAllMocks();
+  });
+
+});
