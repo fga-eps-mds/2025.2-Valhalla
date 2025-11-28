@@ -16,7 +16,7 @@ export default function Home() {
         <div className="w-full scroll-m-0 max-w-[1440px] bg-gray-50  rounded-md px-12 py-14 ">
           <div> <Hero/> </div>
           {/* Seção Informações*/}
-          <div> <InfoCards/> </div>
+          {/*<div> <InfoCards/> </div>*/}
           
           {/* Seção dos Devs*/}
           <div id="devs"> <SecaoDesenvolvedores/> </div>
