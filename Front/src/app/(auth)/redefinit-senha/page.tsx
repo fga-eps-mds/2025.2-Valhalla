@@ -114,7 +114,7 @@ function FormularioRedefinicao() {
                 </a>
 
                 <img
-                    src="/Corujuda - contorno.svg"
+                    src="/logos/Corujuda.svg"
                     alt='Logo do Guardiões da Universidade'
                     width={120}
                     height={120}
@@ -230,7 +230,7 @@ function FormularioRedefinicao() {
                     </button>
                     
                     {sucesso && (
-                        <a href="/cadastro/login" className="mt-6 text-sm text-[#3060BF] hover:underline transition">
+                        <a href="/login" className="mt-6 text-sm text-[#3060BF] hover:underline transition">
                             Ir para Login
                         </a>
                     )}
