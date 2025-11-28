@@ -85,7 +85,8 @@ describe('UsuarioController', () => {
 
       expect(service.editarUsuario).toHaveBeenCalledWith(
         mockRequest.user.id, // 10
-        dto
+        dto,
+        {senha: false}
       );
     });
   });

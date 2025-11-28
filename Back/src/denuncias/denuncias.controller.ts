@@ -63,7 +63,7 @@ export class DenunciasController {
     }
 
     @IsPublic()
-    @Get(':id')
+    @Get('usuario/:id')
     async listarDenunciasPorUsuario(
       @Param('id', ParseIntPipe) id: number,
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,

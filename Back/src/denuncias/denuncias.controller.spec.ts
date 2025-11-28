@@ -82,7 +82,7 @@ describe('DenunciasController', () => {
     it('[Integração] Listar por Usuário: Deve repassar ID, page e limit para service.listarDenunciasPorUsuario', async () => {
       mockDenunciasService.listarDenunciasPorUsuario.mockResolvedValue(mockListResult);
       const idUsuarioTarget = 5;
-      const result = await controller.listarDenunciasPorCategoria(idUsuarioTarget, 3, 5); // ID: 5, page: 3, limit: 5
+      const result = await controller.listarDenunciasPorUsuario(idUsuarioTarget, 3, 5); // ID: 5, page: 3, limit: 5
       
       expect(mockDenunciasService.listarDenunciasPorUsuario).toHaveBeenCalledWith(idUsuarioTarget, 3, 5);
       expect(result).toEqual(mockListResult);
