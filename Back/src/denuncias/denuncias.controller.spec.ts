@@ -46,5 +46,12 @@ describe('DenunciasController', () => {
     controller = module.get<DenunciasController>(DenunciasController);
     jest.clearAllMocks();
   });
+  describe('CRUD Básico', () => {
+    const req = mockRequest(TipoUsuario.COMUM);
 
+    it('[Integração] Criar: Deve chamar service.criarDenuncia passando req.user.id e DTO', async () => {
+      await controller.criarDenuncia(req, mockDto as any);
+      expect(mockDenunciasService.criarDenuncia).toHaveBeenCalledWith(mockUserId, mockDto);
+    });
+ });
 });
