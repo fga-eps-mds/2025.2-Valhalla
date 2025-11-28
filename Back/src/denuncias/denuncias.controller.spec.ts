@@ -72,5 +72,12 @@ describe('DenunciasController', () => {
       await controller.encontrarDenuncia(mockDenunciaId);
       expect(mockDenunciasService.encontrarDenuncia).toHaveBeenCalledWith(mockDenunciaId);
     });
+    it('[Integração] Listar Geral: Deve repassar QueryParams (page, limit) para service.listarDenuncias', async () => {
+      mockDenunciasService.listarDenuncias.mockResolvedValue(mockListResult);
+      const result = await controller.listarDenuncias(2, 20); // page: 2, limit: 20
+      
+      expect(mockDenunciasService.listarDenuncias).toHaveBeenCalledWith(2, 20);
+      expect(result).toEqual(mockListResult);
+    });
  });
 });
