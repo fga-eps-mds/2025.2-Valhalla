@@ -70,7 +70,6 @@ describe('DenunciasService', () => {
         })
       );
     });
-
     it('[Erro] Deve lançar NotFoundException se a Categoria não for encontrada', async () => {
       mockPrismaService.categoria.findUnique.mockResolvedValue(null);
       
