@@ -153,5 +153,25 @@ describe('DenunciasService', () => {
       expect(result).toHaveProperty('totalDenuncias');
     });
   });
+  describe('listarDenunciasPorUsuario', () => {
+    it('[Sucesso] Deve listar por usuário com paginação', async () => {
+      const idUsuario = 10;
+      const page = 1;
+      const limit = 5;
+
+      await service.listarDenunciasPorUsuario(idUsuario, page, limit);
+
+      expect(mockPrismaService.denuncia.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { dataDelete: null, idUsuario: idUsuario },
+          skip: 0,
+          take: limit
+        })
+      );
+      expect(mockPrismaService.denuncia.count).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { dataDelete: null, idUsuario: idUsuario } })
+      );
+    });
+  });
   });
 });
