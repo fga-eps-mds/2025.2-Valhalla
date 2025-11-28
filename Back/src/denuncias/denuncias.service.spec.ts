@@ -1,200 +1,223 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DenunciasService } from './denuncias.service';
-import { PrismaService } from '../database/prisma.service';
+import { PrismaService } from 'src/database/prisma.service';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { TipoUsuario } from '@prisma/client';
-import { DenunciaDto } from './dto/denuncia.dto';
-import { edicaoDenunciaDto } from './dto/edicao.denuncia.dto';
 
-// Mock dos dados para os testes
-const mockDenuncia = {
-  id: 1,
-  idUsuario: 1,
-  descricao: 'Teste Denuncia',
-  idCategoria: 1,
-  mediaSrc: 'img.jpg',
-  anonimato: false,
-  dataDelete: null,
-  dataCriacao: new Date(),
-  dataUpdate: new Date(),
+// Mocks de Dados
+const mockDenuncia = { 
+  id: 1, idUsuario: 10, descricao: 'Buraco na via', idCategoria: 1, anonimato: false, mediaSrc: null, dataDelete: null,
 };
+const mockDenunciaDeletada = { ...mockDenuncia, dataDelete: new Date() };
+const mockDenunciaAdmin = { ...mockDenuncia, idUsuario: 20 };
 
-const mockUsuarioAutor = {
-  id: 1,
-  nome: 'Autor',
-  email: 'autor@teste.com',
-  senha: 'hash',
-  cargo: 'ESTUDANTE',
-  tipo: TipoUsuario.COMUM,
-  mediaSrc: null,
-  dataDelete: null,
-};
+const mockUsuarioComum = { id: 10, tipo: TipoUsuario.COMUM };
+const mockUsuarioAdmin = { id: 20, tipo: TipoUsuario.ADMIN };
+const mockUsuarioMaster = { id: 30, tipo: TipoUsuario.ADMINMASTER };
 
-// Mock do Prisma
+const mockDto = { descricao: 'Nova descrição', idCategoria: 2, anonimato: true };
+const mockCategoria = { id: 2, nome: 'Mock Cat' };
+const mockListaDenuncias = [mockDenuncia, {...mockDenuncia, id: 2}];
+
+// Mock do Prisma Service (Atualizado para paginação)
 const mockPrismaService = {
   denuncia: {
-    create: jest.fn(),
+    create: jest.fn().mockResolvedValue(mockDenuncia),
     findUnique: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    findMany: jest.fn(),
+    findMany: jest.fn().mockResolvedValue(mockListaDenuncias),
+    update: jest.fn().mockResolvedValue(mockDenuncia),
+    delete: jest.fn().mockResolvedValue(mockDenuncia),
+    count: jest.fn().mockResolvedValue(2),
   },
   usuario: {
     findUnique: jest.fn(),
   },
+  categoria: { 
+    findUnique: jest.fn(),
+  }
 };
 
 describe('DenunciasService', () => {
   let service: DenunciasService;
-  let prisma: typeof mockPrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         DenunciasService,
-        { provide: PrismaService, useValue: mockPrismaService },
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService,
+        },
       ],
     }).compile();
 
     service = module.get<DenunciasService>(DenunciasService);
-    prisma = module.get(PrismaService);
     jest.clearAllMocks();
   });
-
-  it('deve estar definido', () => {
-    expect(service).toBeDefined();
-  });
-
   describe('criarDenuncia', () => {
-    it('deve criar uma denúncia com sucesso', async () => {
-      const dto: DenunciaDto = { descricao: 'Teste', idCategoria: 1, anonimato: false };
-      prisma.denuncia.create.mockResolvedValue(mockDenuncia);
+    it('[Sucesso] Deve criar a denúncia vinculando o idUsuario e verificar a categoria', async () => {
+      mockPrismaService.categoria.findUnique.mockResolvedValue({ id: 2 });
+      
+      const idUsuarioAutor = 10;
+      await service.criarDenuncia(idUsuarioAutor, mockDto as any);
 
-      const result = await service.criarDenuncia(1, dto);
-
-      expect(prisma.denuncia.create).toHaveBeenCalledWith({
-        data: {
-          idUsuario: 1,
-          descricao: dto.descricao,
-          idCategoria: dto.idCategoria,
-          mediaSrc: undefined, // ou dto.mediaSrc se passado
-          anonimato: dto.anonimato,
-        },
-      });
-      expect(result).toEqual(mockDenuncia);
+      expect(mockPrismaService.denuncia.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            idUsuario: idUsuarioAutor,
+            idCategoria: mockDto.idCategoria
+          })
+        })
+      );
     });
-  });
-
-  describe('encontrarDenuncia', () => {
-    it('deve retornar uma denúncia se existir e não estiver deletada', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia);
-
-      const result = await service.encontrarDenuncia(1);
-      expect(result).toEqual(mockDenuncia);
+    it('[Erro] Deve lançar NotFoundException se a Categoria não for encontrada', async () => {
+      mockPrismaService.categoria.findUnique.mockResolvedValue(null);
+      
+      await expect(service.criarDenuncia(10, mockDto as any)).rejects.toThrow(
+        new NotFoundException('Categoria não encontrada!'),
+      );
     });
+    describe('editarDenuncia', () => {
+    const idDenuncia = 1;
 
-    it('deve lançar NotFoundException se não existir', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(null);
-      await expect(service.encontrarDenuncia(99)).rejects.toThrow(NotFoundException);
+    it('[Sucesso] Deve permitir a Edição pelo Dono (Denúncia Ativa)', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
+      
+      await service.editarDenuncia(idDenuncia, 10, mockDto as any); 
+
+      expect(mockPrismaService.denuncia.update).toHaveBeenCalled();
+     });
+    it('[Erro] Deve lançar NotFoundException se Denúncia não existe', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(null);
+      
+      await expect(service.editarDenuncia(idDenuncia, 10, mockDto as any)).rejects.toThrow(
+        new NotFoundException('Denúncia não encontrada!'),
+      );
     });
-
-    it('deve lançar NotFoundException se estiver deletada (soft delete)', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue({ ...mockDenuncia, dataDelete: new Date() });
-      await expect(service.encontrarDenuncia(1)).rejects.toThrow(NotFoundException);
+    it('[Erro] Deve lançar ForbiddenException se Usuário não for o dono', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia); 
+      
+      await expect(service.editarDenuncia(idDenuncia, 99, mockDto as any)).rejects.toThrow( 
+        new ForbiddenException('Usuário não autorizado a editar esta denúncia!'),
+      );
     });
-  });
-
-  describe('editarDenuncia', () => {
-    const dtoEdit: edicaoDenunciaDto = { descricao: 'Editado' };
-
-    it('deve editar se for o dono e não estiver deletada', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia);
-      prisma.denuncia.update.mockResolvedValue({ ...mockDenuncia, descricao: 'Editado' });
-
-      const result = await service.editarDenuncia(1, 1, dtoEdit); // id 1, usuario 1 (dono)
-
-      expect(prisma.denuncia.update).toHaveBeenCalled();
-      expect(result.descricao).toEqual('Editado');
+    it('[Erro] Deve lançar ForbiddenException se Denúncia já estiver desativada', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenunciaDeletada); // dataDelete preenchido
+      
+      await expect(service.editarDenuncia(idDenuncia, 10, mockDto as any)).rejects.toThrow(
+        new ForbiddenException('Não é possível editar uma denúncia desativada!'),
+      );
+    });  
     });
-
-    it('deve lançar ForbiddenException se não for o dono', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia);
-      // Tentativa de edição pelo usuário 2 (não dono)
-      await expect(service.editarDenuncia(1, 2, dtoEdit)).rejects.toThrow(ForbiddenException);
+   describe('encontrarDenuncia', () => {
+    it('[Sucesso] Deve retornar a denúncia ativa', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
+      
+      const res = await service.encontrarDenuncia(1);
+      expect(res).toEqual(mockDenuncia);
     });
-
-    it('deve lançar ForbiddenException se a denúncia estiver deletada', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue({ ...mockDenuncia, dataDelete: new Date() });
-      await expect(service.editarDenuncia(1, 1, dtoEdit)).rejects.toThrow(ForbiddenException);
-    });
-  });
-
-  describe('deletarDenuncia (Hard Delete) & Hierarquia', () => {
-    it('deve permitir que o dono delete sua denúncia', async () => {
-      // Mock da denúncia
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia);
-      // Mock do autor da denúncia (para a lógica de hierarquia)
-      prisma.usuario.findUnique.mockResolvedValue(mockUsuarioAutor);
-      prisma.denuncia.delete.mockResolvedValue(mockDenuncia);
-
-      // Usuário 1 (dono) deletando denúncia 1
-      await service.deletarDenuncia(1, 1, TipoUsuario.COMUM);
-
-      expect(prisma.denuncia.delete).toHaveBeenCalledWith({ where: { id: 1 } });
+    it('[Erro] Deve lançar NotFoundException se denúncia não existe (null)', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(null);
+      
+      await expect(service.encontrarDenuncia(1)).rejects.toThrow(
+        new NotFoundException('Denuncia não Encontrada!'),
+      );
     });
 
-    it('deve permitir que ADMIN delete denúncia de COMUM', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia); // Autor é ID 1
-      prisma.usuario.findUnique.mockResolvedValue({ ...mockUsuarioAutor, tipo: TipoUsuario.COMUM }); // Autor é COMUM
-
-      // Usuário 2 (ADMIN) deletando denúncia do Usuário 1
-      await service.deletarDenuncia(1, 2, TipoUsuario.ADMIN);
-
-      expect(prisma.denuncia.delete).toHaveBeenCalled();
-    });
-
-    it('deve BLOQUEAR que COMUM delete denúncia de terceiros', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia);
-      prisma.usuario.findUnique.mockResolvedValue(mockUsuarioAutor);
-
-      // Usuário 2 (COMUM) tentando deletar denúncia do Usuário 1
-      await expect(service.deletarDenuncia(1, 2, TipoUsuario.COMUM)).rejects.toThrow(ForbiddenException);
-    });
-
-    it('deve BLOQUEAR que ADMIN delete denúncia de ADMIN', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia);
-      // Autor da denúncia agora é um ADMIN
-      prisma.usuario.findUnique.mockResolvedValue({ ...mockUsuarioAutor, id: 99, tipo: TipoUsuario.ADMIN });
-
-      // Usuário 2 (ADMIN) tentando deletar denúncia do Usuário 99 (ADMIN)
-      await expect(service.deletarDenuncia(1, 2, TipoUsuario.ADMIN)).rejects.toThrow(ForbiddenException);
-    });
-  });
-
-  describe('desativarDenuncia (Soft Delete)', () => {
-    it('deve realizar o soft delete corretamente', async () => {
-      prisma.denuncia.findUnique.mockResolvedValue(mockDenuncia);
-      prisma.usuario.findUnique.mockResolvedValue(mockUsuarioAutor);
-      prisma.denuncia.update.mockResolvedValue({ ...mockDenuncia, dataDelete: new Date() });
-
-      await service.desativarDenuncia(1, 1, TipoUsuario.COMUM);
-
-      expect(prisma.denuncia.update).toHaveBeenCalledWith(expect.objectContaining({
-        data: expect.objectContaining({ dataDelete: expect.any(Date) })
-      }));
-    });
-  });
-
+    it('[Erro] Deve lançar NotFoundException se denúncia foi deletada', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenunciaDeletada);
+      
+      await expect(service.encontrarDenuncia(1)).rejects.toThrow(
+        new NotFoundException('Denuncia não Encontrada!'),
+      );
+    }); 
+  }); 
   describe('listarDenuncias', () => {
-    it('deve listar apenas denúncias não deletadas', async () => {
-      prisma.denuncia.findMany.mockResolvedValue([mockDenuncia]);
+    it('[Sucesso] Deve listar com paginação e retornar total', async () => {
+      const page = 2;
+      const limit = 10;
+      const skipExpected = (page - 1) * limit; // 10
 
-      await service.listarDenuncias();
+      const result = await service.listarDenuncias(page, limit);
 
-      expect(prisma.denuncia.findMany).toHaveBeenCalledWith({
-        where: { dataDelete: null },
-        orderBy: { id: 'desc' },
-      });
+      expect(mockPrismaService.denuncia.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          skip: skipExpected,
+          take: limit,
+          where: { dataDelete: null }
+        })
+      );
+      expect(mockPrismaService.denuncia.count).toHaveBeenCalled();
+      
+      expect(result).toHaveProperty('denuncias');
+      expect(result).toHaveProperty('totalDenuncias');
+    });
+  });
+  describe('listarDenunciasPorUsuario', () => {
+    it('[Sucesso] Deve listar por usuário com paginação', async () => {
+      const idUsuario = 10;
+      const page = 1;
+      const limit = 5;
+
+      await service.listarDenunciasPorUsuario(idUsuario, page, limit);
+
+      expect(mockPrismaService.denuncia.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { dataDelete: null, idUsuario: idUsuario },
+          skip: 0,
+          take: limit
+        })
+      );
+      expect(mockPrismaService.denuncia.count).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { dataDelete: null, idUsuario: idUsuario } })
+      );
+    });
+  });
+  describe('RBAC - Deletar e Desativar', () => {
+    const idDenuncia = 1;
+    const setupRBAC = (denuncia: any, usuarioDono: any) => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(denuncia);
+      mockPrismaService.usuario.findUnique.mockResolvedValue(usuarioDono);
+    };
+
+    it('[Sucesso] Dono (Comum) pode deletar sua denúncia', async () => {
+      setupRBAC(mockDenuncia, mockUsuarioComum); // Dono é Comum
+      await service.deletarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any);
+      expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
     });
+    it('[Erro] Comum NÃO pode deletar denúncia de outro', async () => {
+      setupRBAC(mockDenuncia, mockUsuarioComum);
+      await expect(
+        service.deletarDenuncia(idDenuncia, 99, TipoUsuario.COMUM as any)
+      ).rejects.toThrow(ForbiddenException);
+    });
+    it('[Sucesso] Admin pode deletar denúncia de Comum', async () => {
+      setupRBAC(mockDenuncia, mockUsuarioComum); 
+      await service.deletarDenuncia(idDenuncia, 20, TipoUsuario.ADMIN as any); 
+      expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
+    });
+    it('[Erro] Admin NÃO pode deletar denúncia de outro Admin', async () => {
+      setupRBAC(mockDenunciaAdmin, mockUsuarioAdmin); 
+      await expect(
+        service.deletarDenuncia(idDenuncia, 25, TipoUsuario.ADMIN as any) 
+      ).rejects.toThrow(ForbiddenException);
+    });
+    it('[Sucesso] Master pode deletar denúncia de Admin', async () => {
+      setupRBAC(mockDenunciaAdmin, mockUsuarioAdmin);
+      await service.deletarDenuncia(idDenuncia, 30, TipoUsuario.ADMINMASTER as any);
+      expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
+    });
+    it('[Erro] Desativar deve falhar se denúncia já tiver dataDelete', async () => {
+        mockPrismaService.denuncia.findUnique
+            .mockResolvedValueOnce(mockDenuncia)
+            .mockResolvedValueOnce(mockDenunciaDeletada);
+        
+        mockPrismaService.usuario.findUnique.mockResolvedValue(mockUsuarioComum);
+
+        await expect(
+            service.desativarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any)
+        ).rejects.toThrow(new NotFoundException("Denuncia não encontrada!"));
+    });
+  });
   });
 });
