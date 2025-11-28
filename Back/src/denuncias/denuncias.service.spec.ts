@@ -173,5 +173,18 @@ describe('DenunciasService', () => {
       );
     });
   });
+  describe('RBAC - Deletar e Desativar', () => {
+    const idDenuncia = 1;
+    const setupRBAC = (denuncia: any, usuarioDono: any) => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(denuncia);
+      mockPrismaService.usuario.findUnique.mockResolvedValue(usuarioDono);
+    };
+
+    it('[Sucesso] Dono (Comum) pode deletar sua denúncia', async () => {
+      setupRBAC(mockDenuncia, mockUsuarioComum); // Dono é Comum
+      await service.deletarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any);
+      expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
+    });
+  });
   });
 });
