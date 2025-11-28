@@ -154,6 +154,11 @@ export class DenunciasService{
                         nome: true,
                         mediaSrc: true,
                     }
+                },
+                categoria: {
+                    select: {
+                        nome: true,
+                    }
                 }
             }
         });

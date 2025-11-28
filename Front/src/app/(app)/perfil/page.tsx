@@ -94,7 +94,7 @@ export default function Perfil() {
                     <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
                 </button>
 
-                {user.tipo !== 'ADMIN' &&user.tipo !== 'ADMINMASTER' && (
+                {user.tipo !== 'ADMINMASTER' && (
                     <button onClick={() => setIsModalExcluirOpen(true)}
                     className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]">
                         EXCLUIR CONTA
