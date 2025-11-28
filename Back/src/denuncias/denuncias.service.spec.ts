@@ -192,20 +192,31 @@ describe('DenunciasService', () => {
       ).rejects.toThrow(ForbiddenException);
     });
     it('[Sucesso] Admin pode deletar denúncia de Comum', async () => {
-      setupRBAC(mockDenuncia, mockUsuarioComum); // Dono é Comum
-      await service.deletarDenuncia(idDenuncia, 20, TipoUsuario.ADMIN as any); // Admin deletando
+      setupRBAC(mockDenuncia, mockUsuarioComum); 
+      await service.deletarDenuncia(idDenuncia, 20, TipoUsuario.ADMIN as any); 
       expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
     });
     it('[Erro] Admin NÃO pode deletar denúncia de outro Admin', async () => {
-      setupRBAC(mockDenunciaAdmin, mockUsuarioAdmin); // Dono é Admin
+      setupRBAC(mockDenunciaAdmin, mockUsuarioAdmin); 
       await expect(
-        service.deletarDenuncia(idDenuncia, 25, TipoUsuario.ADMIN as any) // Outro Admin tentando
+        service.deletarDenuncia(idDenuncia, 25, TipoUsuario.ADMIN as any) 
       ).rejects.toThrow(ForbiddenException);
     });
     it('[Sucesso] Master pode deletar denúncia de Admin', async () => {
       setupRBAC(mockDenunciaAdmin, mockUsuarioAdmin);
       await service.deletarDenuncia(idDenuncia, 30, TipoUsuario.ADMINMASTER as any);
       expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
+    });
+    it('[Erro] Desativar deve falhar se denúncia já tiver dataDelete', async () => {
+        mockPrismaService.denuncia.findUnique
+            .mockResolvedValueOnce(mockDenuncia)
+            .mockResolvedValueOnce(mockDenunciaDeletada);
+        
+        mockPrismaService.usuario.findUnique.mockResolvedValue(mockUsuarioComum);
+
+        await expect(
+            service.desativarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any)
+        ).rejects.toThrow(new NotFoundException("Denuncia não encontrada!"));
     });
   });
   });
