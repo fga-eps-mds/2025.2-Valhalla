@@ -185,6 +185,12 @@ describe('DenunciasService', () => {
       await service.deletarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any);
       expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
     });
+    it('[Erro] Comum NÃO pode deletar denúncia de outro', async () => {
+      setupRBAC(mockDenuncia, mockUsuarioComum);
+      await expect(
+        service.deletarDenuncia(idDenuncia, 99, TipoUsuario.COMUM as any)
+      ).rejects.toThrow(ForbiddenException);
+    });
   });
   });
 });
