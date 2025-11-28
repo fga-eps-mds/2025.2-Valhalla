@@ -108,6 +108,14 @@ describe('DenunciasService', () => {
         new ForbiddenException('Não é possível editar uma denúncia desativada!'),
       );
     });  
-    })
+    });
+   describe('encontrarDenuncia', () => {
+    it('[Sucesso] Deve retornar a denúncia ativa', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
+      
+      const res = await service.encontrarDenuncia(1);
+      expect(res).toEqual(mockDenuncia);
+    });
+  }); 
   });
 });
