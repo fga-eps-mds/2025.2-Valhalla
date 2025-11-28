@@ -43,4 +43,14 @@ export const excluirContaSoft = async (id: number) => {
   const response = await api.delete(`/Usuario/${id}`); 
   return response.data;
 };
+
+interface DadosEdicao {
+  nome?: string;
+  mediaSrc?: string;
+}
+
+export const editarUsuario = async (dados: DadosEdicao) => {
+  const response = await api.patch('/usuario', dados); 
+  return response.data;
+};
 export default api;
