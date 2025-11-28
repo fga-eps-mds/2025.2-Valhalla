@@ -83,7 +83,7 @@ describe('DenunciasService', () => {
     it('[Sucesso] Deve permitir a Edição pelo Dono (Denúncia Ativa)', async () => {
       mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
       
-      await service.editarDenuncia(idDenuncia, 10, mockDto as any); // Usuário 10 é o dono no mockDenuncia
+      await service.editarDenuncia(idDenuncia, 10, mockDto as any); 
 
       expect(mockPrismaService.denuncia.update).toHaveBeenCalled();
      });
@@ -94,6 +94,20 @@ describe('DenunciasService', () => {
         new NotFoundException('Denúncia não encontrada!'),
       );
     });
+    it('[Erro] Deve lançar ForbiddenException se Usuário não for o dono', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia); 
+      
+      await expect(service.editarDenuncia(idDenuncia, 99, mockDto as any)).rejects.toThrow( 
+        new ForbiddenException('Usuário não autorizado a editar esta denúncia!'),
+      );
+    });
+    it('[Erro] Deve lançar ForbiddenException se Denúncia já estiver desativada', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenunciaDeletada); // dataDelete preenchido
+      
+      await expect(service.editarDenuncia(idDenuncia, 10, mockDto as any)).rejects.toThrow(
+        new ForbiddenException('Não é possível editar uma denúncia desativada!'),
+      );
+    });  
     })
   });
 });
