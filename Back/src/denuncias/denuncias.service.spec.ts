@@ -191,6 +191,11 @@ describe('DenunciasService', () => {
         service.deletarDenuncia(idDenuncia, 99, TipoUsuario.COMUM as any)
       ).rejects.toThrow(ForbiddenException);
     });
+    it('[Sucesso] Admin pode deletar denúncia de Comum', async () => {
+      setupRBAC(mockDenuncia, mockUsuarioComum); // Dono é Comum
+      await service.deletarDenuncia(idDenuncia, 20, TipoUsuario.ADMIN as any); // Admin deletando
+      expect(mockPrismaService.denuncia.delete).toHaveBeenCalled();
+    });
   });
   });
 });
