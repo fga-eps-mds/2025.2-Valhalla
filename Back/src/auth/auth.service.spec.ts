@@ -168,10 +168,13 @@ describe('AuthService', () => {
     });
   });
 
-  // --- GRUPO: esqueciSenha ---
+// --- GRUPO: esqueciSenha ---
   describe('esqueciSenha', () => {
     it('deve enviar email se usuário existir', async () => {
       jest.spyOn(usuarioService, 'procurarPorEmail').mockResolvedValue(mockUsuario as any);
+      
+      // CORREÇÃO: Forçar sucesso explícito para evitar erros de Promise pendente ou rejeitada
+      jest.spyOn(mailService, 'sendPasswordResetEmail').mockResolvedValue(undefined); 
       
       const result = await authService.esqueciSenha('teste@unb.br');
 
@@ -190,10 +193,19 @@ describe('AuthService', () => {
 
     it('deve lançar BadRequestException se falhar o envio de email', async () => {
       jest.spyOn(usuarioService, 'procurarPorEmail').mockResolvedValue(mockUsuario as any);
+      
+      // Simula o erro do MailService
       jest.spyOn(mailService, 'sendPasswordResetEmail').mockRejectedValue(new Error('Erro mail'));
+
+      // DICA: Espiar o console.error e silenciá-lo apenas durante este teste
+      // para que a mensagem "Falha ao enviar email" não apareça no seu terminal como se fosse um erro real.
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
       await expect(authService.esqueciSenha('teste@unb.br'))
         .rejects.toThrow(BadRequestException);
+      
+      // Restaura o console.error original
+      consoleSpy.mockRestore();
     });
   });
 

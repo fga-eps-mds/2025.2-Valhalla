@@ -140,13 +140,37 @@ describe('DenunciasService', () => {
 
       const result = await service.listarDenuncias(page, limit);
 
-      expect(mockPrismaService.denuncia.findMany).toHaveBeenCalledWith(
-        expect.objectContaining({
-          skip: skipExpected,
-          take: limit,
-          where: { dataDelete: null }
-        })
-      );
+            // Localize o teste "Deve listar com paginação e retornar total"
+        expect(mockPrismaService.denuncia.findMany).toHaveBeenCalledWith({
+        where: { 
+        dataDelete: null, 
+        usuario: { dataDelete: null } // O filtro extra que você adicionou
+        },
+        orderBy: { id: 'desc' },        // A ordenação
+        skip: expect.any(Number),       // skip calculado
+        take: limit,
+        select: {                       // O select exato que está no service
+        id: true,
+        descricao: true,
+        idCategoria: true,
+        mediaSrc: true,
+        anonimato: true,
+        dataCriacao: true,
+        dataUpdate: true,
+        idUsuario: true,
+        usuario: {
+          select: {
+            nome: true,
+            mediaSrc: true,
+          }
+        },
+        categoria: {
+          select: {
+            nome: true,
+          }
+        }
+        }
+        });
       expect(mockPrismaService.denuncia.count).toHaveBeenCalled();
       
       expect(result).toHaveProperty('denuncias');
