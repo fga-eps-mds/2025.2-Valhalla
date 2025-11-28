@@ -77,5 +77,15 @@ describe('DenunciasService', () => {
         new NotFoundException('Categoria não encontrada!'),
       );
     });
+    describe('editarDenuncia', () => {
+    const idDenuncia = 1;
+
+    it('[Sucesso] Deve permitir a Edição pelo Dono (Denúncia Ativa)', async () => {
+      mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
+      
+      await service.editarDenuncia(idDenuncia, 10, mockDto as any); // Usuário 10 é o dono no mockDenuncia
+
+      expect(mockPrismaService.denuncia.update).toHaveBeenCalled();
+    });
   });
 });
