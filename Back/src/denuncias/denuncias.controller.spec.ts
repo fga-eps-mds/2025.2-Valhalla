@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DenunciasController } from '../denuncias.controller';
-import { DenunciasService } from '../denuncias.service';
+import { DenunciasController } from './denuncias.controller';
+import { DenunciasService } from './denuncias.service';
 import { TipoUsuario } from '@prisma/client';
 
 // Mock do Serviço
@@ -65,5 +65,12 @@ describe('DenunciasController', () => {
       await controller.desativarDenuncia(mockDenunciaId, req);
       expect(mockDenunciasService.desativarDenuncia).toHaveBeenCalledWith(mockDenunciaId, mockUserId, TipoUsuario.COMUM);
     });
+ });
+ describe('Busca e Listagem (Público)', () => {
+
+    it('[Integração] Encontrar por ID: Deve chamar service.encontrarDenuncia apenas com o ID', async () => {
+      await controller.encontrarDenuncia(mockDenunciaId);
+      expect(mockDenunciasService.encontrarDenuncia).toHaveBeenCalledWith(mockDenunciaId);
+    });
  });
 });
