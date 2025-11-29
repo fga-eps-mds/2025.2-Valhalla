@@ -56,6 +56,15 @@ export default function ModalExcluirDenunciaSoft({
               Excluir
             </button>
         </div>
+        <div className="flex gap-3 w-full">
+        </div>
+        
+        <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+            <XMarkIcon className="w-6 h-6" />
+        </button>
 
       </div>
     </div>
