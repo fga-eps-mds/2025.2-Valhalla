@@ -16,7 +16,10 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
         bg-white 
         border-[2px] border-[#67A8FF] 
         rounded-[15px] 
-        shadow-md
+        shadow-md hover:shadow-lg        
+        transform hover:-translate-y-1   
+        transition-all duration-300      
+        group                            
       "
     >
       {/* Ícone */}
