@@ -1,7 +1,5 @@
 # 2025.2 Valhalla — Guardiões da Universidade
 
-![Logo](Front/public/logos/Logo-Navbar.svg)
-
 ## Sobre
 
 O **Guardiões da Universidade**, desenvolvido pelo grupo **Valhalla** no 2° semestre de 2025 na disciplina *Métodos de Desenvolvimento de Software*, tem como objetivo oferecer um **canal de denúncias e orientação** para a comunidade acadêmica da *Universidade de Brasília (UnB)*.  
