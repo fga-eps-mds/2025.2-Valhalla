@@ -36,7 +36,7 @@ type Denuncia = {
   data: string;
 };
 
-export default function MinhasDenuncias() {
+export default function Gerencia() {
     
   const { user } = useAuth();
   const router = useRouter();
