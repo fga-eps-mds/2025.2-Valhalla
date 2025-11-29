@@ -89,9 +89,32 @@ export default function Gerencia() {
     buscarDenuncias();
   }, [currentPage, limite, user]);
 
-  return (
-    <main>
-       {/* ... */}
-    </main>
-  );
+  if (user?.tipo === 'COMUM') {
+      return (
+        <main>
+           Área do Usuário Comum
+        </main>
+      );
+  } else {
+      return (
+
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
+      
+
+      <BotaoMenu
+        icone={<UsersIcon className="w-12 h-12 fill-current" />}
+        texto="Denuncias de Usuarios"
+        onClick={() => router.push('/denuncias-usuarios')} 
+      />
+
+      <BotaoMenu
+        icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+        texto="Minhas Denuncias"
+        onClick={() => router.push('/minhas-denuncias')}
+      />
+
+    </div>
+
+      );
+  }
 }
