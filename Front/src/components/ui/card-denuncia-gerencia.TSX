@@ -22,6 +22,10 @@ export default function CardDenuncia({
   onDelete,
 }: CardDenunciaProps) {
 
+    // Lógica de Anonimato
+    const displayName = anonimato ? "Anônimo" : nomeUsuario;
+    const showPhoto = !anonimato && fotoUsuario !== null && fotoUsuario !== undefined;
+
   return (
     // Placeholder inicial
     <div>
