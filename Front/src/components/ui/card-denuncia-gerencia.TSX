@@ -24,12 +24,11 @@ export default function CardDenuncia({
   onDelete,
 }: CardDenunciaProps) {
 
-    // Lógica de Anonimato
-    const displayName = anonimato ? "Anônimo" : nomeUsuario;
-    const showPhoto = !anonimato && fotoUsuario !== null && fotoUsuario !== undefined;
+  // Lógica de Anonimato
+  const displayName = anonimato ? "Anônimo" : nomeUsuario;
+  const showPhoto = !anonimato && fotoUsuario !== null && fotoUsuario !== undefined;
 
   return (
-    // 1. Container do Card com bordas e sombras
     <div className="w-full text-branco border-2 border-azul-principal rounded-[20px] p-6 shadow-sm mb-4">
       
       {/* --- HEADER (Flexbox para separar Esquerda e Direita) --- */}
@@ -44,10 +43,10 @@ export default function CardDenuncia({
                 <div className="relative w-[50px] h-[50px] shrink-0">
                 {showPhoto ? (
                     <Image
-                      src={fotoUsuario!} // O ! afirma que não é nulo/undefined aqui
-                      alt={`Foto de ${displayName}`}
-                      fill
-                      className="rounded-full object-cover border border-gray-200"
+                    src={fotoUsuario}
+                    alt={`Foto de ${displayName}`}
+                    fill
+                    className="rounded-full object-cover border border-gray-200"
                     />
                 ) : (
                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
@@ -55,14 +54,17 @@ export default function CardDenuncia({
                     </div>
                 )}
                 </div>
+
                 {/* Nome (Fonte Primária/Serifa) */}
                 <h3 className="text-h3">
                     {displayName}
                 </h3>
             </div>
+
+
         </div>
 
-         {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
+        {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
         <div className="flex flex-col items-end">
             <span className="text-body">
                 {categoria}
@@ -83,7 +85,9 @@ export default function CardDenuncia({
       </div>
 
       {/* --- DESCRIÇÃO --- */}
-      <div>
+      {/* Margem top para separar da data */}
+      <div className="mt-4 text-body leading-relaxed break-words whitespace-pre-wrap text-left">
+        {descricao}
       </div>
 
     </div>
