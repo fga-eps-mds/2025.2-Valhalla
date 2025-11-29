@@ -1,5 +1,6 @@
 # 2025.2 Valhalla — Guardiões da Universidade
-![Logo](/Front/public/logos/Logo-Navbar.svg)
+![Logo](Front/public/logos/Logo-Navbar.svg)
+
 
 ## Sobre
 
