@@ -19,10 +19,11 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
         shadow-md
       "
     >
-      <div>
+      {/* Ícone */}
+      <div className="text-azul-dark transition-colors duration-300">
         {icone}
       </div>
-      
+
       {/* Texto */}
       <span className="
         text-[22px] font-bold 
