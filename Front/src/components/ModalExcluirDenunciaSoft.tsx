@@ -1,25 +1,47 @@
 "use client";
 
+import { useState } from 'react';
 import { 
   ExclamationTriangleIcon, 
   XMarkIcon 
 } from '@heroicons/react/24/outline';
+import { toast } from 'sonner';
+import api from '@/utils/api';
 
 interface ModalExcluirDenunciaSoftProps {
   isOpen: boolean;
   onClose: () => void;
-  denunciaId?: number | null;     
+  denunciaId?: number | null;
   onDeleted?: (id: number) => void;
 }
 
-export default function ModalExcluirDenunciaSoft({ 
-  isOpen, 
-  onClose, 
-  denunciaId, 
-  onDeleted 
-}: ModalExcluirDenunciaSoftProps) {
+export default function ModalExcluirDenunciaSoft({ isOpen, onClose, denunciaId, onDeleted }: ModalExcluirDenunciaSoftProps) {
 
-  if (!isOpen) return null;
+const [isDeleting, setIsDeleting] = useState(false);
+
+
+  const handleDeleteDenuncia = async (idParaDeletar?: number) => {
+    const id = idParaDeletar ?? denunciaId;
+    if (!id) {
+      toast.error('ID da denúncia inválido.');
+      return;
+    }
+    setIsDeleting(true);
+    try {
+      await api.delete(`/denuncias/${id}`);
+      toast.success('Denúncia deletada com sucesso!');
+
+      if (onDeleted) onDeleted(id);
+      onClose();
+    } catch (error) {
+      console.error('Erro ao deletar:', error);
+      toast.error('Erro ao tentar deletar a denúncia.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+if (!isOpen) return null;
 
   return (
     <div 
@@ -50,15 +72,16 @@ export default function ModalExcluirDenunciaSoft({
             >
                 Cancelar
             </button>
+            
             <button
+              onClick={() => handleDeleteDenuncia()}
+              disabled={isDeleting}
               className="flex-1 py-3 rounded-xl bg-[#DB3C1A] text-white font-semibold hover:bg-[#b02f14] transition shadow-md disabled:opacity-60"
             >
-              Excluir
+              {isDeleting ? 'Excluindo...' : 'Excluir'}
             </button>
         </div>
-        <div className="flex gap-3 w-full">
-        </div>
-        
+
         <button 
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
