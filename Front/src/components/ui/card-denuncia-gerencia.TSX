@@ -27,9 +27,26 @@ export default function CardDenuncia({
     const showPhoto = !anonimato && fotoUsuario !== null && fotoUsuario !== undefined;
 
   return (
-    // Placeholder inicial
-    <div>
-      Card Denúncia
+    // 1. Container do Card com bordas e sombras
+    <div className="w-full text-branco border-2 border-azul-principal rounded-[20px] p-6 shadow-sm mb-4">
+      
+      {/* --- HEADER (Flexbox para separar Esquerda e Direita) --- */}
+      <div className="flex justify-between items-start mb-2">
+        
+        {/* LADO ESQUERDO: Usuário + Data */}
+        <div className="flex flex-col">
+        </div>
+
+        {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
+        <div className="flex flex-col items-end">
+        </div>
+
+      </div>
+
+      {/* --- DESCRIÇÃO --- */}
+      <div>
+      </div>
+
     </div>
   );
 }
