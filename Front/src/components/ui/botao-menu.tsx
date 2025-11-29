@@ -8,13 +8,17 @@ interface BotaoMenuProps {
 
 export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
   return (
-    <button onClick={onClick}>
-      <div>
-        {icone}
-      </div>
-      <span>
-        {texto}
-      </span>
+    <button
+      onClick={onClick}
+      className="
+        flex items-center justify-center gap-6 
+        w-[350px] h-[120px] 
+        bg-white 
+        border-[2px] border-[#67A8FF] 
+        rounded-[15px] 
+        shadow-md
+      "
+    >
     </button>
   );
 }
