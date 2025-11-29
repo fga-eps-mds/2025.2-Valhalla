@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from 'sonner';
 import api from "@/utils/api";
-import CardDenuncia from "@/components/ui/card-denuncia-gerencia"; // Ajuste o caminho se necessário
-import ModalExcluirDenunciaSoft from "@/components/ModalExcluirDenunciaSoft"; 
+import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
+import ModalExcluirDenunciaSoft from "@/components/ModalExcluirDenunciaSoft";
 
 interface DenunciaBackend {
   id: number;
@@ -71,7 +71,6 @@ export default function Gerencia() {
         }));
 
         setListagemDenuncias(denunciasFormatadas);
-        
         const totalDeItens = response.data.totalDenuncias;
         setTotalDePaginas(Math.ceil(totalDeItens / limite));
 
@@ -122,12 +121,11 @@ return (
                             </p>
                           )}
                         </div>
-                    </div>    
-
+                      </div>
                     </section>
-
                     <section className="flex justify-center items-center space-x-2 py-8">
                       
+                      {/* Botão "Anterior" */}
                       <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         disabled={currentPage === 1}
@@ -135,7 +133,7 @@ return (
                       >
                         Anterior
                       </button>
-
+                      {/* Botões de Número */}
                       {Array.from({ length: totalDePaginas }, (_, i) => i + 1).map(pageNumber => (
                         <button
                           key={pageNumber}
@@ -150,6 +148,7 @@ return (
                         </button>
                       ))}
 
+                      {/* Botão "Próximo" */}
                       <button
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalDePaginas))}
                         disabled={currentPage === totalDePaginas}
@@ -158,7 +157,12 @@ return (
                         Próximo
                       </button>
                     </section>
-                    
+                    <ModalExcluirDenunciaSoft 
+                            isOpen={isModalExcluirOpen} 
+                            onClose={() => setIsModalExcluirOpen(false)}
+                            denunciaId={selectedDenunciaId}
+                            onDeleted={(id) => setListagemDenuncias(prev => prev.filter(d => d.id !== id))}
+                          />
                   </>
                 )}
         </main>
