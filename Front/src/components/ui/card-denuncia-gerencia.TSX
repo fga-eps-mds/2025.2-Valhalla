@@ -55,11 +55,12 @@ export default function CardDenuncia({
                     </div>
                 )}
                 </div>
-                
+                {/* Nome (Fonte Primária/Serifa) */}
+                <h3 className="text-h3">
+                    {displayName}
+                </h3>
             </div>
-
         </div>
-// ...
 
         {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
         <div className="flex flex-col items-end">
