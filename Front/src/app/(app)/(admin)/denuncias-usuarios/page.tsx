@@ -97,9 +97,33 @@ return (
                     <section>
                       <div className="container mx-auto max-w-7xl p-4 md:p-8">
                         <div className="grid grid-cols-1 gap-4 md:gap-6">
-                           {/*lista de cards*/}
+                          {listagemDenuncias.length > 0 ? (
+                            listagemDenuncias.map(denuncia => {
+                              return (
+                                  <CardDenuncia
+                                    key={denuncia.id}
+                                    id={denuncia.id}
+                                    nomeUsuario={denuncia.nomeUsuario}
+                                    fotoUsuario={denuncia.fotoUsuario}
+                                    descricao={denuncia.descricao}
+                                    anonimato={denuncia.anonimato}
+                                    categoria={denuncia.categoria}
+                                    data={denuncia.data}
+                                    onDelete={(id) => {
+                                      setSelectedDenunciaId(id);
+                                      setIsModalExcluirOpen(true);
+                                    }}
+                                  />
+                              );
+                            })
+                          ) : (
+                            <p className="col-span-full text-center text-gray-500 text-lg">
+                              Ops! Nenhuma Denuncia foi encontrada.
+                            </p>
+                          )}
                         </div>
-                      </div>
+                    </div>    
+
                     </section>
                     
                   </>
