@@ -50,6 +50,44 @@ export default function MinhasDenuncias() {
   const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
   const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
 
+  useEffect(() => {
+    const buscarDenuncias = async () => {
+      try {
+        setIsloading(true);
+
+        const response = await api.get(`/denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
+
+        const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
+          id: denuncia.id,
+          nomeUsuario: denuncia.usuario?.nome,
+          fotoUsuario: denuncia.usuario?.mediaSrc,
+          descricao: denuncia.descricao,
+          anonimato: denuncia.anonimato,
+          categoria: denuncia.categoria.nome,
+          data: new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          }),
+        }));
+
+        setListagemDenuncias(denunciasFormatadas);
+        const totalDeItens = response.data.totalDenuncias;
+        setTotalDePaginas(Math.ceil(totalDeItens / limite));
+
+      } catch (error) {
+        console.error("Erro ao buscar denúncias:", error);
+        toast.error("Erro ao buscar denúncias.");
+      } finally {
+        setIsloading(false);
+      }
+    }
+
+    if (user?.id) {
+        buscarDenuncias();
+    }
+  }, [currentPage, limite, user]); 
+
   return (
     <main>
        {/* Conteúdo */}
