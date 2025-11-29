@@ -9,13 +9,35 @@ import CardDenuncia from "@/components/ui/card-denuncia-gerencia"; // Ajuste o c
 import ModalExcluirDenunciaSoft from "@/components/ModalExcluirDenunciaSoft"; 
 
 interface DenunciaBackend {
-  
+  id: number;
+  descricao: string;
+  idCategoria: number;
+  mediaSrc: string | null;
+  anonimato: boolean;
+  dataCriacao: string;
+  usuario: {
+    nome: string;
+    mediaSrc: string | null;
+  };
+  categoria: {
+    nome: string;
+  };
 }
 
 type Denuncia = {
-
+  id: number;
+  nomeUsuario: string;
+  fotoUsuario?: string | null;
+  descricao: string;
+  anonimato: boolean;
+  categoria: string;
+  data: string;
 };
 
 export default function Gerencia() {
-  return;
+  return (
+    <main>
+      <h1>Gerenciamento de Denúncias</h1>
+    </main>
+  );
 }
