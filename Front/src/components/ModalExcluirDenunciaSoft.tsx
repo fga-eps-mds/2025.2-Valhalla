@@ -1,6 +1,9 @@
 "use client";
 
-import React from 'react';
+import { 
+  ExclamationTriangleIcon, 
+  XMarkIcon 
+} from '@heroicons/react/24/outline';
 
 interface ModalExcluirDenunciaSoftProps {
   isOpen: boolean;
@@ -24,9 +27,24 @@ export default function ModalExcluirDenunciaSoft({
       onClick={onClose}
     >
       <div 
-        onClick={(e) => e.stopPropagation()} // Impede que clicar no card feche o modal
+        onClick={(e) => e.stopPropagation()}
         className='bg-white rounded-2xl shadow-xl w-[400px] p-6 flex flex-col items-center text-center relative animate-in fade-in zoom-in duration-200'
       >
+        
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <ExclamationTriangleIcon className="w-8 h-8 text-[#DB3C1A]" />
+        </div>
+
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Excluir Denuncia?
+        </h2>
+        
+        <p className="text-gray-500 mb-8 text-sm leading-relaxed">
+            Tem certeza que deseja excluir essa denúncia?
+        </p>
+
+        {/* Botões */}
+
       </div>
     </div>
   );
