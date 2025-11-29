@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 import { toast } from 'sonner';
 import api from "@/utils/api";
 import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
-import BotaoMenu from "@/components/ui/botao-menu";
-import { UsersIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/solid";
 import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
 
 interface DenunciaBackend {
@@ -56,9 +54,7 @@ export default function Gerencia() {
       try {
         setIsloading(true);
 
-        console.log(`denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
-        const response = await api.get(`/denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
-        console.log('Resposta da API:', response.data);
+        const response = await api.get(`/denuncias?page=${currentPage}&limit=${limite}`);
 
         const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
           id: denuncia.id,
@@ -88,9 +84,8 @@ export default function Gerencia() {
 
     buscarDenuncias();
   }, [currentPage, limite, user]);
-  
-  if (user?.tipo === 'COMUM') {
-      return (
+
+return (
         <main>
           {isLoading ? (
                   <div className="py-12 text-center">
@@ -172,28 +167,4 @@ export default function Gerencia() {
                 )}
         </main>
       );
-    } else {
-      return (
-
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
-      
-
-      {/* Botão 1: Denúncias de Usuários */}
-      <BotaoMenu
-        icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
-        texto="Denuncias de Usuarios"
-        onClick={() => router.push('/denuncias-usuarios')} 
-      />
-
-      {/* Botão 2: Minhas Denúncias */}
-      <BotaoMenu
-        icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
-        texto="Minhas Denuncias"
-        onClick={() => router.push('/minhas-denuncias')}
-      />
-
-    </div>
-
-      );
-    }
 }

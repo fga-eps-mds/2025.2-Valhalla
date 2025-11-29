@@ -88,9 +88,8 @@ export default function Gerencia() {
 
     buscarDenuncias();
   }, [currentPage, limite, user]);
-  
-  if (user?.tipo === 'COMUM') {
-      return (
+
+return (
         <main>
           {isLoading ? (
                   <div className="py-12 text-center">
@@ -172,28 +171,4 @@ export default function Gerencia() {
                 )}
         </main>
       );
-    } else {
-      return (
-
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
-      
-
-      {/* Botão 1: Denúncias de Usuários */}
-      <BotaoMenu
-        icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
-        texto="Denuncias de Usuarios"
-        onClick={() => router.push('/denuncias-usuarios')} 
-      />
-
-      {/* Botão 2: Minhas Denúncias */}
-      <BotaoMenu
-        icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
-        texto="Minhas Denuncias"
-        onClick={() => router.push('/minhas-denuncias')}
-      />
-
-    </div>
-
-      );
-    }
 }
