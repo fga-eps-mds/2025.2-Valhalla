@@ -43,7 +43,19 @@ export default function ModalExcluirDenunciaSoft({
             Tem certeza que deseja excluir essa denúncia?
         </p>
 
-        {/* Botões */}
+        <div className="flex gap-3 w-full">
+            <button
+                onClick={onClose}
+                className="flex-1 py-3 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition"
+            >
+                Cancelar
+            </button>
+            <button
+              className="flex-1 py-3 rounded-xl bg-[#DB3C1A] text-white font-semibold hover:bg-[#b02f14] transition shadow-md disabled:opacity-60"
+            >
+              Excluir
+            </button>
+        </div>
 
       </div>
     </div>
