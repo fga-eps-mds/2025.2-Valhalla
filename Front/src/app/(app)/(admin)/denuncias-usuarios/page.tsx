@@ -86,9 +86,24 @@ export default function Gerencia() {
     buscarDenuncias();
   }, [currentPage, limite, user]);
 
-  return (
-    <main>
-
-    </main>
-  );
+return (
+        <main>
+          {isLoading ? (
+                  <div className="py-12 text-center">
+                    <p className="text-gray-500 text-lg">Carregando...</p>
+                  </div>
+                ) : (
+                  <>
+                    <section>
+                      <div className="container mx-auto max-w-7xl p-4 md:p-8">
+                        <div className="grid grid-cols-1 gap-4 md:gap-6">
+                           {/*lista de cards*/}
+                        </div>
+                      </div>
+                    </section>
+                    
+                  </>
+                )}
+        </main>
+      );
 }
