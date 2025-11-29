@@ -62,7 +62,7 @@ export default function CardDenuncia({
             </div>
         </div>
 
-        {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
+         {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
         <div className="flex flex-col items-end">
             <span className="text-body">
                 {categoria}
@@ -71,8 +71,15 @@ export default function CardDenuncia({
             <span className="text-[12px] text-small mt-1 ml-1">
                 {data}
             </span>
-
+            <button
+              onClick={() => onDelete(id)}
+              className="group flex items-center justify-center p-2 rounded-full hover:bg-red-50 transition-colors duration-200"
+              title="Excluir denúncia"
+            >
+              <TrashIcon className="w-5 h-5 text-red-400 group-hover:text-red-600 transition-colors" />
+            </button>
         </div>
+
       </div>
 
       {/* --- DESCRIÇÃO --- */}
