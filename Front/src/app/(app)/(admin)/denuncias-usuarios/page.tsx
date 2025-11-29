@@ -125,6 +125,39 @@ return (
                     </div>    
 
                     </section>
+
+                    <section className="flex justify-center items-center space-x-2 py-8">
+                      
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                      >
+                        Anterior
+                      </button>
+
+                      {Array.from({ length: totalDePaginas }, (_, i) => i + 1).map(pageNumber => (
+                        <button
+                          key={pageNumber}
+                          onClick={() => setCurrentPage(pageNumber)}
+                          className={`px-4 py-2 rounded shadow-sm ${
+                            currentPage === pageNumber 
+                            ? 'bg-amarelo text-white' 
+                            : 'bg-white text-black' 
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalDePaginas))}
+                        disabled={currentPage === totalDePaginas}
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                      >
+                        Próximo
+                      </button>
+                    </section>
                     
                   </>
                 )}
