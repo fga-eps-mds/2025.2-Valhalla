@@ -47,6 +47,7 @@ export default function MinhasDenuncias() {
   const [limite, setLimite] = useState(20);
 
   const [isLoading, setIsloading] = useState(false);
+
   const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
   const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
 
@@ -55,7 +56,9 @@ export default function MinhasDenuncias() {
       try {
         setIsloading(true);
 
+        console.log(`denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
         const response = await api.get(`/denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
+        console.log('Resposta da API:', response.data);
 
         const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
           id: denuncia.id,
@@ -83,12 +86,10 @@ export default function MinhasDenuncias() {
       }
     }
 
-    if (user?.id) {
-        buscarDenuncias();
-    }
-  }, [currentPage, limite, user]); 
+    buscarDenuncias();
+  }, [currentPage, limite, user]);
 
-  return (
+return (
         <main>
           {isLoading ? (
                   <div className="py-12 text-center">
@@ -126,8 +127,9 @@ export default function MinhasDenuncias() {
                         </div>
                       </div>
                     </section>
-
                     <section className="flex justify-center items-center space-x-2 py-8">
+                      
+                      {/* Botão "Anterior" */}
                       <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         disabled={currentPage === 1}
@@ -135,7 +137,7 @@ export default function MinhasDenuncias() {
                       >
                         Anterior
                       </button>
-
+                      {/* Botões de Número */}
                       {Array.from({ length: totalDePaginas }, (_, i) => i + 1).map(pageNumber => (
                         <button
                           key={pageNumber}
@@ -150,6 +152,7 @@ export default function MinhasDenuncias() {
                         </button>
                       ))}
 
+                      {/* Botão "Próximo" */}
                       <button
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalDePaginas))}
                         disabled={currentPage === totalDePaginas}
@@ -158,8 +161,12 @@ export default function MinhasDenuncias() {
                         Próximo
                       </button>
                     </section>
-
-                    {/* Paginação e Modal */}
+                    <ModalExcluirDenunciaSoft 
+                            isOpen={isModalExcluirOpen} 
+                            onClose={() => setIsModalExcluirOpen(false)}
+                            denunciaId={selectedDenunciaId}
+                            onDeleted={(id) => setListagemDenuncias(prev => prev.filter(d => d.id !== id))}
+                          />
                   </>
                 )}
         </main>
