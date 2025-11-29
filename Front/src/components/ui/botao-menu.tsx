@@ -16,14 +16,14 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
         bg-white 
         border-[2px] border-[#67A8FF] 
         rounded-[15px] 
-        shadow-md hover:shadow-lg        
-        transform hover:-translate-y-1   
-        transition-all duration-300      
-        group                            
+        shadow-md hover:shadow-lg 
+        transform hover:-translate-y-1 
+        transition-all duration-300
+        group
       "
     >
       {/* Ícone */}
-      <div className="text-azul-dark transition-colors duration-300">
+      <div className="text-azul-dark group-hover:text-azul-principal transition-colors duration-300">
         {icone}
       </div>
 
