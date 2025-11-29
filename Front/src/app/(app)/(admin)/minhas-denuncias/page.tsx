@@ -89,8 +89,25 @@ export default function MinhasDenuncias() {
   }, [currentPage, limite, user]); 
 
   return (
-    <main>
-       {/* Conteúdo */}
-    </main>
-  );
+        <main>
+          {isLoading ? (
+                  <div className="py-12 text-center">
+                    <p className="text-gray-500 text-lg">Carregando...</p>
+                  </div>
+                ) : (
+                  <>
+                    <section>
+                      <div className="container mx-auto max-w-7xl p-4 md:p-8">
+                        {/* Grid de Cards */}
+                        <div className="grid grid-cols-1 gap-4 md:gap-6">
+                           {/* Lista */}
+                        </div>
+                      </div>
+                    </section>
+                    
+                    {/* Paginação e Modal */}
+                  </>
+                )}
+        </main>
+      );
 }
