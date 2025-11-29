@@ -92,7 +92,23 @@ export default function Gerencia() {
   if (user?.tipo === 'COMUM') {
       return (
         <main>
-           Área do Usuário Comum
+          {isLoading ? (
+                  <div className="py-12 text-center">
+                    <p className="text-gray-500 text-lg">Carregando...</p>
+                  </div>
+                ) : (
+                  <>
+                    <section>
+                      <div className="container mx-auto max-w-7xl p-4 md:p-8">
+                        <div className="grid grid-cols-1 gap-4 md:gap-6">
+                          {/* Lista de cards */}
+                        </div>
+                      </div>
+                    </section>
+                    
+                    {/* Paginação e Modal*/}
+                  </>
+                )}
         </main>
       );
   } else {
