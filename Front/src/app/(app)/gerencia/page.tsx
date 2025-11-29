@@ -51,14 +51,14 @@ export default function Gerencia() {
   const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
   const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
 
-  // ... estados
-
   useEffect(() => {
     const buscarDenuncias = async () => {
       try {
         setIsloading(true);
 
-        const response = await api.get(`/denuncias?page=${currentPage}&limit=${limite}`);
+        console.log(`denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
+        const response = await api.get(`/denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
+        console.log('Resposta da API:', response.data);
 
         const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
           id: denuncia.id,
@@ -88,7 +88,7 @@ export default function Gerencia() {
 
     buscarDenuncias();
   }, [currentPage, limite, user]);
-
+  
   if (user?.tipo === 'COMUM') {
       return (
         <main>
@@ -99,7 +99,7 @@ export default function Gerencia() {
                 ) : (
                   <>
                     <section>
-                      <div className="container mx-auto max-w-7xl p-4 md:p-8">            
+                      <div className="container mx-auto max-w-7xl p-4 md:p-8">
                         <div className="grid grid-cols-1 gap-4 md:gap-6">
                           {listagemDenuncias.length > 0 ? (
                             listagemDenuncias.map(denuncia => {
@@ -128,24 +128,64 @@ export default function Gerencia() {
                         </div>
                       </div>
                     </section>
-                    
-                    {/* Paginação e Modal*/}
+                    <section className="flex justify-center items-center space-x-2 py-8">
+                      
+                      {/* Botão "Anterior" */}
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                      >
+                        Anterior
+                      </button>
+                      {/* Botões de Número */}
+                      {Array.from({ length: totalDePaginas }, (_, i) => i + 1).map(pageNumber => (
+                        <button
+                          key={pageNumber}
+                          onClick={() => setCurrentPage(pageNumber)}
+                          className={`px-4 py-2 rounded shadow-sm ${
+                            currentPage === pageNumber 
+                            ? 'bg-amarelo text-white' 
+                            : 'bg-white text-black' 
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+
+                      {/* Botão "Próximo" */}
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalDePaginas))}
+                        disabled={currentPage === totalDePaginas}
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                      >
+                        Próximo
+                      </button>
+                    </section>
+                    <ModalExcluirDenunciaSoft 
+                            isOpen={isModalExcluirOpen} 
+                            onClose={() => setIsModalExcluirOpen(false)}
+                            denunciaId={selectedDenunciaId}
+                            onDeleted={(id) => setListagemDenuncias(prev => prev.filter(d => d.id !== id))}
+                          />
                   </>
                 )}
         </main>
       );
-  } else {
+    } else {
       return (
 
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
       
 
+      {/* Botão 1: Denúncias de Usuários */}
       <BotaoMenu
-        icone={<UsersIcon className="w-12 h-12 fill-current" />}
+        icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
         texto="Denuncias de Usuarios"
         onClick={() => router.push('/denuncias-usuarios')} 
       />
 
+      {/* Botão 2: Minhas Denúncias */}
       <BotaoMenu
         icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
         texto="Minhas Denuncias"
@@ -155,5 +195,5 @@ export default function Gerencia() {
     </div>
 
       );
-  }
+    }
 }
