@@ -1,13 +1,45 @@
 'use client';
 
-import React from 'react';
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from 'sonner';
+import api from "@/utils/api";
+import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
+import BotaoMenu from "@/components/ui/botao-menu";
+import { UsersIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/solid";
+import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
 
-export default function PaginaConstrucao() {
+interface DenunciaBackend {
+  id: number;
+  descricao: string;
+  idCategoria: number;
+  mediaSrc: string | null;
+  anonimato: boolean;
+  dataCriacao: string;
+  usuario: {
+    nome: string;
+    mediaSrc: string | null;
+  };
+  categoria: {
+    nome: string;
+  };
+}
+
+type Denuncia = {
+  id: number;
+  nomeUsuario: string;
+  fotoUsuario?: string | null;
+  descricao: string;
+  anonimato: boolean;
+  categoria: string;
+  data: string;
+};
+
+export default function Gerencia() {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[var(--color-off-white)]">
-      <h1 className="text-[var(--color-azul-dark)] font-[var(--font-heading)] text-3xl font-bold">
-        Página em construção
-      </h1>
-    </div>
+    <main>
+      <h1>Gerencia</h1>
+    </main>
   );
 }
