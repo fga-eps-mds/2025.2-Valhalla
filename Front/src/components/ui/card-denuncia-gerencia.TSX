@@ -11,7 +11,21 @@ interface CardDenunciaProps {
   onDelete: (id: number) => void;
 }
 
-export default function CardDenuncia (){
+export default function CardDenuncia({ 
+  id,
+  nomeUsuario, 
+  fotoUsuario, 
+  descricao, 
+  anonimato,
+  categoria,
+  data,
+  onDelete,
+}: CardDenunciaProps) {
 
-  return;
+  return (
+    // Placeholder inicial
+    <div>
+      Card Denúncia
+    </div>
+  );
 }
