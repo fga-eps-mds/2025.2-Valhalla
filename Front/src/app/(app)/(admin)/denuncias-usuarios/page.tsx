@@ -35,9 +35,23 @@ type Denuncia = {
 };
 
 export default function Gerencia() {
+    
+  const { user } = useAuth();
+  const router = useRouter();
+  
+  const [listagemDenuncias, setListagemDenuncias] = useState<Denuncia[]>([]);
+  const [totalDePaginas, setTotalDePaginas] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limite, setLimite] = useState(20);
+
+  const [isLoading, setIsloading] = useState(false);
+
+  const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
+  const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
+
   return (
     <main>
-      <h1>Gerenciamento de Denúncias</h1>
+
     </main>
   );
 }
