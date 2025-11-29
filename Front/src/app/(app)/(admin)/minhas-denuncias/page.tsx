@@ -11,13 +11,35 @@ import { UsersIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/solid";
 import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
 
 interface DenunciaBackend {
-  
+  id: number;
+  descricao: string;
+  idCategoria: number;
+  mediaSrc: string | null;
+  anonimato: boolean;
+  dataCriacao: string;
+  usuario: {
+    nome: string;
+    mediaSrc: string | null;
+  };
+  categoria: {
+    nome: string;
+  };
 }
 
 type Denuncia = {
-
+  id: number;
+  nomeUsuario: string;
+  fotoUsuario?: string | null;
+  descricao: string;
+  anonimato: boolean;
+  categoria: string;
+  data: string;
 };
 
 export default function MinhasDenuncias() {
-  return;
+  return (
+    <main>
+      <h1>Minhas Denúncias</h1>
+    </main>
+  );
 }
