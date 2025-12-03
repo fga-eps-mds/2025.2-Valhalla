@@ -129,3 +129,7 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
                     </button>
 
                     <h1 className='text-h1 mb-[35px]'>Qual sua Notícia?</h1>
+
+                    {/*Botões de TIPO DE NOTÍCIA*/}
+                    <div className='flex items-center gap-[10px] mb-[26px]'></div>
+
