@@ -154,3 +154,16 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
                           </select>
                     </div>
 
+                     {/*Campo DESCRIÇÃO*/} 
+                    <div>
+                      <label htmlFor="descricao" className="text-body mb-1">Descrição</label>
+                      <div>
+                        <textarea id="descricao"
+                          className="w-[500px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 resize-none "
+                          placeholder="Escreva a sua notícia..."
+                          value={descricao} /*Valor é o que está guardado na memória "descricao"*/
+                          onChange={(e) => setDescricao(e.target.value)} /*Quando usuário digita é guardado na memómria*/
+                         />
+                      </div>
+                    </div>
+
