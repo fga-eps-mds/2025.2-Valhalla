@@ -29,3 +29,21 @@ const getCategorias = async (): Promise<Categoria[]> => {
     return [];
   }
 };
+
+interface CriarDenunciaDados {
+  descricao: string;
+  idCategoria: number;
+  anonimato?: boolean;
+  mediaSrc?: string;
+}
+
+const criarDenuncia = async (dados: CriarDenunciaDados) => {
+  try {
+    const response = await api.post('/denuncias', dados);
+    return response.data;
+  } catch (error) {
+    toast.error("Erro ao criar denúncia.");
+    console.error("Erro ao criar denúncia:", error);
+    throw error; 
+  }
+};
