@@ -37,13 +37,34 @@ interface CriarDenunciaDados {
   mediaSrc?: string;
 }
 
-const criarDenuncia = async (dados: CriarDenunciaDados) => {
+const adicionarDenuncia = async (dados: AdicionarDenunciaDados) => {
   try {
     const response = await api.post('/denuncias', dados);
     return response.data;
   } catch (error) {
-    toast.error("Erro ao criar denúncia.");
-    console.error("Erro ao criar denúncia:", error);
+    toast.error("Erro ao adicionar denúncia.");
+    console.error("Erro ao adicionar denúncia:", error);
     throw error; 
   }
 };
+
+export default function ModalAdicionarDenuncia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
+  
+
+  const [descricao, setDescricao] = useState('');
+  const [idCategoria, setIdCategoria] = useState('');
+  const [anonimato, setAnonimato] = useState<boolean | null>(null);
+  const [mediaSrc, setMediaSrc] = useState<string>('');
+  const {user} = useAuth();
+
+  const idUsuario = user?.id;
+  // Estado local para guardar a LISTA CATEGORIA
+    const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
+
+    useEffect(() => {
+      const carregar = async () => {
+        const dados = await getCategorias();
+        setListaCategorias(dados);
+      };
+      carregar();
+    }, []); 
