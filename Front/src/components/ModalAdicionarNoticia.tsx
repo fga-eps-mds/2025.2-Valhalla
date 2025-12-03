@@ -68,3 +68,42 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
       };
       carregar();
     }, []); 
+
+    // Função que é chamada ao clicar em PUBLICAR
+    const publicarNoticia = async () => {
+
+    if (!descricao || !idCategoria) {
+      toast.error("Por favor, preencha a descrição e selecione uma categoria.");
+      return;
+    }
+
+    try {
+      if (!idUsuario) {
+        toast.error("Usuário não autenticado.");
+        return;
+      }
+
+      if (!descricao.trim()) {
+        toast.error("A descrição não pode estar vazia.");
+        return;
+      }
+
+      if (!idCategoria) {
+        toast.error("Por favor, selecione uma categoria.");
+        return;
+      }
+
+      await adicionarNoticia({
+        descricao: descricao,
+        idCategoria: Number(idCategoria),
+        mediaSrc: mediaSrc,
+      });
+
+      toast.success("Notícia publicada com sucesso!");
+      onClose();
+
+    } catch (error) {
+      toast.error("Erro ao publicar notícia. Verifique o console.");
+      console.error(error);
+    }
+  };
