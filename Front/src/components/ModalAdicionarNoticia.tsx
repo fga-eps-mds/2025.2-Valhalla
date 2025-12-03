@@ -167,3 +167,16 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
                       </div>
                     </div>
 
+                    {/*Botão PUBLICAR*/}
+                    <button
+                      type="submit"
+                      onClick={publicarNoticia}
+                      className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold">
+                      PUBLICAR
+                    </button>
+
+                </div>
+            </div>
+          </>
+        )
+
