@@ -133,3 +133,24 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
                     {/*Botões de TIPO DE NOTÍCIA*/}
                     <div className='flex items-center gap-[10px] mb-[26px]'></div>
 
+                    {/*Campo de CATEGORIA*/}
+                    <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
+                    <ChevronUpDownIcon className='size-[24px]'/>
+                    <select 
+                      className='w-full h-full 
+                        px-[16px] text-small cursor-pointer bg-white
+                        appearance-none focus:outline-none focus:border-[var(--color-azul-principal)'
+                      value={idCategoria}
+                      onChange={(e) => setIdCategoria(e.target.value)}
+                    >
+                              <option value="" disabled>Selecione a Categoria</option>
+                              
+                              {listaCategorias.map((cat) => (
+                                <option key={cat.id} value={cat.id}>
+                                  {cat.nome}
+                              </option>
+                            ))}
+
+                          </select>
+                    </div>
+
