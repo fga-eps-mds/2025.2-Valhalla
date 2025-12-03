@@ -30,25 +30,25 @@ const getCategorias = async (): Promise<Categoria[]> => {
   }
 };
 
-interface CriarDenunciaDados {
+interface CriarNoticiaDados {
   descricao: string;
   idCategoria: number;
   anonimato?: boolean;
   mediaSrc?: string;
 }
 
-const adicionarDenuncia = async (dados: AdicionarDenunciaDados) => {
+const adicionarNoticia = async (dados: CriarNoticiaDados) => {
   try {
-    const response = await api.post('/denuncias', dados);
+    const response = await api.post('/noticias', dados);
     return response.data;
   } catch (error) {
-    toast.error("Erro ao adicionar denúncia.");
-    console.error("Erro ao adicionar denúncia:", error);
+    toast.error("Erro ao adicionar notícia.");
+    console.error("Erro ao adicionar notícia:", error);
     throw error; 
   }
 };
 
-export default function ModalAdicionarDenuncia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
+export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   
 
   const [descricao, setDescricao] = useState('');
