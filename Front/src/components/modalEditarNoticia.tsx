@@ -56,7 +56,20 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
       toast.error("Por favor, preencha todos os campos.");
       return;
     }
-    
+
+  try {
+      await api.put(`/noticias/${noticiaParaEditar.id}`, {
+        descricao: descricao,
+        idCategoria: Number(idCategoria),
+      });
+
+      toast.success("Notícia atualizada com sucesso!");
+      aoAtualizar();
+      onClose();
+    } catch (error) {
+      toast.error("Erro ao atualizar notícia.");
+      console.error(error);
+    }
   };
 
     if (!isOpen) return null;
