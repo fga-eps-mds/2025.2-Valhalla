@@ -44,7 +44,7 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
           </button>
 
           <h1 className='text-h1 mb-[35px]'>Editar Notícia</h1>
-          
+
           <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
             <ChevronUpDownIcon className='size-[24px]'/>
             <select className='w-full h-full px-[16px] text-small cursor-pointer bg-white appearance-none focus:outline-none'>
@@ -61,6 +61,12 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
               />
             </div>
           </div>
+
+          <button
+            type="submit"
+            className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold">
+            SALVAR ALTERAÇÕES
+          </button>
         </div>
     </div>
   )
