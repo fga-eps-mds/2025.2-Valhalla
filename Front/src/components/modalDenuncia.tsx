@@ -1,14 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { 
-  CameraIcon, 
-  ArrowLeftIcon
-} from '@heroicons/react/24/outline';
-import {
-  ChevronUpDownIcon,
-  PlusIcon
-} from '@heroicons/react/24/solid';
+import { CameraIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { ChevronUpDownIcon, PlusIcon } from '@heroicons/react/24/solid';
 import api from '@/utils/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -147,7 +141,7 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === true 
-                            ? 'bg-azul-dark text--branco border--azul-dark'
+                            ? 'bg-azul-dark text-branco border--azul-dark'
                             : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
                         `}
                       > ANÔNIMA
@@ -160,7 +154,7 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === false
-                            ? 'bg-azul-dark text--branco border--azul-dark'
+                            ? 'bg-azul-dark text-branco border--azul-dark'
                             : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
                         `}
                       > PÚBLICA
