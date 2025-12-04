@@ -9,4 +9,9 @@ export class edicaoNoticiasDto {
     @IsString({message: 'A descricao deve ser um texto.'})
     @IsOptional()
     descricao?:string;
+
+    @IsString({message: 'O tipo deve ser um texto.'})
+    @IsOptional()
+    tipo?:string;
+
 }
