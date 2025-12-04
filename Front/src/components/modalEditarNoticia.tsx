@@ -26,7 +26,10 @@ interface ModalEditarProps {
 }
 
 export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar, aoAtualizar }: ModalEditarProps) {
-  if (!isOpen) return null;
+    const [descricao, setDescricao] = useState('');
+    const [idCategoria, setIdCategoria] = useState('');
+    const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
+    if (!isOpen) return null;
 
   return (
     <div 
