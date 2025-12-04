@@ -70,7 +70,7 @@ export default function Perfil() {
             <div className="w-full max-w-[500px] flex flex-col gap-5 items-center">
 
                 <button onClick={() => setIsModalPerfilOpen(true)}
-                className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
+                className="min-w-md flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group cursor-pointer">
                     <AcademicCapIcon className="w-6 h-6 text-azul-dark mr-4" />
                     <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900">
                         Clique aqui para editar seu perfil
@@ -79,7 +79,7 @@ export default function Perfil() {
 
                 
                     <button onClick={() => setIsModalSenhaOpen(true)}
-                    className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
+                    className="min-w-md flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group cursor-pointer">
                         <KeyIcon className="w-6 h-6 text-azul-dark mr-4" />
                         <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900">
                             Clique aqui para alterar sua senha
@@ -89,7 +89,7 @@ export default function Perfil() {
 
                 <button 
                     onClick={logout} 
-                    className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-azul-principal text-white hover:bg-[#254c9b] transition shadow-md font-bold text-sm gap-2 border border-azul-dark"
+                    className="w-[190px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-azul-principal text-white hover:bg-[#254c9b] transition shadow-md font-bold text-sm gap-2 border border-azul-dark cursor-pointer"
                 >
                     LOGOUT
                     <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
@@ -97,7 +97,7 @@ export default function Perfil() {
 
                 {user.tipo !== 'ADMINMASTER' && (
                     <button onClick={() => setIsModalExcluirOpen(true)}
-                    className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-azul-dark">
+                    className="w-[190px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-azul-dark cursor-pointer">
                         EXCLUIR CONTA
                         <TrashIcon className="w-5 h-5" />
                     </button>

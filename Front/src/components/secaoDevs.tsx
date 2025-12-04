@@ -43,14 +43,14 @@ const developers: Dev[] = [
     github: "https://github.com/dev-LucasDpaula",
   },
   {
-    name: "Pedro Ian",
-    photo: "/devs/ian.jpeg",
-    github: "https://github.com/pedroiaan",
-  },
-  {
     name: "Pedro Henrique",
     photo: "/devs/americo.jpeg",
     github: "https://github.com/dev-americo",
+  },
+  {
+    name: "Pedro Ian",
+    photo: "/devs/ian.jpeg",
+    github: "https://github.com/pedroiaan",
   },
   {
     name: "Pedro Lucas",

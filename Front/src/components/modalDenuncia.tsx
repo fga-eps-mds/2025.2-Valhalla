@@ -125,11 +125,11 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                     <button
                       type="button"
                       onClick={onClose}
-                      className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors">
+                      className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors cursor-pointer">
                       <ArrowLeftIcon className="size-12" />
                     </button>
 
-                    <h1 className='text-h1 mb-[35px]'>Qual sua Denúncia?</h1>
+                    <h1 className='text-h1 mb-[35px] cursor-default'>Qual sua Denúncia?</h1>
                     
                     {/*Botões de TIPO DE DENUNCIA*/}
                     <div className='flex items-center gap-2.5 mb-[26px]'>
@@ -141,8 +141,8 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === true 
-                            ? 'bg-azul-dark text-branco border--azul-dark'
-                            : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
+                            ? 'bg-azul-dark text-branco border-azul-dark'
+                            : 'bg-branco text-azul-dark border-azul-dark hover:bg-off-white'}
                         `}
                       > ANÔNIMA
                       </button>
@@ -154,8 +154,8 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === false
-                            ? 'bg-azul-dark text-branco border--azul-dark'
-                            : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
+                            ? 'bg-azul-dark text-branco border-azul-dark'
+                            : 'bg-branco text-azul-dark border-azul-dark hover:bg-off-white'}
                         `}
                       > PÚBLICA
                       </button>

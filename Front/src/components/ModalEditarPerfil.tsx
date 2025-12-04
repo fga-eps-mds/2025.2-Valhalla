@@ -62,15 +62,15 @@ export default function ModalEditarPerfil({ isOpen, onClose }: ModalEditarPerfil
         {/* --- CABEÇALHO --- */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <div className="flex items-center gap-4">
-                <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-100 transition">
-                    <XMarkIcon className="w-6 h-6 text-gray-900" />
+                <button onClick={onClose} className="p-2 rounded-full hover:bg-red-50 transition cursor-pointer">
+                    <XMarkIcon className="w-6 h-6 text-red-600" />
                 </button>
-                <h2 className="text-xl font-bold text-gray-900">Editar perfil</h2>
+                <h2 className="text-xl font-bold text-gray-900 cursor-default">Editar perfil</h2>
             </div>
             <button 
                 onClick={handleSave}
                 disabled={loading}
-                className="bg-texto-primario text-white px-5 py-1.5 rounded-full font-bold text-sm hover:bg-gray-800 transition disabled:opacity-50"
+                className="bg-texto-primario text-white px-5 py-1.5 rounded-full font-bold text-sm hover:bg-gray-800 transition cursor-pointer disabled:opacity-50 disabled:cursor-default"
             >
                 {loading ? 'Salvando...' : 'Salvar'}
             </button>
