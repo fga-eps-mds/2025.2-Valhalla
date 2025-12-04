@@ -121,10 +121,10 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
             <div 
 
               onClick={onClose}
-              className='fixed inset-0 z-[999999] bg-black/40 flex items-center justify-center'>
+              className='fixed inset-0 z-999999 bg-black/40 flex items-center justify-center'>
                   <div 
                     onClick={(e) => e.stopPropagation()}
-                    className='pointer-events-auto relative flex flex-col items-center w-[720px] max-w-[100%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6 [&::-webkit-scrollbar]:hidden'
+                    className='pointer-events-auto relative flex flex-col items-center w-[720px] max-w-full max-h-screen overflow-y-auto rounded-2xl bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6 [&::-webkit-scrollbar]:hidden'
                     >
                     
                     {/*Botão de "voltar"*/}
@@ -132,13 +132,13 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                       type="button"
                       onClick={onClose}
                       className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors">
-                      <ArrowLeftIcon className="size-[48px]" />
+                      <ArrowLeftIcon className="size-12" />
                     </button>
 
                     <h1 className='text-h1 mb-[35px]'>Qual sua Denúncia?</h1>
                     
                     {/*Botões de TIPO DE DENUNCIA*/}
-                    <div className='flex items-center gap-[10px] mb-[26px]'>
+                    <div className='flex items-center gap-2.5 mb-[26px]'>
 
                     {/* Botão ANÔNIMA (Ativo se anonimato === true) */}
                       <button 
@@ -147,8 +147,8 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === true 
-                            ? 'bg-[var(--color-azul-dark)] text-[var(--color-branco)] border-[var(--color-azul-dark)]'
-                            : 'bg-[var(--color-branco)] text-[var(--color-azul-dark)] border-[var(--color-azul-dark)] hover:bg-[var(--color-off-white)]'}
+                            ? 'bg-azul-dark text--branco border--azul-dark'
+                            : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
                         `}
                       > ANÔNIMA
                       </button>
@@ -160,19 +160,19 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === false
-                            ? 'bg-[var(--color-azul-dark)] text-[var(--color-branco)] border-[var(--color-azul-dark)]' 
-                            : 'bg-[var(--color-branco)] text-[var(--color-azul-dark)]  border-[var(--color-azul-dark)] hover:bg-[var(--color-off-white)]'}
+                            ? 'bg-azul-dark text--branco border--azul-dark'
+                            : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
                         `}
                       > PÚBLICA
                       </button>
                     </div>
                     
                     {/*Campo de CATEGORIA*/}
-                    <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
-                    <ChevronUpDownIcon className='size-[24px]'/>
+                    <div className='w-[366px] h-[52px] border border-azul-dark rounded-[10px] flex items-center p-4 mb-[30px]'>
+                    <ChevronUpDownIcon className='size-6'/>
                     <select 
                       className='w-full h-full 
-                        px-[16px] text-small cursor-pointer bg-white
+                        px-4 text-small cursor-pointer bg-white
                         appearance-none focus:outline-none focus:border-[var(--color-azul-principal)'
                       value={idCategoria}
                       onChange={(e) => setIdCategoria(e.target.value)}
@@ -215,7 +215,7 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                       <label htmlFor="descricao" className="text-body mb-1">Descrição</label>
                       <div>
                         <textarea id="descricao"
-                          className="w-[500px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 resize-none "
+                          className="w-[500px] h-[273px] rounded-[15px] border border-bordas p-2 resize-none "
                           placeholder="Escreva a sua denúncia..."
                           value={descricao} /*Valor é o que está guardado na memória "descricao"*/
                           onChange={(e) => setDescricao(e.target.value)} /*Quando usuário digita é guardado na memómria*/
@@ -227,7 +227,7 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                     <button
                       type="submit"
                       onClick={publicarDenuncia}
-                      className="flex items-center justify-center border border-[#1A2A4A] rounded-md py-[11px] my-[38px] gap-[5px] bg-[var(--color-azul-principal)] w-[240px] h-[45px] text-white rounded cursor-pointer hover:bg-[var(--color-azul-light)] transition font-bold">
+                      className="flex items-center justify-center border border-azul-dark rounded-md py-[11px] my-[38px] gap-[5px] bg-azul-principal w-60 h-[45px] text-white cursor-pointer hover:bg-azul-light transition font-bold">
                       PUBLICAR
                     </button>
 

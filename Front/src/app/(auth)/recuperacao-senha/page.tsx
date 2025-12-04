@@ -49,7 +49,7 @@ export default function RecuperarSenha() {
             <div className="w-[640px] h-[730px] rounded-2xl bg-white border border-gray-200 shadow-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8"> 
                 
                 <Link href="/" className="absolute top-6 left-6">
-                    <ArrowLeftIcon className="w-10 h-10 text-[#1A2A4A] cursor-pointer hover:text-blue-600 transition" />
+                    <ArrowLeftIcon className="w-10 h-10 text-azul-dark cursor-pointer hover:text-blue-600 transition" />
                 </Link>
                 {/* arrumar a logo*/}
                 <Image 
@@ -60,7 +60,7 @@ export default function RecuperarSenha() {
                     className="mt-8"
                 />
                 
-                <h1 className='text-[36px] text-[#050505] mb-20 font-bold font-[var(--fonte-primaria)]'>
+                <h1 className='text-[36px] text-texto-primario mb-20 font-(--fonte-primaria)'>
                     Recuperação de Senha
                 </h1>
 
@@ -71,7 +71,7 @@ export default function RecuperarSenha() {
                             Insira seu Email Cadastrado
                         </label>
                         <div className="relative">
-                            <UserCircleIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
+                            <UserCircleIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark" />
                             <input 
                                 type="email" 
                                 id="email" 
@@ -79,7 +79,7 @@ export default function RecuperarSenha() {
                                 value={email} 
                                 onChange={(e) => setEmail(e.target.value)}
                                 disabled={carregando}
-                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-[#1A2A4A] font-[var(--fonte-primaria)]"
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-azul-dark font-(--fonte-primaria)"
                             />
                         </div>
                     </div>
@@ -96,7 +96,7 @@ export default function RecuperarSenha() {
                     )}
                     <button
                         type="submit"
-                        className="flex items-center justify-center border border-[#1A2A4A] rounded-xl py-3 gap-2 bg-[#3060BF] w-[240px] text-white hover:bg-[#254c9b] transition font-semibold disabled:bg-gray-400"
+                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-semibold disabled:bg-gray-400"
                         disabled={carregando} 
                     >
                         {carregando ? 'Enviando...' : 'Enviar Link'}

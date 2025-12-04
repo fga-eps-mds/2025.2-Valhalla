@@ -55,7 +55,7 @@ export default function ModalEditarPerfil({ isOpen, onClose }: ModalEditarPerfil
   if (!isOpen || !user) return null;
 
   return (
-    <div className='fixed inset-0 z-[999999] bg-black/40 flex items-center justify-center backdrop-blur-sm px-4'>
+    <div className='fixed inset-0 z-999999 bg-black/40 flex items-center justify-center backdrop-blur-sm px-4'>
       
       <div className='bg-white w-full max-w-[600px] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col'>
         
@@ -70,7 +70,7 @@ export default function ModalEditarPerfil({ isOpen, onClose }: ModalEditarPerfil
             <button 
                 onClick={handleSave}
                 disabled={loading}
-                className="bg-[#050505] text-white px-5 py-1.5 rounded-full font-bold text-sm hover:bg-gray-800 transition disabled:opacity-50"
+                className="bg-texto-primario text-white px-5 py-1.5 rounded-full font-bold text-sm hover:bg-gray-800 transition disabled:opacity-50"
             >
                 {loading ? 'Salvando...' : 'Salvar'}
             </button>
@@ -107,7 +107,7 @@ export default function ModalEditarPerfil({ isOpen, onClose }: ModalEditarPerfil
             <div className="w-full flex flex-col gap-6">
                 
                 {/* Input Nome */}
-                <div className="relative border border-gray-300 rounded-md focus-within:border-[#3060BF] focus-within:ring-1 focus-within:ring-[#3060BF] px-3 py-2 transition-all">
+                <div className="relative border border-gray-300 rounded-md focus-within:border-azul-principal focus-within:ring-1 focus-within:ring-azul-principal px-3 py-2 transition-all">
                     <label htmlFor="nome" className="block text-xs text-gray-500 mb-1">
                         Nome
                     </label>
