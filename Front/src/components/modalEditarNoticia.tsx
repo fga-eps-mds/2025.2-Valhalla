@@ -25,10 +25,24 @@ interface ModalEditarProps {
   aoAtualizar: () => void;
 }
 
+const getCategorias = async (): Promise<Categoria[]> => {
+  try {
+    const response = await api.get('/categorias');
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar categorias:", error);
+    return [];
+  }
+};
+
 export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar, aoAtualizar }: ModalEditarProps) {
     const [descricao, setDescricao] = useState('');
     const [idCategoria, setIdCategoria] = useState('');
     const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
+    useEffect(() => {
+    getCategorias().then(data => setListaCategorias(data));
+  }, []);
+
     if (!isOpen) return null;
 
   return (
@@ -51,7 +65,15 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
           <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
             <ChevronUpDownIcon className='size-[24px]'/>
             <select className='w-full h-full px-[16px] text-small cursor-pointer bg-white appearance-none focus:outline-none'>
+               
                 <option value="" disabled>Selecione a Categoria</option>
+
+                {listaCategorias.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.nome}
+                  </option>
+                ))}
+                
             </select>
           </div>
 
