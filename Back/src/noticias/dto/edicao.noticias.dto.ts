@@ -1,4 +1,4 @@
-import { IsInt, IsString, IsOptional, isInt } from "class-validator";
+import { IsInt, IsString, IsOptional} from "class-validator";
 
 export class edicaoNoticiasDto {
 
