@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { UserCircleIcon, TrashIcon } from "@heroicons/react/24/solid";
-// removed unused imports: api, toast, useState
+import { UserCircleIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
+
 
 interface CardDenunciaProps {
   id: number;
@@ -54,7 +54,6 @@ export default function CardDenuncia({
                     </div>
                 )}
                 </div>
-
                 {/* Nome (Fonte Primária/Serifa) */}
                 <h3 className="text-h3">
                     {displayName}
@@ -73,6 +72,13 @@ export default function CardDenuncia({
             <span className="text-[12px] text-small mt-1 ml-1">
                 {data}
             </span>
+            <button
+              onClick={() => onDelete(id)}
+              className="group flex items-center justify-center p-2 rounded-full hover:bg-blue-50 transition-colors duration-200"
+              title="Editar denúncia"
+            >
+              <PencilIcon className="w-5 h-5 text-azul-light group-hover:text-azul-dark transition-colors" />
+            </button>
             <button
               onClick={() => onDelete(id)}
               className="group flex items-center justify-center p-2 rounded-full hover:bg-red-50 transition-colors duration-200"
