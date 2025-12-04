@@ -44,6 +44,23 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
           </button>
 
           <h1 className='text-h1 mb-[35px]'>Editar Notícia</h1>
+          
+          <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
+            <ChevronUpDownIcon className='size-[24px]'/>
+            <select className='w-full h-full px-[16px] text-small cursor-pointer bg-white appearance-none focus:outline-none'>
+                <option value="" disabled>Selecione a Categoria</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="descricao" className="text-body mb-1">Descrição</label>
+            <div>
+              <textarea id="descricao"
+                className="w-[500px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 resize-none"
+                placeholder="Edite a sua notícia..."
+              />
+            </div>
+          </div>
         </div>
     </div>
   )
