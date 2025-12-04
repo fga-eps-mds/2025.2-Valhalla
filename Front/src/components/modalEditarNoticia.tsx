@@ -36,7 +36,14 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
           onClick={(e) => e.stopPropagation()}
           className='pointer-events-auto relative flex flex-col items-center w-[720px] max-w-[100%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6 [&::-webkit-scrollbar]:hidden'
         >
-           {/* virá adição aqui */}
+           <button
+            type="button"
+            onClick={onClose}
+            className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors">
+            <ArrowLeftIcon className="size-[48px]" />
+          </button>
+
+          <h1 className='text-h1 mb-[35px]'>Editar Notícia</h1>
         </div>
     </div>
   )
