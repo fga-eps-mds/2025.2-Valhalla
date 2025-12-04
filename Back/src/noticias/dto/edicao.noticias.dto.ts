@@ -14,4 +14,7 @@ export class edicaoNoticiasDto {
     @IsOptional()
     tipo?:string;
 
+    @IsString({message: 'A mediaSrc deve ser um texto.'})
+    @IsOptional()
+    mediaSrc?:string;
 }
