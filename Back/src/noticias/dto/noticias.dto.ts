@@ -8,4 +8,8 @@ export class NoticiasDto {
     @IsString({message: 'A descricao deve ser um texto'})
     @IsNotEmpty({message: 'A descricao nao pode estar vazia'})
     descricao:string;
+
+    @IsInt({ message: 'O idCategoria deve ser um numero.' })
+    @IsNotEmpty({ message: 'O idCategoria não pode estar vazio.' })
+    idCategoria: number;
 }
