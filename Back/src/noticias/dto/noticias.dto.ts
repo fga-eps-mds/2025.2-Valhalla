@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt, IsOptional, isString } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt, IsOptional} from 'class-validator';
 
 export class NoticiasDto {
     @IsInt({message: 'O id do usuario deve ser um número.'})
