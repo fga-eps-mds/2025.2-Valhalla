@@ -4,7 +4,9 @@ export class edicaoNoticiasDto {
 
     @IsInt({message: 'O id do usuario deve ser um número.'})
     @IsOptional()
-    idUsuario:number;
+    idUsuario?:number;
 
-    
+    @IsString({message: 'A descricao deve ser um texto.'})
+    @IsOptional()
+    descricao?:string;
 }
