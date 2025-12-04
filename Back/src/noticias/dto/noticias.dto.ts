@@ -12,4 +12,8 @@ export class NoticiasDto {
     @IsInt({ message: 'O idCategoria deve ser um numero.' })
     @IsNotEmpty({ message: 'O idCategoria não pode estar vazio.' })
     idCategoria: number;
+
+    @IsString({ message: 'A mediaSrc deve ser um texto.' })
+    @IsOptional()    
+    mediaSrc?: string;
 }
