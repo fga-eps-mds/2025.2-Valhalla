@@ -36,11 +36,17 @@ const getCategorias = async (): Promise<Categoria[]> => {
 };
 
 export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar, aoAtualizar }: ModalEditarProps) {
-    const [descricao, setDescricao] = useState('');
-    const [idCategoria, setIdCategoria] = useState('');
-    const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
-    useEffect(() => {
-    getCategorias().then(data => setListaCategorias(data));
+  const [descricao, setDescricao] = useState('');
+  const [idCategoria, setIdCategoria] = useState('');
+  const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
+  useEffect(() => {
+      if (noticiaParaEditar) {
+          setDescricao(noticiaParaEditar.descricao);
+          setIdCategoria(String(noticiaParaEditar.idCategoria));
+      }
+  }, [noticiaParaEditar]);
+  useEffect(() => {
+      getCategorias().then(data => setListaCategorias(data));
   }, []);
 
     if (!isOpen) return null;
@@ -64,8 +70,10 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
 
           <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
             <ChevronUpDownIcon className='size-[24px]'/>
-            <select className='w-full h-full px-[16px] text-small cursor-pointer bg-white appearance-none focus:outline-none'>
-               
+            <select className='w-full h-full px-[16px] text-small cursor-pointer bg-white appearance-none focus:outline-none'
+                value={idCategoria}
+                onChange={(e) => setIdCategoria(e.target.value)}
+            >  
                 <option value="" disabled>Selecione a Categoria</option>
 
                 {listaCategorias.map((cat) => (
@@ -83,6 +91,8 @@ export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar,
               <textarea id="descricao"
                 className="w-[500px] h-[273px] rounded-[15px] border border-[var(--color-bordas)] p-2 resize-none"
                 placeholder="Edite a sua notícia..."
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
               />
             </div>
           </div>
