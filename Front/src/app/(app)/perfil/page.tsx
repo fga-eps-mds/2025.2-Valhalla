@@ -9,12 +9,13 @@ import {
     TrashIcon
 } from '@heroicons/react/24/outline';
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import ModalEditarSenha from '@/components/modalEditarSenha'; 
 import ModalExcluirConta from '@/components/ModalExcluirContaSoft';
 import ModalEditarPerfil from '@/components/ModalEditarPerfil';
+
+import Link from "next/link";
 
 export default function Perfil() {
     const { user, logout, isLoading } = useAuth(); 
@@ -34,7 +35,7 @@ export default function Perfil() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3060BF]"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-azul-principal"></div>
             </div>
         );
     }
@@ -58,10 +59,10 @@ export default function Perfil() {
                     )}
                 </div>
 
-                <h1 className="text-[32px] font-bold text-[#050505] font-[var(--fonte-primaria)] mb-1 text-center capitalize">
+                <h1 className="text-[32px] text-texto-primario font-(--fonte-primaria) mb-1 text-center capitalize">
                     {user.nome}
                 </h1>
-                <p className="text-lg font-bold text-[#050505] font-[var(--fonte-primaria)]">
+                <p className="text-lg text-texto-primario font-(--fonte-primaria)">
                     {user.email}
                 </p>
             </div>
@@ -69,8 +70,8 @@ export default function Perfil() {
             <div className="w-full max-w-[500px] flex flex-col gap-5 items-center">
 
                 <button onClick={() => setIsModalPerfilOpen(true)}
-                className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
-                    <AcademicCapIcon className="w-6 h-6 text-[#1A2A4A] mr-4" />
+                className="min-w-md flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group cursor-pointer">
+                    <AcademicCapIcon className="w-6 h-6 text-azul-dark mr-4" />
                     <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900">
                         Clique aqui para editar seu perfil
                     </span>
@@ -78,8 +79,8 @@ export default function Perfil() {
 
                 
                     <button onClick={() => setIsModalSenhaOpen(true)}
-                    className="w-full flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group">
-                        <KeyIcon className="w-6 h-6 text-[#1A2A4A] mr-4" />
+                    className="min-w-md flex items-center justify-start px-6 py-4 rounded-2xl border border-gray-400 text-gray-600 hover:bg-gray-50 transition group cursor-pointer">
+                        <KeyIcon className="w-6 h-6 text-azul-dark mr-4" />
                         <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900">
                             Clique aqui para alterar sua senha
                         </span>
@@ -88,7 +89,7 @@ export default function Perfil() {
 
                 <button 
                     onClick={logout} 
-                    className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#3060BF] text-white hover:bg-[#254c9b] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]"
+                    className="w-[190px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-azul-principal text-white hover:bg-[#254c9b] transition shadow-md font-bold text-sm gap-2 border border-azul-dark cursor-pointer"
                 >
                     LOGOUT
                     <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
@@ -96,7 +97,7 @@ export default function Perfil() {
 
                 {user.tipo !== 'ADMINMASTER' && (
                     <button onClick={() => setIsModalExcluirOpen(true)}
-                    className="w-[200px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-[#1A2A4A]">
+                    className="w-[190px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-azul-dark cursor-pointer">
                         EXCLUIR CONTA
                         <TrashIcon className="w-5 h-5" />
                     </button>

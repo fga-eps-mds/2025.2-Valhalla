@@ -110,7 +110,7 @@ function FormularioRedefinicao() {
 
                 {/* Back Link */}
                 <a href="/" className="absolute top-6 left-6" aria-label="Voltar para a página inicial">
-                    <ArrowLeftIcon className="w-8 h-8 sm:w-10 sm:h-10 text-[#1A2A4A] cursor-pointer hover:text-blue-600 transition" />
+                    <ArrowLeftIcon className="w-8 h-8 sm:w-10 sm:h-10 text-azul-dark cursor-pointer hover:text-blue-600 transition" />
                 </a>
 
                 <img
@@ -121,7 +121,7 @@ function FormularioRedefinicao() {
                     className="mt-8 mb-4"
                 />
 
-                <h1 className='text-3xl sm:text-[36px] text-[#050505] mb-4 font-extrabold text-center'>
+                <h1 className='text-3xl sm:text-[36px] text-texto-primario mb-4 font-extrabold text-center'>
                     Redefinição de Senha
                 </h1>
                 
@@ -135,7 +135,7 @@ function FormularioRedefinicao() {
                     <div className="w-full mb-6">
                         <label htmlFor="senha" className="sr-only">Nova Senha</label>
                         <div className="relative">
-                            <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
+                            <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark" />
                             <input
                                 type="password"
                                 id="senha"
@@ -143,7 +143,7 @@ function FormularioRedefinicao() {
                                 value={senha}
                                 onChange={(e) => setSenha(e.target.value)}
                                 disabled={carregando || !!sucesso}
-                                className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl shadow-md focus:outline-none focus:ring-4 focus:ring-[#3060BF]/50 focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A] transition duration-150"
+                                className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl shadow-md focus:outline-none focus:ring-4 focus:ring-azul-principal/50 focus:border-azul-principal text-gray-800 placeholder-azul-dark transition duration-150"
                                 autoComplete="new-password"
                             />
                         </div>
@@ -187,7 +187,7 @@ function FormularioRedefinicao() {
                     <div className="w-full mb-10">
                         <label htmlFor="confirmacaoSenha" className="sr-only">Confirmação de Senha</label>
                         <div className="relative">
-                            <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]" />
+                            <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark" />
                             <input
                                 type="password"
                                 id="confirmacaoSenha"
@@ -195,7 +195,7 @@ function FormularioRedefinicao() {
                                 value={confirmacaoSenha}
                                 onChange={(e) => setConfirmacaoSenha(e.target.value)}
                                 disabled={carregando || !!sucesso}
-                                className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl shadow-md focus:outline-none focus:ring-4 focus:ring-[#3060BF]/50 focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A] transition duration-150"
+                                className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl shadow-md focus:outline-none focus:ring-4 focus:ring-azul-principal/50 focus:border-azul-principal text-gray-800 placeholder-azul-dark transition duration-150"
                                 autoComplete="new-password"
                             />
                         </div>
@@ -216,7 +216,7 @@ function FormularioRedefinicao() {
                     {/* Botão */}
                     <button
                         type="submit"
-                        className="flex items-center justify-center border-2 border-[#1A2A4A] rounded-xl py-3 px-8 gap-2 bg-[#3060BF] w-full text-white font-semibold shadow-lg hover:bg-[#254c9b] transition duration-200 disabled:bg-gray-400 disabled:border-gray-500 disabled:shadow-none"
+                        className="flex items-center justify-center border-2 border-azul-dark rounded-xl py-3 px-8 gap-2 bg-azul-principal w-full text-white font-semibold shadow-lg hover:bg-[#254c9b] transition duration-200 disabled:bg-gray-400 disabled:border-gray-500 disabled:shadow-none"
                         disabled={carregando || !!sucesso}
                     >
                         {carregando ? (
@@ -230,7 +230,7 @@ function FormularioRedefinicao() {
                     </button>
                     
                     {sucesso && (
-                        <a href="/login" className="mt-6 text-sm text-[#3060BF] hover:underline transition">
+                        <a href="/login" className="mt-6 text-sm text-azul-principal hover:underline transition">
                             Ir para Login
                         </a>
                     )}

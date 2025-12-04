@@ -45,7 +45,7 @@ if (!isOpen) return null;
 
   return (
     <div 
-      className='fixed inset-0 z-[999999] bg-black/40 flex items-center justify-center backdrop-blur-sm'
+      className='fixed inset-0 z-999999 bg-black/40 flex items-center justify-center backdrop-blur-sm'
       onClick={onClose}
     >
       <div 

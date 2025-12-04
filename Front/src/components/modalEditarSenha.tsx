@@ -119,11 +119,11 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
   return (
     <div 
       onClick={handleClose}
-      className='fixed inset-0 z-[999999] bg-black/40 flex items-center justify-center'
+      className='fixed inset-0 z-999999 bg-black/40 flex items-center justify-center'
     >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className='pointer-events-auto relative flex flex-col items-center w-[600px] max-w-[95%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-xl border p-8 [&::-webkit-scrollbar]:hidden'
+        className='pointer-events-auto relative flex flex-col items-center w-[600px] max-w-[95%] max-h-screen overflow-y-auto rounded-2xl bg-white shadow-xl border p-8 [&::-webkit-scrollbar]:hidden'
       >
         
         <button
@@ -131,10 +131,10 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
           onClick={handleClose}
           className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors"
         >
-          <ArrowLeftIcon className="size-[32px]" />
+          <ArrowLeftIcon className="size-8" />
         </button>
 
-        <h1 className='text-[28px] font-bold text-[#050505] font-[var(--fonte-primaria)] mb-8 mt-2'>
+        <h1 className='text-[28px] text-texto-primario font-(--fonte-primaria) mb-8 mt-2'>
             Alterar Senha
         </h1>
         
@@ -143,18 +143,18 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
             <div className="w-full">
                 <label className="text-sm font-semibold text-gray-700 mb-1 ml-1 block">Senha Atual</label>
                 <div className="relative">
-                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1A2A4A]" />
+                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-azul-dark" />
                     <input 
                         type={mostrarSenha ? "text" : "password"}
                         placeholder="Digite sua senha atual"
                         value={senhaAntiga}
                         onChange={(e) => setSenhaAntiga(e.target.value)}
-                        className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A]/50"
+                        className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 placeholder-azul-dark/50"
                     />
                     <button 
                         type="button"
                         onClick={() => setMostrarSenha(!mostrarSenha)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#3060BF]"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-azul-principal"
                     >
                         {mostrarSenha ? <EyeSlashIcon className="size-5"/> : <EyeIcon className="size-5"/>}
                     </button>
@@ -164,13 +164,13 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
             <div className="w-full">
                 <label className="text-sm font-semibold text-gray-700 mb-1 ml-1 block">Nova Senha</label>
                 <div className="relative">
-                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1A2A4A]" />
+                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-azul-dark" />
                     <input 
                         type={mostrarSenha ? "text" : "password"}
                         placeholder="Digite a nova senha"
                         value={novaSenha}
                         onChange={(e) => setNovaSenha(e.target.value)}
-                        className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A]/50"
+                        className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 placeholder-azul-dark/50"
                     />
                 </div>
             </div>
@@ -202,13 +202,13 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
             <div className="w-full">
                 <label className="text-sm font-semibold text-gray-700 mb-1 ml-1 block">Confirmar Nova Senha</label>
                 <div className="relative">
-                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1A2A4A]" />
+                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-azul-dark" />
                     <input 
                         type={mostrarSenha ? "text" : "password"}
                         placeholder="Confirme a nova senha"
                         value={confirmarSenha}
                         onChange={(e) => setConfirmarSenha(e.target.value)}
-                        className={`w-full pl-12 pr-10 py-3 border rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A]/50
+                        className={`w-full pl-12 pr-10 py-3 border rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 placeholder-azul-dark/50
                             ${confirmarSenha && novaSenha !== confirmarSenha ? 'border-red-500' : 'border-gray-300'}
                         `}
                     />
@@ -222,7 +222,7 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
-                className="flex items-center justify-center border border-[#1A2A4A] rounded-xl py-3 mt-6 bg-[#3060BF] w-full text-white hover:bg-[#254c9b] transition font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="flex items-center justify-center border border-azul-dark rounded-xl py-3 mt-6 bg-azul-principal w-full text-white hover:bg-[#254c9b] transition font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
                 {loading ? 'SALVANDO...' : 'SALVAR ALTERAÇÕES'}
             </button>

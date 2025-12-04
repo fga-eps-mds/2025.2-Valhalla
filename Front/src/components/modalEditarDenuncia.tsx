@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { CameraIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
-import { ChevronUpDownIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { ChevronUpDownIcon } from '@heroicons/react/24/solid';
 import api from '@/utils/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -23,26 +23,41 @@ const getCategorias = async (): Promise<Categoria[]> => {
   }
 };
 
-interface CriarDenunciaDados {
+interface EditarDenunciaDados {
   descricao: string;
   idCategoria: number;
   anonimato?: boolean;
   mediaSrc?: string;
 }
 
-const criarDenuncia = async (dados: CriarDenunciaDados) => {
+const editarDenuncia = async (id: number, dados: EditarDenunciaDados) => {
   try {
-    const response = await api.post('/denuncias', dados);
+    const response = await api.patch(`/denuncias/${id}`, dados);
     return response.data;
   } catch (error) {
-    toast.error("Erro ao criar denúncia.");
-    console.error("Erro ao criar denúncia:", error);
-    throw error; 
+    toast.error("Erro ao editar denúncia.");
+    console.error("Erro ao editar denúncia:", error);
+    throw error;
   }
 };
 
-export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
-  
+export default function ModalEditarDenuncia ({
+  isOpen,
+  onClose,
+  denuncia,
+  onSaved,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  denuncia?: {
+    id: number;
+    descricao: string;
+    idCategoria: number;
+    anonimato: boolean;
+    mediaSrc?: string | null;
+  } | null;
+  onSaved?: (updatedDenuncia: any) => void;
+}) {
 
   const [descricao, setDescricao] = useState('');
   const [idCategoria, setIdCategoria] = useState('');
@@ -61,10 +76,20 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
         setListaCategorias(dados);
       };
       carregar();
-    }, []); 
+    }, []);
 
-    // Função que é chamada ao clicar em PUBLICAR
-    const publicarDenuncia = async () => {
+    // quando uma denúncia é passada, preencher campos do formulário
+    useEffect(() => {
+      if (denuncia) {
+        setDescricao(denuncia.descricao ?? '');
+        setIdCategoria(denuncia.idCategoria?.toString() ?? '');
+        setAnonimato(denuncia.anonimato ?? null);
+        setMediaSrc(denuncia.mediaSrc ?? '');
+      }
+    }, [denuncia]);
+
+    // Função que é chamada ao clicar em Editar
+    const publicarEdicaoDenuncia = async () => {
       
       if (!descricao || !idCategoria) {
         toast.error("Por favor, preencha a descrição e selecione uma categoria.");
@@ -92,18 +117,24 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
           return;
         }
 
-        await criarDenuncia({
+        if (!denuncia?.id) {
+          toast.error('Denúncia inválida.');
+          return;
+        }
+
+        const updated = await editarDenuncia(denuncia.id, {
           descricao: descricao,
-          idCategoria: Number(idCategoria), 
-          anonimato: anonimato as boolean, 
+          idCategoria: Number(idCategoria),
+          anonimato: anonimato as boolean,
           mediaSrc: mediaSrc,
         });
 
-        toast.success("Denúncia realizada com sucesso!");
+        toast.success("Denúncia editada com sucesso!");
         onClose();
+        if (onSaved) onSaved(updated);
 
       } catch (error) {
-        toast.error("Erro ao publicar denúncia. Verifique o console.");
+        toast.error("Erro ao editar denúncia. Verifique o console.");
         console.error(error);
       }
     };
@@ -125,11 +156,11 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                     <button
                       type="button"
                       onClick={onClose}
-                      className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors cursor-pointer">
+                      className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors">
                       <ArrowLeftIcon className="size-12" />
                     </button>
 
-                    <h1 className='text-h1 mb-[35px] cursor-default'>Qual sua Denúncia?</h1>
+                    <h1 className='text-h1 mb-[35px]'>Edite sua Denúncia</h1>
                     
                     {/*Botões de TIPO DE DENUNCIA*/}
                     <div className='flex items-center gap-2.5 mb-[26px]'>
@@ -217,12 +248,12 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
                       </div>
                     </div>
                     
-                    {/*Botão PUBLICAR*/}
+                    {/*Botão Editar*/}
                     <button
                       type="submit"
-                      onClick={publicarDenuncia}
+                      onClick={publicarEdicaoDenuncia}
                       className="flex items-center justify-center border border-azul-dark rounded-md py-[11px] my-[38px] gap-[5px] bg-azul-principal w-60 h-[45px] text-white cursor-pointer hover:bg-azul-light transition font-bold">
-                      PUBLICAR
+                      Editar
                     </button>
 
                 </div>
