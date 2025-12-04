@@ -30,19 +30,34 @@ interface EditarDenunciaDados {
   mediaSrc?: string;
 }
 
-const editarDenuncia = async (dados: EditarDenunciaDados) => {
+const editarDenuncia = async (id: number, dados: EditarDenunciaDados) => {
   try {
-    const response = await api.post('/denuncias', dados);
+    const response = await api.patch(`/denuncias/${id}`, dados);
     return response.data;
   } catch (error) {
     toast.error("Erro ao editar denúncia.");
     console.error("Erro ao editar denúncia:", error);
-    throw error; 
+    throw error;
   }
 };
 
-export default function ModalEditarDenuncia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
-  
+export default function ModalEditarDenuncia ({
+  isOpen,
+  onClose,
+  denuncia,
+  onSaved,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  denuncia?: {
+    id: number;
+    descricao: string;
+    idCategoria: number;
+    anonimato: boolean;
+    mediaSrc?: string | null;
+  } | null;
+  onSaved?: (updatedDenuncia: any) => void;
+}) {
 
   const [descricao, setDescricao] = useState('');
   const [idCategoria, setIdCategoria] = useState('');
@@ -61,7 +76,17 @@ export default function ModalEditarDenuncia ({isOpen, onClose}: {isOpen: boolean
         setListaCategorias(dados);
       };
       carregar();
-    }, []); 
+    }, []);
+
+    // quando uma denúncia é passada, preencher campos do formulário
+    useEffect(() => {
+      if (denuncia) {
+        setDescricao(denuncia.descricao ?? '');
+        setIdCategoria(denuncia.idCategoria?.toString() ?? '');
+        setAnonimato(denuncia.anonimato ?? null);
+        setMediaSrc(denuncia.mediaSrc ?? '');
+      }
+    }, [denuncia]);
 
     // Função que é chamada ao clicar em Editar
     const publicarEdicaoDenuncia = async () => {
@@ -92,15 +117,21 @@ export default function ModalEditarDenuncia ({isOpen, onClose}: {isOpen: boolean
           return;
         }
 
-        await editarDenuncia({
+        if (!denuncia?.id) {
+          toast.error('Denúncia inválida.');
+          return;
+        }
+
+        const updated = await editarDenuncia(denuncia.id, {
           descricao: descricao,
-          idCategoria: Number(idCategoria), 
-          anonimato: anonimato as boolean, 
+          idCategoria: Number(idCategoria),
+          anonimato: anonimato as boolean,
           mediaSrc: mediaSrc,
         });
 
         toast.success("Denúncia editada com sucesso!");
         onClose();
+        if (onSaved) onSaved(updated);
 
       } catch (error) {
         toast.error("Erro ao editar denúncia. Verifique o console.");
@@ -141,8 +172,8 @@ export default function ModalEditarDenuncia ({isOpen, onClose}: {isOpen: boolean
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === true 
-                            ? 'bg-azul-dark text--branco border--azul-dark'
-                            : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
+                            ? 'bg-azul-dark text-branco border-azul-dark'
+                            : 'bg-branco text-azul-dark border-azul-dark hover:bg-off-white'}
                         `}
                       > ANÔNIMA
                       </button>
@@ -154,8 +185,8 @@ export default function ModalEditarDenuncia ({isOpen, onClose}: {isOpen: boolean
                         className={`
                           w-[135px] h-[45px] border rounded-[46px] text-small cursor-pointer transition-colors font-bold
                           ${anonimato === false
-                            ? 'bg-azul-dark text--branco border--azul-dark'
-                            : 'bg-branco text-azul-dark border-azul-dark hover:bg--off-white'}
+                            ? 'bg-azul-dark text-branco border-azul-dark'
+                            : 'bg-branco text-azul-dark border-azul-dark hover:bg-off-white'}
                         `}
                       > PÚBLICA
                       </button>
