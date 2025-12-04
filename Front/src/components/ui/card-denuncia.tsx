@@ -60,12 +60,12 @@ export default function CardDenuncia({
         </div>
 
         {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end cursor-default">
             <span className="text-body">
                 {categoria}
             </span>
             {/* Data (Abaixo do avatar/nome) */}
-            <span className="text-[12px] text-small mt-1 ml-1">
+            <span className="text-[12px] text-small mt-1 ml-1 cursor-default">
                 {data}
             </span>
         </div>

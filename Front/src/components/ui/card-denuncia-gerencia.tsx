@@ -11,6 +11,7 @@ interface CardDenunciaProps {
   categoria: string; 
   data: string;
   onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 }
 
 export default function CardDenuncia({ 
@@ -22,6 +23,7 @@ export default function CardDenuncia({
   categoria,
   data,
   onDelete,
+  onEdit,
 }: CardDenunciaProps) {
 
   // Lógica de Anonimato
@@ -64,24 +66,24 @@ export default function CardDenuncia({
         </div>
 
         {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end cursor-default">
             <span className="text-body">
                 {categoria}
             </span>
             {/* Data (Abaixo do avatar/nome) */}
-            <span className="text-[12px] text-small mt-1 ml-1">
+            <span className="text-[12px] text-small mt-1 ml-1 cursor-default">
                 {data}
             </span>
             <button
-              onClick={() => onDelete(id)}
-              className="group flex items-center justify-center p-2 rounded-full hover:bg-blue-50 transition-colors duration-200"
+              onClick={() => onEdit(id)}
+              className="group flex items-center justify-center p-2 rounded-full hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
               title="Editar denúncia"
             >
               <PencilIcon className="w-5 h-5 text-azul-light group-hover:text-azul-dark transition-colors" />
             </button>
             <button
               onClick={() => onDelete(id)}
-              className="group flex items-center justify-center p-2 rounded-full hover:bg-red-50 transition-colors duration-200"
+              className="group flex items-center justify-center p-2 rounded-full hover:bg-red-50 transition-colors duration-200 cursor-pointer"
               title="Excluir denúncia"
             >
               <TrashIcon className="w-5 h-5 text-red-400 group-hover:text-red-600 transition-colors" />
