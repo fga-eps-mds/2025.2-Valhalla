@@ -26,5 +26,18 @@ interface ModalEditarProps {
 }
 
 export default function ModalEditarNoticia({ isOpen, onClose, noticiaParaEditar, aoAtualizar }: ModalEditarProps) {
-  return null;
+  if (!isOpen) return null;
+
+  return (
+    <div 
+      onClick={onClose}
+      className='fixed inset-0 z-[999999] bg-black/40 flex items-center justify-center'>
+        <div 
+          onClick={(e) => e.stopPropagation()}
+          className='pointer-events-auto relative flex flex-col items-center w-[720px] max-w-[100%] max-h-[100vh] overflow-y-auto rounded-[1rem] bg-white shadow-[0_0.25rem_0.25rem_0_rgba(0,0,0,0.25)] border p-6 [&::-webkit-scrollbar]:hidden'
+        >
+           {/* virá adição aqui */}
+        </div>
+    </div>
+  )
 }
