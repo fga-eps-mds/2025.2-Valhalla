@@ -26,4 +26,21 @@ export class NoticiasController {
         return this.noticiasService.editarNoticia(id, req.user.id, data);
     }
 
+    @Delete('delete-permanente/:id')
+    async deletarNoticia(
+      @Param('id', ParseIntPipe) id: number,
+      @Request() req: AuthRequest,
+    ) {
+        return this.noticiasService.deletarDenuncia(id, req.user.id, req.user.tipo);
+    }
+
+    @Delete(':id')
+    async desativarDenuncia(
+      @Param('id', ParseIntPipe) id: number,
+      @Request() req: AuthRequest,
+    ) {
+        return this.noticiasService.desativarDenuncia(id, req.user.id, req.user.tipo);
+    }
+
+    
 }
