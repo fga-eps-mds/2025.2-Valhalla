@@ -42,5 +42,11 @@ export class NoticiasController {
         return this.noticiasService.desativarDenuncia(id, req.user.id, req.user.tipo);
     }
 
-    
+    @IsPublic()
+    @Get(':id')
+    async encontrarDenuncia(
+      @Param('id', ParseIntPipe) id: number,
+    ) {
+        return this.noticiasService.encontrarDenuncia(id);
+    }
 }
