@@ -19,6 +19,9 @@ import { DenunciasController } from './denuncias/denuncias.controller';
 import { DenunciasService } from './denuncias/denuncias.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
+import { NoticiasController } from './noticias/noticias.controller';
+import { NoticiasService } from './noticias/noticias.service';
+import { NoticiasModule } from './noticias/noticias.module';
 
 @Module({
   imports: [
@@ -26,14 +29,15 @@ import { AuthService } from './auth/auth.service';
     PrismaModule,
     CategoriasModule,
     UsuarioModule,    
-    AuthModule        
+    AuthModule, NoticiasModule        
   ],
   controllers: [
     DenunciasController,
     AppController,
     CategoriasController, 
     UsuarioController,
-    AuthController    
+    AuthController,
+    NoticiasController    
   ],
   providers: [
     DenunciasService,
@@ -44,7 +48,7 @@ import { AuthService } from './auth/auth.service';
     {                  
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
+    }, NoticiasService,
   ],
 })
 export class AppModule {}

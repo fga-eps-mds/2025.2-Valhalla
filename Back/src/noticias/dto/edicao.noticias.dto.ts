@@ -1,6 +1,6 @@
 import { IsInt, IsString, IsOptional} from "class-validator";
 
-export class edicaoNoticiasDto {
+export class EdicaoNoticiasDto {
 
     @IsInt({message: 'O id do usuario deve ser um número.'})
     @IsOptional()
