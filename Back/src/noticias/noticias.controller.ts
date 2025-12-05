@@ -6,5 +6,5 @@ import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('noticias')
 export class NoticiasController {
-    
+    constructor(private readonly noticiasService: NoticiasService) {}
 }
