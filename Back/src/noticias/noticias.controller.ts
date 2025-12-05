@@ -1,4 +1,4 @@
-import { Body, Controller , Post, Param, ParseIntPipe, Patch, Delete, Get, Request, Query, UseGuards, DefaultValuePipe } from '@nestjs/common';
+import { Body, Controller , Post, Param, ParseIntPipe, Patch, Delete, Get, Request, Query, DefaultValuePipe } from '@nestjs/common';
 import { NoticiasService } from './noticias.service';
 import { NoticiasDto } from './dto/noticias.dto';
 import { EdicaoNoticiasDto } from './dto/edicao.noticias.dto';
@@ -59,5 +59,14 @@ export class NoticiasController {
       return this.noticiasService.listarDenuncias(page, limit);
     }
 
-
+    
+    @IsPublic()
+    @Get('usuario/:id')
+    async listarNoticiasPorUsuario(
+      @Param('id', ParseIntPipe) id: number,
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+      @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+    ) {
+      return this.noticiasService.listarDenunciasPorUsuario(id, page, limit);
+    }
 }
