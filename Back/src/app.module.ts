@@ -18,10 +18,13 @@ import { UsuarioService } from './usuario/usuario.service';
 import { DenunciasController } from './denuncias/denuncias.controller';
 import { DenunciasService } from './denuncias/denuncias.service';
 import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    CloudinaryModule,
     DenunciasModule,
     PrismaModule,
     CategoriasModule,
@@ -40,7 +43,6 @@ import { AuthService } from './auth/auth.service';
     AppService,
     CategoriasService, 
     UsuarioService,    
-    //AuthService,    
     {                  
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
