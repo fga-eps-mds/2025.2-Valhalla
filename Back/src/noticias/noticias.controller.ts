@@ -7,4 +7,12 @@ import { IsPublic } from 'src/auth/decorators/isPublic.decorator';
 @Controller('noticias')
 export class NoticiasController {
     constructor(private readonly noticiasService: NoticiasService) {}
+
+    @Post()
+    async criarNoticia(
+        @Request() req,
+        @Body() data: NoticiasDto,
+    ) {
+        return this.noticiasService.criarNoticia(req.user.id, data);
+    }
 }
