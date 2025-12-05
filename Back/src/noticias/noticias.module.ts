@@ -1,4 +1,13 @@
-import { Module } from '@nestjs/common';
+// noticias.module.ts
 
-@Module({})
+import { Module } from '@nestjs/common';
+import { NoticiasService } from './noticias.service';
+import { NoticiasController } from './noticias.controller';
+import { PrismaModule } from 'src/prisma/prisma.module'; 
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [NoticiasController],
+  providers: [NoticiasService],
+})
 export class NoticiasModule {}
