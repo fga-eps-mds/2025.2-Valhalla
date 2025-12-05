@@ -35,7 +35,7 @@ export class NoticiasController {
     }
 
     @Delete(':id')
-    async desativarDenuncia(
+    async desativarNoticia(
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
     ) {
@@ -44,9 +44,20 @@ export class NoticiasController {
 
     @IsPublic()
     @Get(':id')
-    async encontrarDenuncia(
+    async encontrarNoticia(
       @Param('id', ParseIntPipe) id: number,
     ) {
         return this.noticiasService.encontrarDenuncia(id);
     }
+
+    @IsPublic()
+    @Get()
+    async listarNoticias(
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+      @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+    ) {
+      return this.noticiasService.listarDenuncias(page, limit);
+    }
+
+
 }
