@@ -48,4 +48,50 @@ describe('NoticiasService', () => {
         jest.clearAllMocks();
     });
 
+    describe('criarNoticia', () => {
+        const mockNoticiaDto = {
+            descricao: 'Descrição do Teste',
+            tipo: 'NOTICIA',
+            idUsuario: 99, 
+        };
+        const idUsuarioRequisitor = 1;
+
+        it('deve criar uma notícia se o usuário for ADMIN', async () => {
+            prisma.noticia.create.mockResolvedValue({ id: 1, ...mockNoticiaDto });
+
+            const result = await service.criarNoticia(
+                idUsuarioRequisitor,
+                mockNoticiaDto as any, 
+                'ADMIN' as any,
+            );
+
+            expect(prisma.noticia.create).toHaveBeenCalled();
+            expect(result).toHaveProperty('id', 1);
+        });
+        
+        it('deve criar uma notícia se o usuário for ADMINMASTER', async () => {
+            prisma.noticia.create.mockResolvedValue({ id: 2, ...mockNoticiaDto });
+
+            const result = await service.criarNoticia(
+                idUsuarioRequisitor,
+                mockNoticiaDto as any,
+                'ADMINMASTER' as any, 
+            );
+
+            expect(prisma.noticia.create).toHaveBeenCalledTimes(1);
+            expect(result).toHaveProperty('id', 2);
+        });
+
+        it('deve lançar ForbiddenException se o usuário for COMUM', async () => {
+            await expect(
+                service.criarNoticia(
+                    idUsuarioRequisitor,
+                    mockNoticiaDto as any,
+                    'COMUM' as any, 
+                ),
+            ).rejects.toThrow('Apenas administradores podem criar notícias.');
+            expect(prisma.noticia.create).not.toHaveBeenCalled();
+        });
+    });
+
 });
