@@ -2,13 +2,17 @@ import { Injectable, NotFoundException, ForbiddenException, BadRequestException 
 import { NoticiasDto } from './dto/noticias.dto';
 import { EdicaoNoticiasDto } from './dto/edicao.noticias.dto';
 import { PrismaService } from 'src/database/prisma.service';
+import { TipoUsuario } from '@prisma/client';
 
 @Injectable()
 export class NoticiasService {
     
     constructor(private readonly prismaService: PrismaService) {}
 
-    async criarNoticia(idUsuario: number, data: NoticiasDto) {
+    async criarNoticia(idUsuario: number,data: NoticiasDto, tipo: TipoUsuario) {
+        if(tipo !== TipoUsuario.ADMIN && tipo !== TipoUsuario.ADMINMASTER) {
+            throw new ForbiddenException('Apenas administradores podem criar notícias.');
+        }
         return this.prismaService.noticia.create({
             data: {
                 ...data, 
