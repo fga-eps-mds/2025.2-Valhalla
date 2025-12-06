@@ -14,7 +14,7 @@ export class NoticiasController {
         @Request() req: AuthRequest,
         @Body() data: NoticiasDto,
     ) {
-        return this.noticiasService.criarNoticia(req.user.id, data);
+        return this.noticiasService.criarNoticia(req.user.id, data, req.user.tipo);
     }
 
     @Patch(':id')
@@ -23,7 +23,7 @@ export class NoticiasController {
         @Request() req: AuthRequest,
         @Body() data: EdicaoNoticiasDto,
     ) {
-        return this.noticiasService.editarNoticia(id, req.user.id, data);
+        return this.noticiasService.editarNoticia(id, req.user.id, data, req.user.tipo);
     }
 
     @Delete('delete-permanente/:id')
