@@ -93,5 +93,95 @@ describe('NoticiasService', () => {
             expect(prisma.noticia.create).not.toHaveBeenCalled();
         });
     });
+    describe('editarNoticia e DefinirHierarquia', () => {
+        const idNoticia = 100;
+        const idUsuarioDono = 5;
+        const idUsuarioAdmin = 10;
+        const mockDataEdicao = { descricao: 'Nova Descrição' };
+
+        const mockNoticiaExistente = { 
+            id: idNoticia, 
+            idUsuario: idUsuarioDono, 
+            usuario: { 
+                id: idUsuarioDono, 
+                tipo: 'COMUM' as any 
+            }
+        };
+
+        const mockNoticiaEditada = { ...mockNoticiaExistente, ...mockDataEdicao };
+
+        it('deve permitir a edição se o requisitor for o dono da notícia', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+            prisma.noticia.update.mockResolvedValue(mockNoticiaEditada as any);
+
+            const result = await service.editarNoticia(
+                idNoticia, 
+                idUsuarioDono, 
+                mockDataEdicao as any, 
+                'COMUM' as any
+            );
+
+            expect(prisma.noticia.update).toHaveBeenCalledWith({
+                where: { id: idNoticia },
+                data: mockDataEdicao,
+            });
+            expect(result.descricao).toBe('Nova Descrição');
+        });
+
+        it('deve permitir que ADMINMASTER edite qualquer notícia', async () => {
+            
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+            prisma.noticia.update.mockResolvedValue(mockNoticiaEditada as any);
+            
+            
+            const result = await service.editarNoticia(
+                idNoticia, 
+                idUsuarioAdmin, 
+                mockDataEdicao as any, 
+                'ADMINMASTER' as any 
+            );
+
+            
+            expect(prisma.noticia.update).toHaveBeenCalledTimes(1);
+            expect(result).toHaveProperty('id', idNoticia);
+        });
+        
+        
+        it('deve lançar ForbiddenException se um usuário COMUM tentar editar a notícia de outro', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+            
+            
+            await expect(
+                service.editarNoticia(
+                    idNoticia, 
+                    idUsuarioAdmin, 
+                    mockDataEdicao as any, 
+                    'COMUM' as any 
+                )
+            ).rejects.toThrow('Ação não autorizada!');
+
+            
+            expect(prisma.noticia.update).not.toHaveBeenCalled();
+        });
+        
+        
+        it('deve lançar NotFoundException se a notícia não existir', async () => {
+            
+            prisma.noticia.findUnique.mockResolvedValue(null);
+            
+            
+            await expect(
+                service.editarNoticia(
+                    idNoticia, 
+                    idUsuarioDono, 
+                    mockDataEdicao as any, 
+                    'ADMINMASTER' as any
+                )
+            ).rejects.toThrow('Notícia não encontrada!');
+
+          
+            expect(prisma.noticia.update).not.toHaveBeenCalled();
+        });
+    });
 
 });
