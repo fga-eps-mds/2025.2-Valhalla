@@ -21,19 +21,9 @@ export class NoticiasService {
         });
     }
 
-    async editarNoticia(idNoticia: number, idUsuario: number, data: EdicaoNoticiasDto) {
+    async editarNoticia(idNoticia: number, idUsuario: number, data: EdicaoNoticiasDto, tipo: TipoUsuario) {
 
-        const noticia = await this.prismaService.noticia.findUnique({
-            where: { id: idNoticia },
-        });
-
-        if (!noticia) {
-            throw new NotFoundException(`Notícia com ID ${idNoticia} não encontrada.`);
-        }
-
-        if (noticia.idUsuario !== idUsuario) {
-            throw new ForbiddenException('Você não tem permissão para editar esta notícia.');
-        }
+        await this.DefinirHierarquia(idNoticia, idUsuario, tipo);
 
         return this.prismaService.noticia.update({
             where: { id: idNoticia },
@@ -41,22 +31,9 @@ export class NoticiasService {
         });
     }
 
-    async desativarNoticia(idNoticia: number, idUsuario: number, tipoUsuario: string) {
+    async desativarNoticia(idNoticia: number, idUsuario: number, tipo: TipoUsuario) {
 
-        const noticia = await this.prismaService.noticia.findUnique({
-            where: { id: idNoticia },
-        });
-
-        if (!noticia) {
-            throw new NotFoundException(`Notícia com ID ${idNoticia} não encontrada.`);
-        }
-
-        const isOwner = noticia.idUsuario === idUsuario;
-        const isAdmin = tipoUsuario === 'ADMIN'; 
-
-        if (!isOwner && !isAdmin) {
-            throw new ForbiddenException('Você não tem permissão para desativar esta notícia.');
-        }
+        await this.DefinirHierarquia(idNoticia, idUsuario, tipo);
 
         return this.prismaService.noticia.update({
             where: { id: idNoticia },
@@ -153,4 +130,41 @@ export class NoticiasService {
                 },
             }
         });
-}}
+    }  
+
+    private async DefinirHierarquia(noticiaId: number,requisitorId: number, tipoRequisitor: TipoUsuario,) {
+    const noticia = await this.prismaService.noticia.findUnique({
+        where: { id: noticiaId },
+        include: { usuario: true }
+    });
+
+    if (!noticia) {
+        throw new NotFoundException("Notícia não encontrada!");
+    }
+
+    const dono = noticia.usuario;
+
+    if (dono.id === requisitorId) return true;
+
+    switch (tipoRequisitor) {
+        case TipoUsuario.COMUM:
+            throw new ForbiddenException("Ação não autorizada!");
+
+        case TipoUsuario.ADMIN:
+            if (dono.tipo === TipoUsuario.ADMINMASTER)
+                throw new ForbiddenException("Ação não autorizada!");
+
+            if (dono.tipo === TipoUsuario.ADMIN && dono.id !== requisitorId)
+                throw new ForbiddenException("Ação não autorizada!");
+
+            return true;
+
+        case TipoUsuario.ADMINMASTER:
+            return true;
+
+        default:
+            throw new ForbiddenException("Ação não autorizada!");
+    }
+}
+
+}
