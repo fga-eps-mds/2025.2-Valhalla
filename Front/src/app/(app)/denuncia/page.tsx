@@ -3,7 +3,7 @@
 // Imports ESTRUTURAIS do React e Next
 import React, { useState, useEffect } from 'react';
 import ModalDenuncia from '@/components/modalDenuncia';
-import { PlusIcon} from '@heroicons/react/24/solid';
+import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import api from '@/utils/api';
 import CardDenuncia from '@/components/ui/card-denuncia';
 import { toast } from 'sonner';
@@ -47,6 +47,9 @@ export default function PaginaDenuncias() {
 
   const [isLoading, setIsloading] = useState(false);
 
+  const [termoBusca, setTermoBusca] = useState('');
+  const [filtroCategoria, setFiltroCategoria] = useState('Todas');
+
 
   useEffect(() => {
     const buscarDenuncias = async () => {
@@ -85,7 +88,6 @@ export default function PaginaDenuncias() {
   }, [currentPage, limite]);
 
   return (
-    // Container principal da página
     <div className="bg-white min-h-screen relative">
 
       <main>
@@ -97,6 +99,47 @@ export default function PaginaDenuncias() {
               <>
                 <section>
                   <div className="container mx-auto max-w-7xl p-4 md:p-8">
+                    
+                    <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-6  rounded-[20px] shadow-lg border border-azul-principal">
+                        
+                        <div className="relative w-full md:w-2/3">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 group-focus-within:text-azul-dark" />
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Pesquisar por descrição..."
+                                className="pl-12 w-full p-3 bg-gray-50 border-none rounded-full focus:ring-2 focus:ring-azul-dark/50 focus:bg-white transition-all outline-none text-gray-700 placeholder-gray-400"
+                                value={termoBusca}
+                                onChange={(e) => setTermoBusca(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="w-full md:w-1/3">
+                            <select 
+                                className="w-full p-3 bg-gray-50 border-none rounded-full px-4 outline-none cursor-pointer text-gray-700 focus:ring-2 focus:ring-azul-dark/50 focus:bg-white transition-all appearance-none"
+                                value={filtroCategoria}
+                                onChange={(e) => setFiltroCategoria(e.target.value)}
+                                style={{ 
+                                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                                    backgroundPosition: `right 1rem center`,
+                                    backgroundRepeat: `no-repeat`,
+                                    backgroundSize: `1.5em 1.5em` 
+                                }}
+                            >
+                                <option value="Todas">Todas as Categorias</option>
+                                <option value="Assédio">Assédio</option>
+                                <option value="Fraude">Fraude</option>
+                                <option value="Conteúdo Impróprio">Conteúdo Impróprio</option>
+                                <option value="Infraestrutura">Infraestrutura</option>
+                                <option value="Direitos Humanos">Direitos Humanos</option>
+                                <option value="Melhorias">Melhorias</option>
+                                <option value="Integridade">Integridade</option>
+                            </select>
+                        </div>
+                    </div>
+
+
                     <div className="grid grid-cols-1 gap-4 md:gap-6">
                       {listagemDenuncias.length > 0 ? (
                         listagemDenuncias.map(denuncia => {
