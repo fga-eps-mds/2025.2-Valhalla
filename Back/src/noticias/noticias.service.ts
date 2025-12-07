@@ -51,7 +51,7 @@ export class NoticiasService {
             throw new NotFoundException(`Notícia com ID ${idNoticia} não encontrada.`);
         }
 
-        const isAdmin = tipoUsuario === 'ADMIN'; 
+        const isAdmin = tipoUsuario === 'ADMIN' || tipoUsuario === 'ADMINMASTER'; 
 
         if (!isAdmin) {
             throw new ForbiddenException('Você não tem permissão para deletar permanentemente esta notícia.');
@@ -109,27 +109,35 @@ export class NoticiasService {
 
         const skip = (page - 1) * limit;
 
-        const denuncias = await this.prismaService.noticia.findMany({
-            where: {dataDelete: null, idUsuario: idUsuario},
-            orderBy: {id: 'desc'},
-            skip: skip,
-            take: limit,
-            select: {
-                id: true,
-                descricao: true,
-                mediaSrc: true,
-                dataCriacao: true,
-                dataUpdate: true,
-                idUsuario: true,
-                usuario: {
-                    select: {
-                        id: true,
-                        nome: true,
-                        mediaSrc: true,
-                    }
-                },
-            }
-        });
+        // CORREÇÃO: Adicionado o return no final e o count
+        const [denuncias, totalDenuncias] = await this.prismaService.$transaction([
+            this.prismaService.noticia.findMany({
+                where: {dataDelete: null, idUsuario: idUsuario},
+                orderBy: {id: 'desc'},
+                skip: skip,
+                take: limit,
+                select: {
+                    id: true,
+                    descricao: true,
+                    mediaSrc: true,
+                    dataCriacao: true,
+                    dataUpdate: true,
+                    idUsuario: true,
+                    usuario: {
+                        select: {
+                            id: true,
+                            nome: true,
+                            mediaSrc: true,
+                        }
+                    },
+                }
+            }),
+             this.prismaService.noticia.count({
+                where: {dataDelete: null, idUsuario: idUsuario},
+            })
+        ]);
+        
+        return { denuncias, totalDenuncias };
     }  
 
     private async DefinirHierarquia(noticiaId: number,requisitorId: number, tipoRequisitor: TipoUsuario,) {
