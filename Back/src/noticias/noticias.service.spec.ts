@@ -248,5 +248,81 @@ describe('NoticiasService', () => {
             ).rejects.toThrow('Notícia com ID 200 não encontrada.');
         });
     });
+    // src/noticias/noticias.service.spec.ts
+
+    describe('Busca e Listagem (@Get methods)', () => {
+        const idNoticiaExistente = 300;
+        const idUsuario = 15;
+        const noticiasMock = [
+            { id: 300, descricao: 'Notícia A', idUsuario: idUsuario, dataDelete: null },
+            { id: 301, descricao: 'Notícia B', idUsuario: idUsuario, dataDelete: null },
+        ];
+        const noticiaDeletada = { id: 302, descricao: 'Notícia C', idUsuario: idUsuario, dataDelete: new Date() };
+
+        it('deve retornar a notícia se for encontrada e não estiver deletada', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(noticiasMock[0] as any);
+
+            const result = await service.encontrarNoticia(idNoticiaExistente);
+
+            expect(prisma.noticia.findUnique).toHaveBeenCalledWith({ where: { id: idNoticiaExistente } });
+            expect(result).toEqual(noticiasMock[0]);
+        });
+        
+        it('deve lançar NotFoundException se a notícia não for encontrada', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(null);
+
+            await expect(service.encontrarNoticia(9999)).rejects.toThrow('Denuncia não Encontrada!');
+        });
+        
+        it('deve lançar NotFoundException se a notícia estiver soft deletada (dataDelete)', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(noticiaDeletada as any);
+
+            await expect(service.encontrarNoticia(302)).rejects.toThrow('Denuncia não Encontrada!');
+        });
+
+        it('deve listar notícias ativas e retornar dados de paginação corretos', async () => {
+            const totalNoticias = 10;
+            const page = 2;
+            const limit = 5;
+            const expectedSkip = 5;
+
+            prisma.$transaction.mockResolvedValue([noticiasMock, totalNoticias]);
+
+            const result = await service.listarNoticias(page, limit);
+
+            expect(prisma.noticia.findMany).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    skip: expectedSkip,
+                    take: limit,
+                    where: expect.objectContaining({ dataDelete: null }),
+                })
+            );
+            
+            expect(result.denuncias.length).toBe(noticiasMock.length);
+            expect(result.totalDenuncias).toBe(totalNoticias);
+        });
+
+        it('deve listar notícias ativas filtradas por ID do usuário', async () => {
+            const totalNoticiasUsuario = 3;
+            const page = 1;
+            const limit = 10;
+
+            prisma.$transaction.mockResolvedValue([noticiasMock, totalNoticiasUsuario]);
+
+            await service.listarNoticiasPorUsuario(idUsuario, page, limit);
+
+            expect(prisma.noticia.findMany).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    where: expect.objectContaining({ idUsuario: idUsuario, dataDelete: null }),
+                    take: limit,
+                })
+            );
+            expect(prisma.noticia.count).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    where: expect.objectContaining({ idUsuario: idUsuario }),
+                })
+            );
+        });
+    });
 
 });
