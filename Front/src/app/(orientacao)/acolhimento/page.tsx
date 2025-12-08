@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from "next/image";
 
 interface LinkCardProps {
   href: string;
@@ -25,7 +26,7 @@ const LinkCard = ({ href, title, text }: LinkCardProps) => {
 export default function AcolhimentoPage() {
   const pageData = {
     mainTitle: "Acolhimento e Saúde Mental",
-    illustration: "/images/illust_acolhimento.png",
+    illustration: "/imagens_orientacao/acolhimento.svg",
     subTopics: [
       { title: "Saúde Mental" },
       { title: "Falta de Suporte Psicológico" },
@@ -58,18 +59,23 @@ export default function AcolhimentoPage() {
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <main className="max-w-6xl mx-auto">
         
-        <header className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+<header className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+          {/* Lado do Texto */}
           <div className="w-full md:w-1/2">
             <h1 className="text-4xl font-bold text-gray-800 leading-tight">
               {pageData.mainTitle}
             </h1>
           </div>
-          <div className="w-full md:w-1/2">
-            <img 
+          
+          <div className="w-full md:w-1/2 flex justify-center items-center">
+            <Image 
               src={pageData.illustration} 
-              alt="Ilustração sobre acolhimento e saúde mental" 
-              className="w-full h-auto rounded-lg object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src="https://placehold.co/500x300/EFEFEF/AAAAAA?text=Ilustração+Acolhimento"; }}
+              alt="Ilustração sobre acolhimento e saúde mental"
+              width={320}  
+              height={140} 
+              className="rounded-lg h-auto w-auto max-w-full"
+              
+              priority
             />
           </div>
         </header>
