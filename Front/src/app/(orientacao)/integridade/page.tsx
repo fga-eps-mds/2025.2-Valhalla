@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from "next/image";
 
 interface LinkCardProps {
   href: string;
@@ -25,7 +26,7 @@ const LinkCard = ({ href, title, text }: LinkCardProps) => {
 export default function IntegridadePage() {
   const pageData = {
     mainTitle: "Integridade, Transparência e Corrupção",
-    illustration: "/images/illust_integridade.png",
+    illustration: "/imagens_orientacao/integridade.svg",
     subTopics: [
       { title: "Falta de Transparência" },
       { title: "Desinformação" },
@@ -69,12 +70,16 @@ export default function IntegridadePage() {
               {pageData.mainTitle}
             </h1>
           </div>
-          <div className="w-full md:w-1/2">
-            <img 
+
+          <div className="w-full md:w-1/2 flex justify-center items-center">
+            <Image 
               src={pageData.illustration} 
-              alt={`Ilustração sobre ${pageData.mainTitle}`}
-              className="w-full h-auto rounded-lg object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src="https://placehold.co/500x300/EFEFEF/AAAAAA?text=Ilustração+Integridade"; }}
+              alt="Ilustração sobre Integridade" 
+              width={320} 
+              height={140}
+              
+              className="rounded-lg h-auto w-auto max-w-full"
+              priority
             />
           </div>
         </header>
