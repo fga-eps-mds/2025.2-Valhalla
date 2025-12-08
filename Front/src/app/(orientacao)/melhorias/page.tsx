@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from "next/image";
 
 interface LinkCardProps {
   href: string;
@@ -25,7 +26,7 @@ const LinkCard = ({ href, title, text }: LinkCardProps) => {
 export default function MelhoriasPage() {
   const pageData = {
     mainTitle: "Melhorias e Sugestões",
-    illustration: "/images/illust_melhorias.png",
+    illustration: "/imagens_orientacao/melhorias.svg",
     subTopics: [
       { title: "Sugestões" },
       { title: "Solicitação de Mudanças" },
@@ -64,12 +65,16 @@ export default function MelhoriasPage() {
               {pageData.mainTitle}
             </h1>
           </div>
-          <div className="w-full md:w-1/2">
-            <img 
+
+          <div className="w-full md:w-1/2 flex justify-center items-center">
+            <Image 
               src={pageData.illustration} 
-              alt={`Ilustração sobre ${pageData.mainTitle}`}
-              className="w-full h-auto rounded-lg object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src="https://placehold.co/500x300/EFEFEF/AAAAAA?text=Ilustração+Melhorias"; }}
+              alt="Ilustração sobre Melhorias" 
+              width={320} 
+              height={140}
+              
+              className="rounded-lg h-auto w-auto max-w-full"
+              priority
             />
           </div>
         </header>
