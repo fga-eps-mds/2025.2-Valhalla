@@ -154,7 +154,7 @@ describe('NoticiasService', () => {
             // Ajustado mensagem de erro para bater com o service
             await expect(
                 service.deletarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
-            ).rejects.toThrow('Notícia não encontrada!');
+            ).rejects.toThrow('Notícia com ID 200 não encontrada.');
 
             await expect(
                 service.desativarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
@@ -210,9 +210,8 @@ describe('NoticiasService', () => {
                 })
             );
 
-    
-            expect(result.noticias.length).toBe(noticiasMock.length);
-            expect(result.totalNoticias).toBe(totalNoticias);
+            expect(result[0].length).toBe(noticiasMock.length);
+            expect(result[1]).toBe(totalNoticias);
         });
 
         it('deve listar notícias ativas filtradas por ID do usuário', async () => {
