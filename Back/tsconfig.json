@@ -10,9 +10,9 @@
     "sourceMap": true,
     "outDir": "./dist",
     "ignoreDeprecations": "6.0",
-    "baseUrl": "./", 
-    "paths": { 
-      "src/*": ["src/*"] 
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["src/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
@@ -20,6 +20,8 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    
+    "types": ["node", "jest"]
   }
 }
