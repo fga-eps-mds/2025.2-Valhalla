@@ -93,97 +93,78 @@ describe('NoticiasService', () => {
             expect(prisma.noticia.create).not.toHaveBeenCalled();
         });
     });
-    describe('editarNoticia e DefinirHierarquia', () => {
-        const idNoticia = 100;
+   describe('desativarNoticia e deletarNoticia', () => {
+        const idNoticia = 200;
         const idUsuarioDono = 5;
         const idUsuarioAdmin = 10;
-        const mockDataEdicao = { descricao: 'Nova Descrição' };
-
+        
+        
         const mockNoticiaExistente = { 
             id: idNoticia, 
             idUsuario: idUsuarioDono, 
-            usuario: { 
-                id: idUsuarioDono, 
-                tipo: 'COMUM' as any 
-            }
+            dataDelete: null,
+            usuario: { id: idUsuarioDono, tipo: 'COMUM' } 
         };
 
-        const mockNoticiaEditada = { ...mockNoticiaExistente, ...mockDataEdicao };
-
-        it('deve permitir a edição se o requisitor for o dono da notícia', async () => {
+        it('deve permitir que ADMINMASTER delete permanentemente uma notícia', async () => {
             prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
-            prisma.noticia.update.mockResolvedValue(mockNoticiaEditada as any);
+            prisma.noticia.delete.mockResolvedValue(mockNoticiaExistente as any);
 
-            const result = await service.editarNoticia(
+            await service.deletarNoticia(
+                idNoticia, 
+                idUsuarioAdmin, 
+                'ADMINMASTER' as any
+            );
+
+            expect(prisma.noticia.delete).toHaveBeenCalledWith({
+                where: { id: idNoticia },
+            });
+        });
+
+        it('deve lançar ForbiddenException se um usuário COMUM tentar o hard delete', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+
+            await expect(
+                service.deletarNoticia(
+                    idNoticia, 
+                    idUsuarioDono, 
+                    'COMUM' as any
+                )
+            ).rejects.toThrow('Você não tem permissão para deletar permanentemente esta notícia.');
+
+            expect(prisma.noticia.delete).not.toHaveBeenCalled();
+        });
+
+        it('deve permitir a desativação se o requisitor for o dono da notícia (soft delete)', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+            prisma.noticia.update.mockResolvedValue({ ...mockNoticiaExistente, dataDelete: new Date() } as any);
+
+            await service.desativarNoticia(
                 idNoticia, 
                 idUsuarioDono, 
-                mockDataEdicao as any, 
                 'COMUM' as any
             );
 
             expect(prisma.noticia.update).toHaveBeenCalledWith({
                 where: { id: idNoticia },
-                data: mockDataEdicao,
+                data: { dataDelete: expect.any(Date) },
             });
-            expect(result.descricao).toBe('Nova Descrição');
         });
 
-        it('deve permitir que ADMINMASTER edite qualquer notícia', async () => {
-            
-            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
-            prisma.noticia.update.mockResolvedValue(mockNoticiaEditada as any);
-            
-            
-            const result = await service.editarNoticia(
-                idNoticia, 
-                idUsuarioAdmin, 
-                mockDataEdicao as any, 
-                'ADMINMASTER' as any 
-            );
-
-            
-            expect(prisma.noticia.update).toHaveBeenCalledTimes(1);
-            expect(result).toHaveProperty('id', idNoticia);
-        });
-        
-        
-        it('deve lançar ForbiddenException se um usuário COMUM tentar editar a notícia de outro', async () => {
-            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
-            
-            
-            await expect(
-                service.editarNoticia(
-                    idNoticia, 
-                    idUsuarioAdmin, 
-                    mockDataEdicao as any, 
-                    'COMUM' as any 
-                )
-            ).rejects.toThrow('Ação não autorizada!');
-
-            
-            expect(prisma.noticia.update).not.toHaveBeenCalled();
-        });
-        
-        
-        it('deve lançar NotFoundException se a notícia não existir', async () => {
-            
+        it('deve lançar NotFoundException se a notícia a ser deletada/desativada não existir', async () => {
             prisma.noticia.findUnique.mockResolvedValue(null);
-            
-            
-            await expect(
-                service.editarNoticia(
-                    idNoticia, 
-                    idUsuarioDono, 
-                    mockDataEdicao as any, 
-                    'ADMINMASTER' as any
-                )
-            ).rejects.toThrow('Notícia não encontrada!');
 
-          
-            expect(prisma.noticia.update).not.toHaveBeenCalled();
+            await expect(
+                service.deletarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
+            ).rejects.toThrow('Notícia com ID 200 não encontrada.');
+            
+            
+             await expect(
+                service.desativarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
+            ).rejects.toThrow('Notícia não encontrada!'); 
         });
     });
-    // src/noticias/noticias.service.spec.ts
+    
 
     describe('desativarNoticia e deletarNoticia', () => {
         const idNoticia = 200;
@@ -248,7 +229,6 @@ describe('NoticiasService', () => {
             ).rejects.toThrow('Notícia com ID 200 não encontrada.');
         });
     });
-    // src/noticias/noticias.service.spec.ts
 
     describe('Busca e Listagem (@Get methods)', () => {
         const idNoticiaExistente = 300;
