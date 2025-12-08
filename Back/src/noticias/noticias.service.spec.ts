@@ -183,13 +183,13 @@ describe('NoticiasService', () => {
         it('deve lançar NotFoundException se a notícia não for encontrada', async () => {
             prisma.noticia.findUnique.mockResolvedValue(null);
 
-            await expect(service.encontrarNoticia(9999)).rejects.toThrow('Denuncia não Encontrada!');
+            await expect(service.encontrarNoticia(9999)).rejects.toThrow('Notícia não Encontrada!');
         });
 
         it('deve lançar NotFoundException se a notícia estiver soft deletada (dataDelete)', async () => {
             prisma.noticia.findUnique.mockResolvedValue(noticiaDeletada as any);
 
-            await expect(service.encontrarNoticia(302)).rejects.toThrow('Denuncia não Encontrada!');
+            await expect(service.encontrarNoticia(302)).rejects.toThrow('Notícia não Encontrada!');
         });
 
         it('deve listar notícias ativas e retornar dados de paginação corretos', async () => {
