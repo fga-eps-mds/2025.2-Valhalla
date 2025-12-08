@@ -210,8 +210,8 @@ describe('NoticiasService', () => {
                 })
             );
 
-            expect(result[0].length).toBe(noticiasMock.length);
-            expect(result[1]).toBe(totalNoticias);
+            expect(result.noticias.length).toBe(noticiasMock.length); 
+            expect(result.totalNoticias).toBe(totalNoticias);
         });
 
         it('deve listar notícias ativas filtradas por ID do usuário', async () => {
