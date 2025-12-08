@@ -59,7 +59,7 @@ export default function AssedioPage() {
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <main className="max-w-6xl mx-auto">
         
-<header className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+        <header className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
           {/* Lado do Texto */}
           <div className="w-full md:w-1/2">
             <h1 className="text-4xl font-bold text-gray-800 leading-tight">
