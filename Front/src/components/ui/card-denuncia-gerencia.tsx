@@ -86,8 +86,7 @@ export default function CardDenuncia({
 
       {/* --- DESCRIÇÃO --- */}
       {/* Margem top para separar da data */}
-      <div className="mt-4 text-body leading-relaxed break-words whitespace-pre-wrap text-left">
-        {descricao}
+      <div className="mt-4 text-body leading-relaxed whitespace-pre-wrap text-left">
       </div>
 
     </div>

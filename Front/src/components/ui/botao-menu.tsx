@@ -14,7 +14,7 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
         flex items-center justify-center gap-6 
         w-[350px] h-[120px] 
         bg-white 
-        border-[2px] border-[#67A8FF] 
+        border-2 border-azul-light 
         rounded-[15px] 
         shadow-md hover:shadow-lg 
         transform hover:-translate-y-1 
@@ -30,8 +30,8 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
       {/* Texto */}
       <span className="
         text-[22px] font-bold 
-        text-[var(--color-azul-dark)] 
-        font-[var(--fonte-primaria)] 
+        text-azul-dark 
+        font-serif 
         text-left leading-tight
         w-[140px]
       ">
