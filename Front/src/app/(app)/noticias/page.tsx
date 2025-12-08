@@ -88,7 +88,8 @@ export default function NoticiasPage() {
   const isAdmin = user?.tipo === 'ADMIN' || user?.tipo === 'ADMINMASTER';
 
   return (
-    <main className="min-h-screen bg-[var(--color-off-white)] pb-20">
+    // LIMPEZA 1: bg-[var(--color-off-white)] -> bg-off-white
+    <main className="min-h-screen bg-off-white pb-20">
       
       <Header />
 
@@ -96,14 +97,16 @@ export default function NoticiasPage() {
         <div className="w-full max-w-[1000px]">
           
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-h2 text-left text-[var(--color-texto-primario)]">
+            {/* LIMPEZA 2: text-[var(--color-texto-primario)] -> text-texto-primario */}
+            <h1 className="text-h2 text-left text-texto-primario">
               Mural de Notícias
             </h1>
           </div>
 
           {loading ? (
             <div className="flex justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-azul-principal)]"></div>
+              {/* LIMPEZA 3: border-[var(--color-azul-principal)] -> border-azul-principal */}
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-azul-principal"></div>
             </div>
           ) : noticias.length > 0 ? (
             <div className="flex flex-col gap-6">
@@ -118,13 +121,13 @@ export default function NoticiasPage() {
                   autorId={noticia.idUsuario}
                   autorNome={noticia.usuario?.nome || "Usuário"}
                   autorFoto={noticia.usuario?.mediaSrc}
-                  onEdit={handleEdit}     // Agora chama a função real!
+                  onEdit={handleEdit}
                   onDelete={handleDelete}
                 />
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 text-gray-500 text-body font-[var(--fonte-secundaria)]">
+            <div className="text-center py-20 text-gray-500 text-body font-secondary">
               Nenhuma notícia encontrada.
             </div>
           )}
@@ -134,17 +137,17 @@ export default function NoticiasPage() {
               <button
                 disabled={page === 1}
                 onClick={() => setPage(p => p - 1)}
-                className="px-4 py-2 rounded-md bg-white border border-gray-300 disabled:opacity-50 hover:bg-gray-100 transition text-[var(--color-texto-corpo)]"
+                className="px-4 py-2 rounded-md bg-white border border-gray-300 disabled:opacity-50 hover:bg-gray-100 transition text-texto-corpo"
               >
                 Anterior
               </button>
-              <span className="flex items-center font-bold text-[var(--color-azul-dark)]">
+              <span className="flex items-center font-bold text-azul-dark">
                 Página {page}
               </span>
               <button
                 disabled={noticias.length < LIMIT || (page * LIMIT) >= total}
                 onClick={() => setPage(p => p + 1)}
-                className="px-4 py-2 rounded-md bg-white border border-gray-300 disabled:opacity-50 hover:bg-gray-100 transition text-[var(--color-texto-corpo)]"
+                className="px-4 py-2 rounded-md bg-white border border-gray-300 disabled:opacity-50 hover:bg-gray-100 transition text-texto-corpo"
               >
                 Próxima
               </button>
@@ -156,15 +159,15 @@ export default function NoticiasPage() {
 
       {isAdmin && (
         <button
-          onClick={handleOpenCreateModal} // Agora chama a função real!
-          className="fixed bottom-10 right-10 w-16 h-16 bg-[var(--color-azul-principal)] hover:bg-[var(--color-azul-hover)] text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 z-50 cursor-pointer"
+          onClick={handleOpenCreateModal}
+          // LIMPEZA 4: Cores simplificadas
+          className="fixed bottom-10 right-10 w-16 h-16 bg-azul-principal hover:bg-azul-hover text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 z-50 cursor-pointer"
           title="Nova Notícia"
         >
           <PlusIcon className="w-8 h-8" />
         </button>
       )}
 
-      {/* --- AQUI FICA O MODAL (Invisível até ser chamado) --- */}
       <ModalNoticia 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
