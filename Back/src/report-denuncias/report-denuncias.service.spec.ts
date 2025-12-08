@@ -4,8 +4,7 @@ import { PrismaService } from '../database/prisma.service';
 import { reportDenunciasDto } from './dto/report-denuncias.dto';
 import { NotFoundException } from '@nestjs/common';
 
-// 1. Criamos um objeto falso para simular o que o Prisma retorna
-// Ajustado para refletir os campos do novo DTO (idUsuario, idDenuncia)
+
 const mockReport = {
   id: 1,
   idDenuncia: 10,
@@ -13,7 +12,6 @@ const mockReport = {
   dataCriacao: new Date(),
 };
 
-// 2. Mockamos as funções do Prisma
 const mockPrismaService = {
   reportsDenuncia: {
     create: jest.fn(),
@@ -36,7 +34,7 @@ describe('ReportDenunciasService', () => {
     }).compile();
 
     service = module.get<ReportDenunciasService>(ReportDenunciasService);
-    prisma = module.get(PrismaService); // Pega o mock injetado
+    prisma = module.get(PrismaService); 
     jest.clearAllMocks();
   });
 
@@ -44,24 +42,18 @@ describe('ReportDenunciasService', () => {
     expect(service).toBeDefined();
   });
 
-  // --- TESTE DE CRIAÇÃO ---
   describe('CriarReportDenuncia', () => {
     it('deve chamar o prisma.create com os dados corretos', async () => {
-      // Ajustado para o novo formato do DTO
       const dto: reportDenunciasDto = { idUsuario: 5, idDenuncia: 10 };
       
-      // Configura o mock para retornar sucesso
       prisma.reportsDenuncia.create.mockResolvedValue(mockReport);
 
       await service.CriarReportDenuncia(dto);
 
-      // Verifica se o prisma foi chamado corretamente
       expect(prisma.reportsDenuncia.create).toHaveBeenCalledWith({ data: dto });
-      // OBS: Não testamos o retorno aqui porque sua função original não tem 'return'
     });
   });
 
-  // --- TESTE DE BUSCA ---
   describe('acharTodosReports', () => {
     it('deve retornar uma lista de reports', async () => {
       const listaReports = [mockReport, { ...mockReport, id: 2 }];
@@ -74,12 +66,9 @@ describe('ReportDenunciasService', () => {
     });
   });
 
-  // --- TESTE DE DELEÇÃO ---
   describe('deletarReport', () => {
     it('deve deletar um report se ele existir', async () => {
-      // 1. Simula que o findUnique encontrou algo
       prisma.reportsDenuncia.findUnique.mockResolvedValue(mockReport);
-      // 2. Simula que o delete funcionou
       prisma.reportsDenuncia.delete.mockResolvedValue(mockReport);
 
       const result = await service.deletarReport(1);
@@ -90,14 +79,11 @@ describe('ReportDenunciasService', () => {
     });
 
     it('deve lançar Error se o report não for encontrado', async () => {
-      // 1. Simula que o findUnique retornou null (não achou)
       prisma.reportsDenuncia.findUnique.mockResolvedValue(null);
 
-      // OBS: Estou testando 'Error' genérico porque é o que está no seu código.
-      // Recomendo mudar para NotFoundException no código e aqui.
+
       await expect(service.deletarReport(99)).rejects.toThrow('report não encontrado');
       
-      // Garante que NÃO tentou deletar
       expect(prisma.reportsDenuncia.delete).not.toHaveBeenCalled();
     });
   });
