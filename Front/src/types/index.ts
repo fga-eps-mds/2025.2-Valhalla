@@ -1,11 +1,16 @@
 export type TipoUsuario = 'COMUM' | 'ADMIN' | 'ADMINMASTER';
 
-export interface Usuario {
+export interface Noticia {
   id: number;
-  nome: string;
-  email: string;
-  tipo: TipoUsuario;
-  mediaSrc: string | null;
+  descricao: string;       
+  tipo: string;             
+  mediaSrc: string | null;  
+  idUsuario: number;        
+  dataCriacao: string;      
+  
+  
+  usuario?: {
+    nome: string;
+    mediaSrc: string | null;
+  };
 }
-
-export type CargoUsuario = 'ESTUDANTE' | 'SERVIDOR' | 'OUTRO';
