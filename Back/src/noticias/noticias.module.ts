@@ -3,7 +3,7 @@
 import { Module } from '@nestjs/common';
 import { NoticiasService } from './noticias.service';
 import { NoticiasController } from './noticias.controller';
-import { PrismaModule } from 'src/prisma/prisma.module'; 
+import { PrismaModule } from '../database/prisma.module';git add src/noticias/noticias.module.ts 
 
 @Module({
   imports: [PrismaModule],
