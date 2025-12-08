@@ -199,8 +199,12 @@ describe('NoticiasService', () => {
             const expectedSkip = 5;
 
             prisma.$transaction.mockResolvedValue([noticiasMock, totalNoticias]);
+            prisma.noticia.findMany.mockResolvedValue(noticiasMock as any);
+            prisma.noticia.count.mockResolvedValue(totalNoticias);
 
             const result: any = await service.listarNoticias(page, limit);
+            
+            console.log('Retorno do Service:', result); 
 
             expect(prisma.noticia.findMany).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -210,8 +214,8 @@ describe('NoticiasService', () => {
                 })
             );
 
-            expect(result.noticias.length).toBe(noticiasMock.length); 
-            expect(result.totalNoticias).toBe(totalNoticias);
+            expect(result.denuncias.length).toBe(noticiasMock.length);
+            expect(result.totalDenuncias).toBe(totalNoticias);
         });
 
         it('deve listar notícias ativas filtradas por ID do usuário', async () => {
