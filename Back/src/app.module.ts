@@ -19,6 +19,7 @@ import { DenunciasController } from './denuncias/denuncias.controller';
 import { DenunciasService } from './denuncias/denuncias.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
+import { ReportDenunciasModule } from './report-denuncias/report-denuncias.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { AuthService } from './auth/auth.service';
     PrismaModule,
     CategoriasModule,
     UsuarioModule,    
-    AuthModule        
+    AuthModule, ReportDenunciasModule        
   ],
   controllers: [
     DenunciasController,
