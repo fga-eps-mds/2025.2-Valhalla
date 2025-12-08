@@ -9,4 +9,8 @@ export class ReportDenunciasService {
     async CriarReportDenuncia (data: reportDenunciasDto) {
         const reportDenuncia = await this.prisma.reportsDenuncia.create({data});
     }
+
+    async acharTodosReports(){
+        return await this.prisma.reportsDenuncia.findMany();
+    }
 }
