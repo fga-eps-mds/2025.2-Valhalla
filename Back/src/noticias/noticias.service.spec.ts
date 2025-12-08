@@ -1,10 +1,6 @@
-// noticias.service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { NoticiasService } from './noticias.service';
 import { PrismaService } from 'src/database/prisma.service';
-import { TipoUsuario } from '@prisma/client';
-
-// 1. Definição do Mock do Prisma
 
 const prismaServiceMock = {
     noticia: {
@@ -15,7 +11,7 @@ const prismaServiceMock = {
         delete: jest.fn(),
         count: jest.fn(),
     },
-    $transaction: jest.fn().mockImplementation((data) => data),
+    $transaction: jest.fn().mockImplementation((data) => data), 
     usuario: {
         findUnique: jest.fn(),
     },
@@ -23,21 +19,21 @@ const prismaServiceMock = {
 
 describe('NoticiasService', () => {
     let service: NoticiasService;
-    let prisma: typeof prismaServiceMock; 
+    let prisma: typeof prismaServiceMock;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 NoticiasService,
-                { 
+                {
                     provide: PrismaService,
-                    useValue: prismaServiceMock, 
+                    useValue: prismaServiceMock,
                 },
             ],
         }).compile();
 
         service = module.get<NoticiasService>(NoticiasService);
-        prisma = prismaServiceMock; 
+        prisma = prismaServiceMock;
     });
 
     it('should be defined', () => {
@@ -52,7 +48,7 @@ describe('NoticiasService', () => {
         const mockNoticiaDto = {
             descricao: 'Descrição do Teste',
             tipo: 'NOTICIA',
-            idUsuario: 99, 
+            idUsuario: 99,
         };
         const idUsuarioRequisitor = 1;
 
@@ -61,21 +57,21 @@ describe('NoticiasService', () => {
 
             const result = await service.criarNoticia(
                 idUsuarioRequisitor,
-                mockNoticiaDto as any, 
+                mockNoticiaDto as any,
                 'ADMIN' as any,
             );
 
             expect(prisma.noticia.create).toHaveBeenCalled();
             expect(result).toHaveProperty('id', 1);
         });
-        
+
         it('deve criar uma notícia se o usuário for ADMINMASTER', async () => {
             prisma.noticia.create.mockResolvedValue({ id: 2, ...mockNoticiaDto });
 
             const result = await service.criarNoticia(
                 idUsuarioRequisitor,
                 mockNoticiaDto as any,
-                'ADMINMASTER' as any, 
+                'ADMINMASTER' as any,
             );
 
             expect(prisma.noticia.create).toHaveBeenCalledTimes(1);
@@ -87,23 +83,24 @@ describe('NoticiasService', () => {
                 service.criarNoticia(
                     idUsuarioRequisitor,
                     mockNoticiaDto as any,
-                    'COMUM' as any, 
+                    'COMUM' as any,
                 ),
             ).rejects.toThrow('Apenas administradores podem criar notícias.');
             expect(prisma.noticia.create).not.toHaveBeenCalled();
         });
     });
-   describe('desativarNoticia e deletarNoticia', () => {
+
+    describe('desativarNoticia e deletarNoticia', () => {
         const idNoticia = 200;
         const idUsuarioDono = 5;
         const idUsuarioAdmin = 10;
-        
-        
-        const mockNoticiaExistente = { 
-            id: idNoticia, 
-            idUsuario: idUsuarioDono, 
+
+        // Mock correto com usuario incluso para evitar erro de leitura de 'id'
+        const mockNoticiaExistente = {
+            id: idNoticia,
+            idUsuario: idUsuarioDono,
             dataDelete: null,
-            usuario: { id: idUsuarioDono, tipo: 'COMUM' } 
+            usuario: { id: idUsuarioDono, tipo: 'COMUM' }
         };
 
         it('deve permitir que ADMINMASTER delete permanentemente uma notícia', async () => {
@@ -111,8 +108,8 @@ describe('NoticiasService', () => {
             prisma.noticia.delete.mockResolvedValue(mockNoticiaExistente as any);
 
             await service.deletarNoticia(
-                idNoticia, 
-                idUsuarioAdmin, 
+                idNoticia,
+                idUsuarioAdmin,
                 'ADMINMASTER' as any
             );
 
@@ -126,8 +123,8 @@ describe('NoticiasService', () => {
 
             await expect(
                 service.deletarNoticia(
-                    idNoticia, 
-                    idUsuarioDono, 
+                    idNoticia,
+                    idUsuarioDono,
                     'COMUM' as any
                 )
             ).rejects.toThrow('Você não tem permissão para deletar permanentemente esta notícia.');
@@ -140,8 +137,8 @@ describe('NoticiasService', () => {
             prisma.noticia.update.mockResolvedValue({ ...mockNoticiaExistente, dataDelete: new Date() } as any);
 
             await service.desativarNoticia(
-                idNoticia, 
-                idUsuarioDono, 
+                idNoticia,
+                idUsuarioDono,
                 'COMUM' as any
             );
 
@@ -154,79 +151,14 @@ describe('NoticiasService', () => {
         it('deve lançar NotFoundException se a notícia a ser deletada/desativada não existir', async () => {
             prisma.noticia.findUnique.mockResolvedValue(null);
 
+            // Ajustado mensagem de erro para bater com o service
             await expect(
                 service.deletarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
-            ).rejects.toThrow('Notícia com ID 200 não encontrada.');
-            
-            
-             await expect(
-                service.desativarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
-            ).rejects.toThrow('Notícia não encontrada!'); 
-        });
-    });
-    
-
-    describe('desativarNoticia e deletarNoticia', () => {
-        const idNoticia = 200;
-        const idUsuarioDono = 5;
-        const idUsuarioAdmin = 10;
-        const mockNoticiaExistente = { id: idNoticia, idUsuario: idUsuarioDono, dataDelete: null };
-
-        it('deve permitir que ADMINMASTER delete permanentemente uma notícia', async () => {
-            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
-            prisma.noticia.delete.mockResolvedValue(mockNoticiaExistente as any);
-
-            await service.deletarNoticia(
-                idNoticia, 
-                idUsuarioAdmin, 
-                'ADMINMASTER' as any
-            );
-
-            expect(prisma.noticia.delete).toHaveBeenCalledWith({
-                where: { id: idNoticia },
-            });
-        });
-
-        it('deve lançar ForbiddenException se um usuário COMUM tentar o hard delete', async () => {
-            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+            ).rejects.toThrow('Notícia não encontrada!');
 
             await expect(
-                service.deletarNoticia(
-                    idNoticia, 
-                    idUsuarioDono, 
-                    'COMUM' as any
-                )
-            ).rejects.toThrow('Você não tem permissão para deletar permanentemente esta notícia.');
-
-            expect(prisma.noticia.delete).not.toHaveBeenCalled();
-        });
-
-        it('deve permitir a desativação se o requisitor for o dono da notícia (soft delete)', async () => {
-            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
-            prisma.noticia.update.mockResolvedValue({ ...mockNoticiaExistente, dataDelete: new Date() } as any);
-
-            await service.desativarNoticia(
-                idNoticia, 
-                idUsuarioDono, 
-                'COMUM' as any
-            );
-
-            expect(prisma.noticia.update).toHaveBeenCalledWith({
-                where: { id: idNoticia },
-                data: { dataDelete: expect.any(Date) },
-            });
-        });
-
-        it('deve lançar NotFoundException se a notícia a ser deletada/desativada não existir', async () => {
-            prisma.noticia.findUnique.mockResolvedValue(null);
-
-            await expect(
-                service.deletarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
-            ).rejects.toThrow('Notícia com ID 200 não encontrada.');
-            
-             await expect(
                 service.desativarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
-            ).rejects.toThrow('Notícia com ID 200 não encontrada.');
+            ).rejects.toThrow('Notícia não encontrada!');
         });
     });
 
@@ -247,13 +179,13 @@ describe('NoticiasService', () => {
             expect(prisma.noticia.findUnique).toHaveBeenCalledWith({ where: { id: idNoticiaExistente } });
             expect(result).toEqual(noticiasMock[0]);
         });
-        
+
         it('deve lançar NotFoundException se a notícia não for encontrada', async () => {
             prisma.noticia.findUnique.mockResolvedValue(null);
 
             await expect(service.encontrarNoticia(9999)).rejects.toThrow('Denuncia não Encontrada!');
         });
-        
+
         it('deve lançar NotFoundException se a notícia estiver soft deletada (dataDelete)', async () => {
             prisma.noticia.findUnique.mockResolvedValue(noticiaDeletada as any);
 
@@ -268,7 +200,7 @@ describe('NoticiasService', () => {
 
             prisma.$transaction.mockResolvedValue([noticiasMock, totalNoticias]);
 
-            const result = await service.listarNoticias(page, limit);
+            const result: any = await service.listarNoticias(page, limit);
 
             expect(prisma.noticia.findMany).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -277,9 +209,10 @@ describe('NoticiasService', () => {
                     where: expect.objectContaining({ dataDelete: null }),
                 })
             );
-            
-            expect(result.denuncias.length).toBe(noticiasMock.length);
-            expect(result.totalDenuncias).toBe(totalNoticias);
+
+    
+            expect(result.noticias.length).toBe(noticiasMock.length);
+            expect(result.totalNoticias).toBe(totalNoticias);
         });
 
         it('deve listar notícias ativas filtradas por ID do usuário', async () => {
@@ -304,5 +237,4 @@ describe('NoticiasService', () => {
             );
         });
     });
-
 });
