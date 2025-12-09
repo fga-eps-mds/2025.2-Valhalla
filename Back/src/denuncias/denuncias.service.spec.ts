@@ -242,6 +242,83 @@ describe('DenunciasService', () => {
             service.desativarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any)
         ).rejects.toThrow(new NotFoundException("Denuncia não encontrada!"));
     });
+    it('[Sucesso] Deve desativar denúncia (Linha 75)', async () => {
+        // 1. Mock para passar na Hierarquia (Denúncia existe)
+        mockPrismaService.denuncia.findUnique.mockResolvedValueOnce(mockDenuncia);
+        // 2. Mock para passar na Hierarquia (Usuário existe)
+        mockPrismaService.usuario.findUnique.mockResolvedValueOnce(mockUsuarioComum);
+        
+        // 3. Mock CRÍTICO: Retorna NULL para dizer que "NÃO tem dataDelete" ainda
+        mockPrismaService.denuncia.findUnique.mockResolvedValueOnce(null);
+
+        await service.desativarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any);
+
+        expect(mockPrismaService.denuncia.update).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: expect.objectContaining({ dataDelete: expect.any(Date) })
+            })
+        );
+    }); // <--- O ERRO ESTAVA AQUI, AGORA ESTÁ FECHADO
+
+    it('[Erro] Deve falhar se a denúncia não existir durante a verificação de hierarquia (Linha 182)', async () => {
+        mockPrismaService.denuncia.findUnique.mockResolvedValue(null);
+
+        await expect(
+            service.deletarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any)
+        ).rejects.toThrow(new NotFoundException("Denuncia Não Encontrado!"));
+    });
+
+    it('[Erro] Deve falhar se o dono da denúncia não existir (Linha 192)', async () => {
+        mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
+        mockPrismaService.usuario.findUnique.mockResolvedValue(null);
+
+        await expect(
+            service.deletarDenuncia(idDenuncia, 10, TipoUsuario.COMUM as any)
+        ).rejects.toThrow(new NotFoundException("Usuário Não Encontrado!"));
+    });
+
+    it('[Erro] Admin NÃO pode deletar denúncia de um AdminMaster (Linha 205)', async () => {
+        mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
+        // O dono da denúncia é um MASTER
+        mockPrismaService.usuario.findUnique.mockResolvedValue(mockUsuarioMaster);
+
+        await expect(
+            service.deletarDenuncia(idDenuncia, 20, TipoUsuario.ADMIN as any)
+        ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('[Erro] Tipo de usuário desconhecido deve cair no default (Linhas 219-222)', async () => {
+        mockPrismaService.denuncia.findUnique.mockResolvedValue(mockDenuncia);
+        mockPrismaService.usuario.findUnique.mockResolvedValue(mockUsuarioComum);
+
+        await expect(
+            service.deletarDenuncia(idDenuncia, 99, 'HACKER' as any)
+        ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('[Erro] Admin NÃO pode deletar denúncia de outro Admin (Linha 213)', async () => {
+        // Cenário: Denúncia pertence a um Admin (ID 25)
+        mockPrismaService.denuncia.findUnique.mockResolvedValue({ ...mockDenuncia, idUsuario: 25 });
+        mockPrismaService.usuario.findUnique.mockResolvedValue({ id: 25, tipo: TipoUsuario.ADMIN });
+
+        // Ação: Outro Admin (ID 20) tenta deletar
+        await expect(
+            service.deletarDenuncia(idDenuncia, 20, TipoUsuario.ADMIN as any)
+        ).rejects.toThrow(ForbiddenException);
+    });
+
+    // Cobre a linha 222 (Fallback final)
+    it('[Erro] Admin tentando deletar dono com tipo desconhecido deve cair no erro final (Linha 222)', async () => {
+        // Cenário: O dono da denúncia tem um tipo "ALIEN" que não existe no sistema
+        // Isso faz o código entrar no case ADMIN, não dar match em nada, dar break e ir pra última linha
+        mockPrismaService.denuncia.findUnique.mockResolvedValue({ ...mockDenuncia, idUsuario: 99 });
+        mockPrismaService.usuario.findUnique.mockResolvedValue({ id: 99, tipo: 'ALIEN_TYPE' });
+
+        // Ação: Admin tenta deletar
+        await expect(
+            service.deletarDenuncia(idDenuncia, 20, TipoUsuario.ADMIN as any)
+        ).rejects.toThrow(ForbiddenException);
+    });
   });
-  });
+});
 });

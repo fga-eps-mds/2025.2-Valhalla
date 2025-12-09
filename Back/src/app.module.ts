@@ -18,6 +18,8 @@ import { UsuarioService } from './usuario/usuario.service';
 import { DenunciasController } from './denuncias/denuncias.controller';
 import { DenunciasService } from './denuncias/denuncias.service';
 import { AuthController } from './auth/auth.controller';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ConfigModule } from '@nestjs/config';
 import { AuthService } from './auth/auth.service';
 import { NoticiasController } from './noticias/noticias.controller';
 import { NoticiasService } from './noticias/noticias.service';
@@ -25,6 +27,8 @@ import { NoticiasModule } from './noticias/noticias.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    CloudinaryModule,
     DenunciasModule,
     PrismaModule,
     CategoriasModule,
@@ -47,7 +51,6 @@ import { NoticiasModule } from './noticias/noticias.module';
     AppService,
     CategoriasService, 
     UsuarioService,    
-    //AuthService,    
     {                  
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

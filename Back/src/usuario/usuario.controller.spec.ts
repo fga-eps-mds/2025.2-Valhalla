@@ -90,4 +90,41 @@ describe('UsuarioController', () => {
       );
     });
   });
+
+  describe('criarAdmin', () => {
+    it('deve chamar service.criarUsuario passando o tipo do solicitante', async () => {
+      const dto = { nome: 'Novo Admin' } as CriacaoUsuarioDto;
+      // Simulamos um request feito por um ADMIN
+      const adminRequest = { 
+        user: { tipo: TipoUsuario.ADMIN } 
+      } as AuthRequest;
+
+      await controller.criarAdmin(dto, adminRequest);
+
+      // Verifica se passou o DTO e o objeto de opções com o tipo correto
+      expect(service.criarUsuario).toHaveBeenCalledWith(
+        dto, 
+        { tipo: TipoUsuario.ADMIN }
+      );
+    });
+  });
+
+  describe('encontrarUsuario', () => {
+    it('deve chamar service.encontrarUsuario com o ID correto', async () => {
+      const id = 10;
+      await controller.encontrarUsuario(id);
+      expect(service.encontrarUsuario).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe('listarUsuario', () => {
+    it('deve chamar service.listarUsuario com paginação padrão ou informada', async () => {
+      const page = 2;
+      const limit = 20;
+      
+      await controller.listarUsuario(page, limit);
+      
+      expect(service.listarUsuario).toHaveBeenCalledWith(page, limit);
+    });
+  });
 });

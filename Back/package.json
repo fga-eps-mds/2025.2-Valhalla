@@ -28,8 +28,10 @@
     "@nestjs/platform-express": "^11.1.9",
     "@prisma/client": "^6.19.0",
     "bcrypt": "^6.0.0",
+    "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "cloudinary": "^2.8.0",
     "dotenv": "^17.2.3",
     "nodemailer": "^7.0.11",
     "passport-jwt": "^4.0.1",
@@ -52,6 +54,7 @@
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
+    "@types/multer": "^2.0.0",
     "@types/node": "^22.19.1",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
@@ -81,11 +84,32 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "collectCoverageFrom": [
-      "/*.(t|j)s"
+"collectCoverageFrom": [
+      "**/*.ts",                 
+      "!**/*.d.ts",              
+      "!**/*.js",                
+      "!**/main.ts",             
+      "!**/*.module.ts",        
+      "!**/node_modules/**",     
+      "!**/dist/**",
+      "!**/seed.ts",
+      "!**/jest.setup.ts",
+      "!**/*.spec.ts",
+      "!src/database/**",
+      "!test/**",              
+      "!src/app.module.ts",    
+      "!src/main.ts",          
+      "!src/app.service.ts",   
+      "!src/app.controller.ts"          
     ],
+    
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
+    "coverageReporters": [
+      "json-summary", 
+      "text",
+      "lcov"
+    ],
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/src/$1"
     }
