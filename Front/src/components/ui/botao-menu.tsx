@@ -29,9 +29,10 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
 
       {/* Texto */}
       <span className="
-        text-[22px] font-bold 
-        text-azul-dark 
-        font-serif 
+        text-[22px] 
+        text-azul-dark
+        font-(--fonte-primaria)
+
         text-left leading-tight
         w-[140px]
       ">

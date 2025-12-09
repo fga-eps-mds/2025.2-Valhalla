@@ -2,14 +2,14 @@
 
 // Imports ESTRUTURAIS do React e Next
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import ModalDenuncia from '@/components/modalDenuncia';
-import { useAuth } from '@/contexts/AuthContext';
 import { PlusIcon} from '@heroicons/react/24/solid';
 import api from '@/utils/api';
 import CardDenuncia from '@/components/ui/card-denuncia';
 import { toast } from 'sonner';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface DenunciaBackend {
   id: number;
@@ -126,7 +126,7 @@ export default function PaginaDenuncias() {
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                    className="px-4 py-2 rounded bg-white text-black shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-default"
                   >
                     Anterior
                   </button>
@@ -149,7 +149,7 @@ export default function PaginaDenuncias() {
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalDePaginas))}
                     disabled={currentPage === totalDePaginas}
-                    className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                    className="px-4 py-2 rounded bg-white text-black shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-default"
                   >
                     Próximo
                   </button>

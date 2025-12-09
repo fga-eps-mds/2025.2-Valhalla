@@ -1,9 +1,12 @@
 # 2025.2 Valhalla — Guardiões da Universidade
 
+![Logo](./Front/public/logos/logo-navbar.svg)
+
 ## Sobre
 
 O **Guardiões da Universidade**, desenvolvido pelo grupo **Valhalla** no 2° semestre de 2025 na disciplina *Métodos de Desenvolvimento de Software*, tem como objetivo oferecer um **canal de denúncias e orientação** para a comunidade acadêmica da *Universidade de Brasília (UnB)*.  
 A plataforma permite que alunos e servidores relatem situações, conheçam os procedimentos oficiais e acompanhem informações sobre demandas da universidade.
+
 
 ### ⚠️ Observação Importante
 
@@ -64,7 +67,9 @@ Para rodar o projeto localmente, siga os passos abaixo:
     ```
 7.  **Inicie o Back-end:**
     ```bash
-    npm run dev
+    npm run start
+    ou
+    npm run start:dev
     ```
 8.  **Inicie o Front-end:**
     Abra um novo terminal, navegue até a pasta `Front` e execute:
@@ -72,109 +77,87 @@ Para rodar o projeto localmente, siga os passos abaixo:
     npm run dev
     ```
 
-O aplicativo estará disponível em `http://localhost:5173` (ou outra porta, dependendo da configuração do seu ambiente).
+O aplicativo estará disponível em `http://localhost:3000` (ou outra porta, dependendo da configuração do seu ambiente).
 
 ---
 
-### Equipe de Desenvolvimento
-
-## Equipe
+## Equipe de Desenvolvimento
 
 <div align="center">
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="/Front/public/devs/antonio.jpeg" width="100"><br>
-      <strong>Antonio Lucas</strong><br>
-      Matrícula: 241025597<br>
-      <a href="https://github.com/Devv-Antonio">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-    <td align="center">
-      <img src="/Front/public/devs/diniz.jpeg" width="100"><br>
-      <strong>Gabriel Diniz</strong><br>
-      Matrícula: 241025630<br>
-      <a href="https://github.com/GabrielDiniz12">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-    <td align="center">
-      <img src="/Front/public/devs/Bonifacio.jpg" width="100"><br>
-      <strong>Julia Gabriella</strong><br>
-      Matrícula: 241025659<br>
-      <a href="https://github.com/Gustavo27033">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-  </tr>
-
-  <tr>
-    <td align="center">
-      <img src="/Front/public/devs/julia.jpg" width="100"><br>
-      <strong>Julia Gabriella</strong><br>
-      Matrícula: 241036142<br>
-      <a href="https://github.com/juliagabriellafs">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-    <td align="center">
-      <img src="/Front/public/devs/laura.jpg" width="100"><br>
-      <strong>Laura Rogelin</strong><br>
-      Matrícula: 222006928<br>
-      <a href="https://github.com/laurarogelin">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-    <td align="center">
-      <img src="/Front/public/devs/gepeto.jpg" width="100"><br>
-      <strong>Lucas Alves</strong><br>
-      Matrícula: 241025541<br>
-      <a href="https://github.com/xLucasMelo">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-  </tr>
-
-  <tr>
-    <td align="center">
-      <img src="/Front/public/devs/luquinhas.jpg" width="100"><br>
-      <strong>Lucas Oliveira</strong><br>
-      Matrícula: 241011386<br>
-      <a href="https://github.com/dev-LucasDpaula">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-    <td align="center">
-      <img src="/Front/public/devs/ian.jpeg" width="100"><br>
-      <strong>Pedro Ian</strong><br>
-      Matrícula: 241025837<br>
-      <a href="https://github.com/pedroiaan">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-    <td align="center">
-      <img src="/Front/public/devs/americo.jpeg" width="100"><br>
-      <strong>Pedro Henrique</strong><br>
-      Matrícula: 241025980<br>
-      <a href="https://github.com/dev-americo">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-  </tr>
-
-  <tr>
-    <td align="center">
-      <img src="/Front/public/devs/pedrin.jpg" width="100"><br>
-      <strong>NOME 10</strong><br>
-      Matrícula: 241025710<br>
-      <a href="https://github.com/Pwdrinho">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
-      </a>
-    </td>
-  </tr>
-
-</table>
-
+  <table>
+    <tr>
+      <td align="center">
+        <img src="./Front/public/devs/antonio.jpeg" width="100"><br>
+        <strong>Antonio Lucas</strong><br>241025597<br>
+        <a href="https://github.com/Devv-Antonio">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/diniz.jpeg" width="100"><br>
+        <strong>Gabriel Diniz</strong><br>241025630<br>
+        <a href="https://github.com/GabrielDiniz12">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/Bonifacio.jpg" width="100"><br>
+        <strong>Gustavo Bonifácio</strong><br>241025659<br>
+        <a href="https://github.com/Gustavo27033">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/julia.jpg" width="100"><br>
+        <strong>Julia Gabriella</strong><br>241036142<br>
+        <a href="https://github.com/juliagabriellafs">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/laura.jpg" width="100"><br>
+        <strong>Laura Rogelin</strong><br>222006928<br>
+        <a href="https://github.com/laurarogelin">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="./Front/public/devs/gepeto.jpg" width="100"><br>
+        <strong>Lucas Alves</strong><br>241025541<br>
+        <a href="https://github.com/xLucasMelo">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/luquinhas.jpg" width="100"><br>
+        <strong>Lucas Oliveira</strong><br>241011386<br>
+        <a href="https://github.com/dev-LucasDpaula">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/americo.jpeg" width="100"><br>
+        <strong>Pedro Henrique</strong><br>241025980<br>
+        <a href="https://github.com/dev-americo">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/ian.jpeg" width="100"><br>
+        <strong>Pedro Ian</strong><br>241025837<br>
+        <a href="https://github.com/pedroiaan">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/pedrin.jpg" width="100"><br>
+        <strong>Pedro Lucas</strong><br>241025710<br>
+        <a href="https://github.com/Pwdrinho">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+    </tr>
+  </table>
 </div>
