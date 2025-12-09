@@ -126,7 +126,7 @@ export default function Cadastro() {
             <div className="w-[640px] min-h-[730px] rounded-2xl bg-white border border-gray-200 shadow-xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center p-8">
                 
                 <Link href="/" className="absolute top-6 left-6">
-                    <ArrowLeftIcon className="w-10 h-10 text-[#1A2A4A] cursor-pointer hover:text-[#3060BF] transition" />
+                    <ArrowLeftIcon className="w-10 h-10 text-azul-dark cursor-pointer hover:text-azul-principal transition" />
                 </Link>
 
                 <Image 
@@ -137,47 +137,47 @@ export default function Cadastro() {
                     className="mb-4 mt-2"
                 />
                 
-                <h1 className='text-[36px] font-bold text-[#050505] font-[var(--fonte-primaria)] mb-8'>
+                <h1 className='text-[36px] text-texto-primario font-(--fonte-primaria) mb-8'>
                     Cadastro
                 </h1>
 
                 <form onSubmit={handleSubmit} className='w-full max-w-sm flex flex-col gap-4'>
                     
                     <div className='relative'>
-                        <UserCircleIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
+                        <UserCircleIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark'/>
                         <input 
                             type="text" 
                             value={nome}
                             onChange={(e) => setNome(e.target.value)}
                             placeholder='Nome Completo'
-                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A]/50"
+                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 placeholder-azul-dark/50"
                         />
                     </div>
                     
                     <div className='relative'>
-                        <AcademicCapIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
+                        <AcademicCapIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark'/>
                         <input 
                             type="email" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder='Email Institucional'
-                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A]/50"
+                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 placeholder-azul-dark/50"
                         />
                     </div>
                     
                     <div className='relative'>
-                        <KeyIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
+                        <KeyIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark'/>
                         <input 
                             type={mostrarSenha ? "text" : "password"}
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}
                             placeholder='Senha'
-                            className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A]/50"
+                            className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 placeholder-azul-dark/50"
                         />
                         <button 
                             type="button"
                             onClick={() => setMostrarSenha(!mostrarSenha)}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#3060BF]"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-azul-principal"
                         >
                             {mostrarSenha ? <EyeSlashIcon className="size-5"/> : <EyeIcon className="size-5"/>}
                         </button>
@@ -207,13 +207,13 @@ export default function Cadastro() {
                     )}
                     
                     <div className='relative'>
-                        <KeyIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
+                        <KeyIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark'/>
                         <input 
                             type={mostrarSenha ? "text" : "password"}
                             value={confirmaSenha}
                             onChange={(e) => setConfirmaSenha(e.target.value)}
                             placeholder='Confirmar Senha'
-                            className={`w-full pl-12 pr-10 py-3 border rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 placeholder-[#1A2A4A]/50
+                            className={`w-full pl-12 pr-10 py-3 border rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 placeholder-azul-dark/50
                                 ${confirmaSenha && senha !== confirmaSenha ? 'border-red-500' : 'border-gray-300'}
                             `}
                         />
@@ -223,11 +223,11 @@ export default function Cadastro() {
                     )}
                     
                     <div className='relative'>
-                        <ChevronUpDownIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-[#1A2A4A]'/>
+                        <ChevronUpDownIcon className='absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-azul-dark'/>
                         <select 
                             value={cargo}
                             onChange={(e) => setCargo(e.target.value as CargoUsuario)}
-                            className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#3060BF] text-gray-800 bg-white appearance-none cursor-pointer'
+                            className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-azul-principal text-gray-800 bg-white appearance-none cursor-pointer'
                         >
                             <option value="" disabled>Selecione sua Ocupação</option>
                             <option value="ESTUDANTE">Estudante</option>
@@ -239,7 +239,7 @@ export default function Cadastro() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex items-center justify-center border border-[#1A2A4A] rounded-xl py-3 mt-4 gap-2 bg-[#3060BF] w-full text-white hover:bg-[#254c9b] transition font-bold shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 mt-4 gap-2 bg-azul-principal w-full text-white hover:bg-[#254c9b] transition font-bold shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                         {loading ? 'CADASTRANDO...' : 'CADASTRAR'}
                         {!loading && <ArrowRightEndOnRectangleIcon className='size-5'/>}
@@ -251,12 +251,12 @@ export default function Cadastro() {
                             id="termos"
                             checked={termosAceitos}
                             onChange={() => setTermosAceitos(!termosAceitos)}
-                            className="w-5 h-5 accent-[#3060BF] cursor-pointer" 
+                            className="w-5 h-5 accent-azul-principal cursor-pointer" 
                         />
                         <label htmlFor="termos" className="text-sm text-gray-600 cursor-pointer select-none">
-                            Li e aceito os <a href="#" className="text-[#3060BF] underline hover:text-[#254c9b]">termos de uso</a>
+                            Li e aceito os <a href="#" className="text-azul-principal underline hover:text-[#254c9b]">termos de uso</a>
                         </label>
-                        <ShieldCheckIcon className='size-5 text-[#3060BF]'/>
+                        <ShieldCheckIcon className='size-5 text-azul-principal'/>
                     </div>
 
                 </form>

@@ -205,7 +205,7 @@ export class DenunciasService{
                     throw new ForbiddenException("Ação não autorizada!");
                 }
                 if (usuarioDenuncia.tipo === TipoUsuario.ADMIN && usuarioDenuncia.id !== idRequisitor){
-                    throw new ForbiddenException("Ação não autorizada!");
+                    throw new ForbiddenException("A ção não autorizada!");
                 }
                 if (usuarioDenuncia.tipo === TipoUsuario.COMUM){
                     return true;

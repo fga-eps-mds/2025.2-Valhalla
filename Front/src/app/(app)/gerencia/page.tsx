@@ -9,6 +9,7 @@ import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
 import BotaoMenu from "@/components/ui/botao-menu";
 import { UsersIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/solid";
 import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
+import ModalEditarDenuncia from '@/components/modalEditarDenuncia';
 
 interface DenunciaBackend {
   id: number;
@@ -30,8 +31,10 @@ type Denuncia = {
   id: number;
   nomeUsuario: string;
   fotoUsuario?: string | null;
+  mediaSrc?: string | null;
   descricao: string;
   anonimato: boolean;
+  idCategoria?: number;
   categoria: string;
   data: string;
 };
@@ -50,6 +53,8 @@ export default function Gerencia() {
 
   const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
   const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
+  const [isModalEditarOpen, setIsModalEditarOpen] = useState(false);
+  const [selectedDenuncia, setSelectedDenuncia] = useState<Denuncia | null>(null);
 
   useEffect(() => {
     const buscarDenuncias = async () => {
@@ -64,8 +69,10 @@ export default function Gerencia() {
           id: denuncia.id,
           nomeUsuario: denuncia.usuario?.nome,
           fotoUsuario: denuncia.usuario?.mediaSrc,
+          mediaSrc: denuncia.mediaSrc,
           descricao: denuncia.descricao,
           anonimato: denuncia.anonimato,
+          idCategoria: denuncia.idCategoria,
           categoria: denuncia.categoria.nome,
           data: new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR', {
             day: '2-digit',
@@ -117,6 +124,11 @@ export default function Gerencia() {
                                       setSelectedDenunciaId(id);
                                       setIsModalExcluirOpen(true);
                                     }}
+                                    onEdit={(id) => {
+                                      const found = listagemDenuncias.find(d => d.id === id) || null;
+                                      setSelectedDenuncia(found);
+                                      setIsModalEditarOpen(true);
+                                    }}
                                   />
                               );
                             })
@@ -134,7 +146,7 @@ export default function Gerencia() {
                       <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         disabled={currentPage === 1}
-                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-default"
                       >
                         Anterior
                       </button>
@@ -157,7 +169,7 @@ export default function Gerencia() {
                       <button
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalDePaginas))}
                         disabled={currentPage === totalDePaginas}
-                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-default"
                       >
                         Próximo
                       </button>
@@ -168,6 +180,26 @@ export default function Gerencia() {
                             denunciaId={selectedDenunciaId}
                             onDeleted={(id) => setListagemDenuncias(prev => prev.filter(d => d.id !== id))}
                           />
+
+                    <ModalEditarDenuncia
+                      isOpen={isModalEditarOpen}
+                      onClose={() => setIsModalEditarOpen(false)}
+                      denuncia={selectedDenuncia ? {
+                        id: selectedDenuncia.id,
+                        descricao: selectedDenuncia.descricao,
+                        idCategoria: selectedDenuncia.idCategoria ?? 0,
+                        anonimato: selectedDenuncia.anonimato,
+                        mediaSrc: selectedDenuncia.mediaSrc ?? null,
+                      } : null}
+                      onSaved={(updated) => {
+                        setListagemDenuncias(prev => prev.map(d => d.id === updated.id ? {
+                          ...d,
+                          descricao: updated.descricao ?? d.descricao,
+                          anonimato: updated.anonimato ?? d.anonimato,
+                          categoria: updated.categoria?.nome ?? d.categoria,
+                        } : d));
+                      }}
+                    />
                   </>
                 )}
         </main>

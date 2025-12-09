@@ -20,6 +20,10 @@ import { DenunciasService } from './denuncias/denuncias.service';
 import { AuthController } from './auth/auth.controller';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthService } from './auth/auth.service';
+import { NoticiasController } from './noticias/noticias.controller';
+import { NoticiasService } from './noticias/noticias.service';
+import { NoticiasModule } from './noticias/noticias.module';
 
 @Module({
   imports: [
@@ -29,14 +33,18 @@ import { ConfigModule } from '@nestjs/config';
     PrismaModule,
     CategoriasModule,
     UsuarioModule,    
-    AuthModule        
+    AuthModule,
+    ReportDenunciasModule,
+    NoticiasModule        
+
   ],
   controllers: [
     DenunciasController,
     AppController,
     CategoriasController, 
     UsuarioController,
-    AuthController    
+    AuthController,
+    NoticiasController    
   ],
   providers: [
     DenunciasService,
@@ -46,7 +54,7 @@ import { ConfigModule } from '@nestjs/config';
     {                  
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
+    }, NoticiasService,
   ],
 })
 export class AppModule {}

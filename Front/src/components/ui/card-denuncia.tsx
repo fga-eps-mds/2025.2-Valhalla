@@ -60,12 +60,12 @@ export default function CardDenuncia({
         </div>
 
         {/* LADO DIREITO: Categoria (Fonte Primária/Serifa) */}
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end cursor-default">
             <span className="text-body">
                 {categoria}
             </span>
             {/* Data (Abaixo do avatar/nome) */}
-            <span className="text-[12px] text-small mt-1 ml-1">
+            <span className="text-[12px] text-small mt-1 ml-1 cursor-default">
                 {data}
             </span>
         </div>
@@ -74,7 +74,7 @@ export default function CardDenuncia({
 
       {/* --- DESCRIÇÃO --- */}
       {/* Margem top para separar da data */}
-      <div className="mt-4 text-body leading-relaxed break-words whitespace-pre-wrap text-left">
+      <div className="mt-4 text-body leading-relaxed wrap-break-words whitespace-pre-wrap text-left">
         {descricao}
       </div>
 
