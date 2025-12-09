@@ -19,7 +19,9 @@ import { DenunciasController } from './denuncias/denuncias.controller';
 import { DenunciasService } from './denuncias/denuncias.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
-import { ReportDenunciasModule } from './report-denuncias/report-denuncias.module';
+import { NoticiasController } from './noticias/noticias.controller';
+import { NoticiasService } from './noticias/noticias.service';
+import { NoticiasModule } from './noticias/noticias.module';
 
 @Module({
   imports: [
@@ -27,14 +29,18 @@ import { ReportDenunciasModule } from './report-denuncias/report-denuncias.modul
     PrismaModule,
     CategoriasModule,
     UsuarioModule,    
-    AuthModule, ReportDenunciasModule        
+    AuthModule,
+    ReportDenunciasModule,
+    NoticiasModule        
+
   ],
   controllers: [
     DenunciasController,
     AppController,
     CategoriasController, 
     UsuarioController,
-    AuthController    
+    AuthController,
+    NoticiasController    
   ],
   providers: [
     DenunciasService,
@@ -45,7 +51,7 @@ import { ReportDenunciasModule } from './report-denuncias/report-denuncias.modul
     {                  
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
+    }, NoticiasService,
   ],
 })
 export class AppModule {}

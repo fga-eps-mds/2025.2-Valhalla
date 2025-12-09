@@ -32,6 +32,7 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
         text-[22px] 
         text-azul-dark
         font-(--fonte-primaria)
+
         text-left leading-tight
         w-[140px]
       ">
