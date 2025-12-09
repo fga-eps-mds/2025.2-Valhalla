@@ -54,3 +54,45 @@ export const editarUsuario = async (dados: DadosEdicao) => {
   return response.data;
 };
 export default api;
+
+export interface CriarNoticiaDados {
+  descricao: string;
+  tipo: string;
+  mediaSrc?: string;
+  idUsuario: number;
+}
+
+export interface EditarNoticiaDados {
+  descricao?: string;
+  tipo?: string;
+  mediaSrc?: string;
+}
+export const criarNoticia = async (dados: CriarNoticiaDados) => {
+  const response = await api.post('/noticias', dados);
+  return response.data;
+};
+
+export const listarNoticias = async (page: number = 1, limit: number = 10) => {
+  const response = await api.get(`/noticias?page=${page}&limit=${limit}`);
+  return response.data; 
+};
+
+export const listarNoticiasPorUsuario = async (idUsuario: number, page: number = 1, limit: number = 10) => {
+  const response = await api.get(`/noticias/usuario/${idUsuario}?page=${page}&limit=${limit}`);
+  return response.data;
+};
+
+export const editarNoticia = async (id: number, dados: EditarNoticiaDados) => {
+  const response = await api.patch(`/noticias/${id}`, dados);
+  return response.data;
+};
+
+export const desativarNoticia = async (id: number) => {
+  const response = await api.delete(`/noticias/${id}`);
+  return response.data;
+};
+
+export const deletarNoticiaPermanente = async (id: number) => {
+  const response = await api.delete(`/noticias/delete-permanente/${id}`);
+  return response.data;
+};

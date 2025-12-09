@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from "next/image";
 
 type LinkCardProps = {
   href: string;
@@ -25,7 +26,7 @@ const LinkCard: React.FC<LinkCardProps> = ({ href, title, text }) => {
 export default function DireitosHumanosPage() {
   const pageData = {
     mainTitle: "Defesa dos Direitos Humanos",
-    illustration: "/images/illust_direitos_humanos.png",
+    illustration: "/imagens_orientacao/direitos_humanos.svg",
     subTopics: [
       { title: "Discriminação" },
       { title: "Bullying" },
@@ -69,12 +70,16 @@ export default function DireitosHumanosPage() {
               {pageData.mainTitle}
             </h1>
           </div>
-          <div className="w-full md:w-1/2">
-            <img 
+
+          <div className="w-full md:w-1/2 flex justify-center items-center">
+            <Image 
               src={pageData.illustration} 
               alt="Ilustração sobre direitos humanos" 
-              className="w-full h-auto rounded-lg object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src="https://placehold.co/500x300/EFEFEF/AAAAAA?text=Ilustração+Direitos+Humanos"; }}
+              width={320} 
+              height={140}
+              
+              className="rounded-lg h-auto w-auto max-w-full"
+              priority
             />
           </div>
         </header>

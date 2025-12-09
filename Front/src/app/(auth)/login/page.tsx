@@ -8,11 +8,12 @@ import {
     ArrowLeftIcon, 
     KeyIcon
 } from '@heroicons/react/24/outline';
-import { CheckIcon } from '@heroicons/react/24/solid';
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from '../../../contexts/AuthContext';
 import { loginUsuario } from '@/utils/api';
+
+import { CheckIcon } from '@heroicons/react/24/solid';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -59,14 +60,14 @@ export default function Login() {
                     className="mt-2" 
                 />
                 
-                <h1 className='text-[36px] text-texto-primario mb-10 font-bold font-[var(--fonte-primaria)]'>
+                <h1 className='text-[36px] text-texto-primario mb-10  font-(--fonte-primaria)'>
                     Login
                 </h1>
 
                 <form className="w-full max-w-sm flex flex-col items-center" onSubmit={handleLogin}>
                     
                     <div className="w-full mb-5">
-                        <label htmlFor="email" className="block text-2xl font-bold text-gray-800 mb-2 font-[var(--fonte-primaria)]">
+                        <label htmlFor="email" className="block text-2xl text-gray-800 mb-2 font-(--fonte-primaria)">
                             E-mail
                         </label>
                         <div className="relative">
@@ -77,13 +78,13 @@ export default function Login() {
                                 value={email}
                                 onChange= {(e) => setEmail(e.target.value)}
                                 placeholder="Digite aqui seu Email" 
-                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-azul-dark font-[var(--fonte-primaria)]"
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-azul-dark font-(--fonte-primaria)"
                             />
                         </div>
                     </div>
 
                     <div className="w-full mb-5">
-                        <label htmlFor="password" className="block text-2xl font-bold text-gray-800 mb-2 font-[var(--fonte-primaria)]">
+                        <label htmlFor="password" className="block text-2xl text-gray-800 mb-2 font-(--fonte-primaria)">
                             Senha
                         </label>
                         <div className="relative">
@@ -94,7 +95,7 @@ export default function Login() {
                                 placeholder="Digite aqui sua senha" 
                                 value={senha}
                                 onChange={(e) => setSenha(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-azul-dark font-[var(--fonte-primaria)]"
+                                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-azul-dark font-(--fonte-primaria)"
                             />
                         </div>
                     </div>
@@ -134,13 +135,13 @@ export default function Login() {
                     </button>
                 </form>
 
-                <button className="mt-8 flex items-center justify-center w-12 h-12 border border-gray-300 rounded-full shadow-sm hover:shadow-md transition">  {/* n está funciona */}
+                <button className="mt-8 flex items-center justify-center w-12 h-12 border border-gray-300 rounded-full shadow-sm hover:shadow-md transition">  {/* em construção */}
                     <Image src="/google.png" alt="Login com Google" width={48} height={48} /> 
                 </button>
 
                 <p className="mt-6 text-sm text-azul-dark">
                     Novo por aqui ?  {'   '}
-                    <Link href="/cadastro" className="font-medium text-blue-600 hover:underline"> {/* conferir se esse é o nome da página*/}
+                    <Link href="/cadastro" className="font-medium text-blue-600 hover:underline">
                         Crie sua conta
                     </Link>
                 </p>

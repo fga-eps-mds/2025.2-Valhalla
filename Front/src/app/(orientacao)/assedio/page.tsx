@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from "next/image";
 
 interface LinkCardProps {
   href: string;
@@ -25,7 +26,7 @@ const LinkCard = ({ href, title, text }: LinkCardProps) => {
 export default function AssedioPage() {
   const pageData = {
     mainTitle: "Combatendo o Assédio Moral e Sexual",
-    illustration: "/images/illust_assedio.png",
+    illustration: "/imagens_orientacao/assedio.svg",
     subTopics: [
       { title: "Assédio Moral" },
       { title: "Assédio Sexual" },
@@ -59,17 +60,22 @@ export default function AssedioPage() {
       <main className="max-w-6xl mx-auto">
         
         <header className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+          {/* Lado do Texto */}
           <div className="w-full md:w-1/2">
             <h1 className="text-4xl font-bold text-gray-800 leading-tight">
               {pageData.mainTitle}
             </h1>
           </div>
-          <div className="w-full md:w-1/2">
-            <img 
+
+          <div className="w-full md:w-1/2 flex justify-center items-center">
+            <Image 
               src={pageData.illustration} 
               alt="Ilustração sobre combate ao assédio" 
-              className="w-full h-auto rounded-lg object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).onerror = null; (e.target as HTMLImageElement).src="https://placehold.co/500x300/EFEFEF/AAAAAA?text=Ilustração+Assédio"; }}
+              width={320} 
+              height={140}
+              
+              className="rounded-lg h-auto w-auto max-w-full"
+              priority
             />
           </div>
         </header>
