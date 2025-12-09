@@ -29,7 +29,10 @@ import { NoticiasModule } from './noticias/noticias.module';
     PrismaModule,
     CategoriasModule,
     UsuarioModule,    
-    AuthModule, NoticiasModule        
+    AuthModule,
+    ReportDenunciasModule,
+    NoticiasModule        
+
   ],
   controllers: [
     DenunciasController,
