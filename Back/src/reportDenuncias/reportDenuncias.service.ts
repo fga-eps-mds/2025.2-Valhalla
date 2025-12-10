@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/database/prisma.service';
-import { reportDenunciasDto } from './dto/report-denuncias.dto';
+import { PrismaService } from '../database/prisma.service';
+import { reportDenunciasDto } from './dto/reportDenuncias.dto';
 
 @Injectable()
 export class ReportDenunciasService {

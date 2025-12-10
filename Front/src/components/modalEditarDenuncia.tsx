@@ -52,6 +52,7 @@ export default function ModalEditarDenuncia ({
   denuncia?: {
     id: number;
     descricao: string;
+    categoria: string;
     idCategoria: number;
     anonimato: boolean;
     mediaSrc?: string | null;
@@ -62,6 +63,7 @@ export default function ModalEditarDenuncia ({
   const [descricao, setDescricao] = useState('');
   const [idCategoria, setIdCategoria] = useState('');
   const [anonimato, setAnonimato] = useState<boolean | null>(null);
+  const [categoria, setCategoria] = useState('');
   const [mediaSrc, setMediaSrc] = useState<string>('');
   const {user} = useAuth();
 
@@ -83,6 +85,7 @@ export default function ModalEditarDenuncia ({
       if (denuncia) {
         setDescricao(denuncia.descricao ?? '');
         setIdCategoria(denuncia.idCategoria?.toString() ?? '');
+        setCategoria(denuncia.categoria ?? '');
         setAnonimato(denuncia.anonimato ?? null);
         setMediaSrc(denuncia.mediaSrc ?? '');
       }
@@ -122,6 +125,9 @@ export default function ModalEditarDenuncia ({
           return;
         }
 
+        const categoriaSelecionadaObj = listaCategorias.find(c => c.id === Number(idCategoria));
+        const nomeCategoriaNova = categoriaSelecionadaObj?.nome;
+
         const updated = await editarDenuncia(denuncia.id, {
           descricao: descricao,
           idCategoria: Number(idCategoria),
@@ -131,7 +137,7 @@ export default function ModalEditarDenuncia ({
 
         toast.success("Denúncia editada com sucesso!");
         onClose();
-        if (onSaved) onSaved(updated);
+        if (onSaved) onSaved({...updated, nomeCategoria: nomeCategoriaNova});
 
       } catch (error) {
         toast.error("Erro ao editar denúncia. Verifique o console.");

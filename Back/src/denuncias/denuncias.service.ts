@@ -91,12 +91,12 @@ export class DenunciasService{
         return denuncia;
     }
 
-    async listarDenuncias(page: number, limit: number) {
+    async listarDenuncias(page: number, limit: number, Usuario?: number) {
 
         const skip = (page - 1) * limit;
 
         const denuncias = await this.prisma.denuncia.findMany({
-            where: {dataDelete: null, usuario: {dataDelete: null}}, 
+            where: {dataDelete: null, usuario: {dataDelete: null}, ...(Usuario ? {idUsuario: { not: Usuario }} : {})}, 
             orderBy: {id: 'desc'},
             skip: skip,
             take: limit,
@@ -124,7 +124,7 @@ export class DenunciasService{
         });
 
         const totalDenuncias = await this.prisma.denuncia.count({
-            where: {dataDelete: null, usuario: {dataDelete: null}},
+            where: {dataDelete: null, usuario: {dataDelete: null}, ...(Usuario ? {idUsuario: { not: Usuario }} : {})},
         });
 
         return { denuncias, totalDenuncias };

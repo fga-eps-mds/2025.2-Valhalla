@@ -9,6 +9,7 @@ import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
 import BotaoMenu from "@/components/ui/botao-menu";
 import { UsersIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/solid";
 import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
+import ModalEditarDenuncia from "@/components/modalEditarDenuncia";
 
 interface DenunciaBackend {
   id: number;
@@ -33,6 +34,7 @@ type Denuncia = {
   descricao: string;
   anonimato: boolean;
   categoria: string;
+  idCategoria: number;
   data: string;
 };
 
@@ -51,6 +53,9 @@ export default function Gerencia() {
   const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
   const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
 
+  const [isModalEditarOpen, setIsModalEditarOpen] = useState(false);
+  const [selectedDenuncia, setSelectedDenuncia] = useState<Denuncia | null>(null);
+
   useEffect(() => {
     const buscarDenuncias = async () => {
       try {
@@ -67,6 +72,7 @@ export default function Gerencia() {
           descricao: denuncia.descricao,
           anonimato: denuncia.anonimato,
           categoria: denuncia.categoria.nome,
+          idCategoria: denuncia.idCategoria,
           data: new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
@@ -111,10 +117,16 @@ return (
                                     descricao={denuncia.descricao}
                                     anonimato={denuncia.anonimato}
                                     categoria={denuncia.categoria}
+                                    idCategoria={denuncia.idCategoria || undefined}
                                     data={denuncia.data}
                                     onDelete={(id) => {
                                       setSelectedDenunciaId(id);
                                       setIsModalExcluirOpen(true);
+                                    }}
+                                    onEdit={(id) => {
+                                      const found = listagemDenuncias.find(d => d.id === id) || null;
+                                      setSelectedDenuncia(found);
+                                      setIsModalEditarOpen(true);
                                     }}
                                   />
                               );
@@ -167,6 +179,26 @@ return (
                             denunciaId={selectedDenunciaId}
                             onDeleted={(id) => setListagemDenuncias(prev => prev.filter(d => d.id !== id))}
                           />
+                    <ModalEditarDenuncia
+                      isOpen={isModalEditarOpen}
+                      onClose={() => setIsModalEditarOpen(false)}
+                      denuncia={selectedDenuncia ? {
+                        id: selectedDenuncia.id,
+                        descricao: selectedDenuncia.descricao,
+                        categoria: selectedDenuncia.categoria,
+                        idCategoria: selectedDenuncia.idCategoria,
+                        anonimato: selectedDenuncia.anonimato,
+                      } : null}
+                      onSaved={(updated) => {
+                        setListagemDenuncias(prev => prev.map(d => d.id === updated.id ? {
+                          ...d,
+                          descricao: updated.descricao ?? d.descricao,
+                          anonimato: updated.anonimato ?? d.anonimato,
+                          categoria: updated.nomeCategoria ?? d.categoria,
+                          idCategoria: updated.idCategoria ?? d.idCategoria,
+                        } : d));
+                      }}
+                    />
                   </>
                 )}
         </main>

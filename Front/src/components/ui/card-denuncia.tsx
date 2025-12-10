@@ -7,6 +7,7 @@ interface CardDenunciaProps {
   descricao: string;
   anonimato: boolean;
   categoria: string; 
+  idCategoria?: number;
   data: string; 
 }
 

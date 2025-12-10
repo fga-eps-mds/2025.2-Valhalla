@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { ReportDenunciasService } from './report-denuncias.service';
-import { reportDenunciasDto } from './dto/report-denuncias.dto';
+import { ReportDenunciasService } from './reportDenuncias.service';
+import { reportDenunciasDto } from './dto/reportDenuncias.dto';
 
 @Controller('report-denuncias')
 export class ReportDenunciasController {

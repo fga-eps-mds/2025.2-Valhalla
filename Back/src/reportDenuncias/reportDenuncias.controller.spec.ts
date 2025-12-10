@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ReportDenunciasController } from './report-denuncias.controller';
-import { ReportDenunciasService } from './report-denuncias.service';
-import { reportDenunciasDto } from './dto/report-denuncias.dto';
+import { ReportDenunciasController } from './reportDenuncias.controller';
+import { ReportDenunciasService } from './reportDenuncias.service';
+import { reportDenunciasDto } from './dto/reportDenuncias.dto';
 
 describe('ReportDenunciasController', () => {
   let controller: ReportDenunciasController;

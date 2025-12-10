@@ -11,7 +11,7 @@ import{
     PlusIcon
 } from "@heroicons/react/20/solid";
 import api from '@/utils/api';
-import { useAuth} from "@/contexts/authContext";
+import { useAuth } from '@/contexts/AuthContext';
 import {toast} from 'sonner';
 
 interface Categoria {
@@ -179,4 +179,4 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
             </div>
           </>
         )
-
+}
