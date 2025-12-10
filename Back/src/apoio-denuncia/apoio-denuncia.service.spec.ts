@@ -82,5 +82,29 @@ describe('Testes do Serviço de Apoio à Denúncia', () => {
         mensagem: 'Apoio registrado.' 
       });
     });
+    it('Deve REMOVER o apoio se o usuário já tiver apoiado antes', async () => {
+      // A denúncia existe? Sim.
+      prisma.denuncia.findUnique.mockResolvedValue({ id: 10 } as any);
+      
+      // O usuário já apoiou? Sim (retorna um apoio existente com ID 5)
+      prisma.apoiosDenuncia.findUnique.mockResolvedValue({ id: 5, ...dadosExemplo } as any);
+      
+      // Simula a deleção retornando o objeto deletado
+      prisma.apoiosDenuncia.delete.mockResolvedValue({ id: 5, ...dadosExemplo } as any);
+
+      const resultado = await service.alternarApoio(dadosExemplo);
+
+      // O Prisma chamou a função .delete() no ID 5?
+      expect(prisma.apoiosDenuncia.delete).toHaveBeenCalledWith({
+        where: { id: 5 },
+      });
+
+      // A mensagem de retorno diz que removeu?
+      expect(resultado).toEqual({ 
+        status: 'removido', 
+        mensagem: 'Apoio removido.' 
+      });
+    });
+   });
+
   });
-});
