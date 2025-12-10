@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CloudinaryService } from './cloudinary.service';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryProvider } from './cloudinary.provider';
+import 'multer';
 
 // 1. Dizemos ao Jest para mockar (fingir) a biblioteca 'cloudinary'
 jest.mock('cloudinary');
