@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
-import { CreateApoioDenunciaDto } from './dto/create-apoio-denuncia.dto';
-import { UpdateApoioDenunciaDto } from './dto/update-apoio-denuncia.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../database/prisma.service'; // Verifique se o caminho volta corretamente para database
+import { AlternarApoioDto } from './dto/alternar-apoio.dto';
 
 @Injectable()
 export class ApoioDenunciaService {
-  create(createApoioDenunciaDto: CreateApoioDenunciaDto) {
-    return 'This action adds a new apoioDenuncia';
+  constructor(private readonly prisma: PrismaService) {}
+
+  // Apoiar ou Remover apoio
+  async alternarApoio(dto: AlternarApoioDto) {
+    const { idUsuario, idDenuncia } = dto;
+
+    // Verifica denúncia
+    const denunciaExiste = await this.prisma.denuncia.findUnique({
+      where: { id: idDenuncia },
+    });
+    
+    if (!denunciaExiste) throw new NotFoundException('Denúncia não encontrada.');
+
+    // Verifica se já apoiou 
+    const apoioExistente = await this.prisma.apoiosDenuncia.findUnique({
+      where: {
+        idUsuario_idDenuncia: { idUsuario, idDenuncia },
+      },
+    });
+
+    if (apoioExistente) {
+      // Remove 
+      await this.prisma.apoiosDenuncia.delete({ where: { id: apoioExistente.id } });
+      return { status: 'removido', mensagem: 'Apoio removido.' };
+    } else {
+      // Cria 
+      await this.prisma.apoiosDenuncia.create({ data: { idUsuario, idDenuncia } });
+      return { status: 'adicionado', mensagem: 'Apoio registrado.' };
+    }
   }
 
-  findAll() {
-    return `This action returns all apoioDenuncia`;
+  // Contar Apoios
+  async contarApoios(idDenuncia: number) {
+    const total = await this.prisma.apoiosDenuncia.count({
+      where: { idDenuncia },
+    });
+    return { idDenuncia, total };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} apoioDenuncia`;
-  }
-
-  update(id: number, updateApoioDenunciaDto: UpdateApoioDenunciaDto) {
-    return `This action updates a #${id} apoioDenuncia`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} apoioDenuncia`;
+  // Verificar Status 
+  async verificarSeUsuarioApoiou(idUsuario: number, idDenuncia: number) {
+    const apoio = await this.prisma.apoiosDenuncia.findUnique({
+      where: {
+        idUsuario_idDenuncia: { idUsuario, idDenuncia },
+      },
+    });
+    return { apoiado: !!apoio };
   }
 }
