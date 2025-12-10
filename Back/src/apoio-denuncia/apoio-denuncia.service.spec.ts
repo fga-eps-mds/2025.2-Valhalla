@@ -43,4 +43,22 @@ describe('Testes do Serviço de Apoio à Denúncia', () => {
   it('O serviço deve estar definido e rodando', () => {
     expect(service).toBeDefined();
   });
+// Testes função alternar (apoiar / desapoiar)
+  describe('Função: alternarApoio', () => {
+    const dadosExemplo = { idUsuario: 1, idDenuncia: 10 };
+
+    it('Deve dar erro se tentar apoiar uma denúncia que não existe', async () => {
+      // Procura essa denúncia ID 10 e retorna null"
+      prisma.denuncia.findUnique.mockResolvedValue(null);
+
+      // Tenta rodar a função e espera que ela EXPLODA com um erro NotFoundException
+      await expect(service.alternarApoio(dadosExemplo))
+        .rejects
+        .toThrow(NotFoundException);
+      
+      // Garante que o sistema parou
+      expect(prisma.apoiosDenuncia.findUnique).not.toHaveBeenCalled();
+        });
+    });
+    
 });
