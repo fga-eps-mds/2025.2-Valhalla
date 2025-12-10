@@ -59,6 +59,28 @@ describe('Testes do Serviço de Apoio à Denúncia', () => {
       // Garante que o sistema parou
       expect(prisma.apoiosDenuncia.findUnique).not.toHaveBeenCalled();
         });
+        it('Deve ADICIONAR um apoio se o usuário ainda não tiver apoiado', async () => {
+      // A denúncia existe? Sim (retorna objeto com ID 10)
+      prisma.denuncia.findUnique.mockResolvedValue({ id: 10 } as any); 
+      
+      // O usuário já apoiou? Não (retorna null)
+      prisma.apoiosDenuncia.findUnique.mockResolvedValue(null);
+      
+      // Configura o retorno falso da criação (só pra não dar erro)
+      prisma.apoiosDenuncia.create.mockResolvedValue({ id: 1, ...dadosExemplo } as any);
+
+      const resultado = await service.alternarApoio(dadosExemplo);
+
+      // O Prisma chamou a função .create()?
+      expect(prisma.apoiosDenuncia.create).toHaveBeenCalledWith({
+        data: dadosExemplo,
+      });
+
+      // A mensagem de retorno está certa?
+      expect(resultado).toEqual({ 
+        status: 'adicionado', 
+        mensagem: 'Apoio registrado.' 
+      });
     });
-    
+  });
 });
