@@ -58,8 +58,9 @@ export class DenunciasController {
     async listarDenuncias(
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
       @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+      @Query('usuario') usuario?: number,
     ) {
-      return this.denunciasService.listarDenuncias(page, limit);
+      return this.denunciasService.listarDenuncias(page, limit, usuario);
     }
 
     @IsPublic()
