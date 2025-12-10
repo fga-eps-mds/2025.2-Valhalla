@@ -1,15 +1,20 @@
 'use client';
 
 import Link from "next/link";
-import { ShieldCheckIcon, UsersIcon, ArrowsUpDownIcon } from "@heroicons/react/24/solid";
+import { UsersIcon, ScaleIcon, ShieldExclamationIcon, LifebuoyIcon, LightBulbIcon, BuildingOffice2Icon } from "@heroicons/react/24/solid";
 import InfoCards from "@/components/secaoInfo";
 import Navbar from "@/components/navbar";
+import BotaoMenu from "@/components/ui/botao-menu";
+import { useRouter } from "next/navigation";
 
 export default function Orientacao() {
+
+
+  const router = useRouter();
+
+
   return (
     <main>
-
-      <Navbar/>
       
       <div className="flex justify-center">
         <div className=" w-full scroll-m-0 max-w-[1440px] bg-gray-100  rounded-md px-12 py-14 ">
@@ -17,94 +22,53 @@ export default function Orientacao() {
             <h1 className="text-4xl font-bold mb-8">Página de Orientação</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              
+              {/* Botão 1: Acolhimento */}
+              <BotaoMenu
+                icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
+                texto="Direitos Humanos"
+                onClick={() => router.push('/acolhimento')} 
+              />
 
-              <Link href="/acolhimento" className="
-                bg-linear-to-br from-blue-400 to-blue-500
-                shadow-md rounded-2xl overflow-hidden
-                flex flex-col justify-between min-h-[120px]
-                transition-transform duration-300 hover:scale-105"
-              >
-                <div className="p-8 text-white flex flex-col items-center gap-4">
-                  <ArrowsUpDownIcon className="w-12 h-12" />
-                  <h3 className="text-lg sm:text-xl font-semibold text-center leading-tight">
-                    Acolhimento
-                  </h3>
-                </div>
-              </Link>
-        
-              <Link href="/assedio" className="
-                bg-linear-to-br from-blue-400 to-blue-500
-                shadow-md rounded-2xl overflow-hidden
-                flex flex-col justify-between min-h-[120px]
-                transition-transform duration-300 hover:scale-105"
-              >
-                <div className="p-8 text-white flex flex-col items-center gap-4">
-                  <ArrowsUpDownIcon className="w-12 h-12" />
-                  <h3 className="text-lg sm:text-xl font-semibold text-center leading-tight">
-                    Assedio
-                  </h3>
-                </div>
-              </Link>
-        
-              <Link href="/direitos-humanos" className="
-                bg-linear-to-br from-blue-400 to-blue-500
-                shadow-md rounded-2xl overflow-hidden
-                flex flex-col justify-between min-h-[120px]
-                transition-transform duration-300 hover:scale-105"
-              >
-                <div className="p-8 text-white flex flex-col items-center gap-4">
-                  <ArrowsUpDownIcon className="w-12 h-12" />
-                  <h3 className="text-lg sm:text-xl font-semibold text-center leading-tight">
-                    Direitos Humanos
-                  </h3>
-                </div>
-              </Link>
-                    
-              <Link href="/infraestrutura" className="
-                bg-linear-to-br from-blue-400 to-blue-500
-                shadow-md rounded-2xl overflow-hidden
-                flex flex-col justify-between min-h-[120px]
-                transition-transform duration-300 hover:scale-105"
-              >
-                <div className="p-8 text-white flex flex-col items-center gap-4">
-                  <ArrowsUpDownIcon className="w-12 h-12" />
-                  <h3 className="text-lg sm:text-xl font-semibold text-center leading-tight">
-                    Infraestrutura
-                  </h3>
-                </div>
-              </Link>
-        
-              <Link href="/integridade" className="
-                bg-linear-to-br from-blue-400 to-blue-500
-                shadow-md rounded-2xl overflow-hidden
-                flex flex-col justify-between min-h-[120px]
-                transition-transform duration-300 hover:scale-105"
-              >
-                <div className="p-8 text-white flex flex-col items-center gap-4">
-                  <ArrowsUpDownIcon className="w-12 h-12" />
-                  <h3 className="text-lg sm:text-xl font-semibold text-center leading-tight">
-                    Integridade
-                  </h3>
-                </div>
-              </Link>
-        
-              <Link href="/melhorias" className="
-                bg-linear-to-br from-blue-400 to-blue-500
-                shadow-md rounded-2xl overflow-hidden
-                flex flex-col justify-between min-h-[120px]
-                transition-transform duration-300 hover:scale-105"
-              >
-                <div className="p-8 text-white flex flex-col items-center gap-4">
-                  <ArrowsUpDownIcon className="w-12 h-12" />
-                  <h3 className="text-lg sm:text-xl font-semibold text-center leading-tight">
-                    Melhorias
-                  </h3>
-                </div>
-              </Link>
+              {/* Botão 2: Integridade */}
+              <BotaoMenu
+                icone={<ScaleIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+                texto="Integridade"
+                onClick={() => router.push('/integridade')}
+              />
+
+              {/* Botão 3: Assédio */}
+              <BotaoMenu
+                icone={<ShieldExclamationIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
+                texto="Assédio"
+                onClick={() => router.push('/assedio')} 
+              />
+
+              {/* Botão 4: Acolhimento */}
+              <BotaoMenu
+                icone={<LifebuoyIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+                texto="Acolhimento"
+                onClick={() => router.push('/acolhimento')}
+              />              
+              
+              {/* Botão 5: Melhorias */}
+              <BotaoMenu
+                icone={<LightBulbIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
+                texto="Melhorias"
+                onClick={() => router.push('/melhorias')} 
+              />
+
+              {/* Botão 6: Infraestrutura */}
+              <BotaoMenu
+                icone={<BuildingOffice2Icon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+                texto="Infraestrutura"
+                onClick={() => router.push('/infraestrutura')}
+              />
             </div>
           </div>
         </div>
       </div>
     </main>
+    
   );
 }
