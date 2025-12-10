@@ -11,7 +11,7 @@ export default function RootLayout({
     <RoleGuard allowedRoles={['COMUM', 'ADMIN', 'ADMINMASTER']}>
       <Navbar />
 
-      <main className="flex-1 w-full pt-20 bg-gray-50">
+      <main className="flex-1 w-full pt-16 bg-branco">
         {children} 
       </main>
     </RoleGuard>
