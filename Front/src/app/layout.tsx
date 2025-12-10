@@ -47,9 +47,9 @@ export default function RootLayout({
         </AuthProvider>
 
           <Toaster 
-            richColors        // Deixa o sucesso verde e o erro vermelho
-            position="top-right" // Posição (pode ser top-center, bottom-right, etc)
-            expand={true}     // (Opcional) Expande ao passar o mouse
+            richColors        
+            position="top-right" 
+            expand={true}     
           />
       </body>
     </html>

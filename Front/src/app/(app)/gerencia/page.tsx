@@ -188,6 +188,7 @@ export default function Gerencia() {
                         id: selectedDenuncia.id,
                         descricao: selectedDenuncia.descricao,
                         idCategoria: selectedDenuncia.idCategoria ?? 0,
+                        categoria: selectedDenuncia.categoria,
                         anonimato: selectedDenuncia.anonimato,
                         mediaSrc: selectedDenuncia.mediaSrc ?? null,
                       } : null}
