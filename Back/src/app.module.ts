@@ -25,6 +25,7 @@ import { NoticiasController } from './noticias/noticias.controller';
 import { NoticiasService } from './noticias/noticias.service';
 import { NoticiasModule } from './noticias/noticias.module';
 import { ReportDenunciasModule } from './reportDenuncias/reportDenuncias.module';
+import { ApoioDenunciaModule } from './apoio-denuncia/apoio-denuncia.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { ReportDenunciasModule } from './reportDenuncias/reportDenuncias.module'
     UsuarioModule,    
     AuthModule,
     ReportDenunciasModule,
-    NoticiasModule        
+    NoticiasModule,
+    ApoioDenunciaModule        
 
   ],
   controllers: [
