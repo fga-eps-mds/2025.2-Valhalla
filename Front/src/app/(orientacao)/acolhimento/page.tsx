@@ -43,7 +43,7 @@ export default function AcolhimentoPage() {
         text: "Canal primário. Registre como 'Reclamação' ou 'Denúncia' sobre a falha no serviço."
       },
       {
-        href: "http://www.crp01.org.br/fale-concosco/",
+        href: "https://www.crp-01.org.br/page_180/Den%C3%BAncias/",
         title: "Conselho Regional de Psicologia (CRP/DF)",
         text: "Para queixas sobre a conduta antiética de um psicólogo específico."
       },
