@@ -24,6 +24,7 @@ import { AuthService } from './auth/auth.service';
 import { NoticiasController } from './noticias/noticias.controller';
 import { NoticiasService } from './noticias/noticias.service';
 import { NoticiasModule } from './noticias/noticias.module';
+import { ReportDenunciasModule } from './reportDenuncias/reportDenuncias.module';
 
 @Module({
   imports: [
