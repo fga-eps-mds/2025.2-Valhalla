@@ -106,5 +106,42 @@ describe('Testes do Serviço de Apoio à Denúncia', () => {
       });
     });
    });
+   // Testes de contagem de apoio
+  describe('Função: contarApoios', () => {
+    it('Deve retornar o número total de apoios corretamente', async () => {
+      // O banco diz que tem 42 apoios
+      const totalEsperado = 42;
+      prisma.apoiosDenuncia.count.mockResolvedValue(totalEsperado);
 
+      const resultado = await service.contarApoios(10); // ID da denúncia 10
+
+      expect(prisma.apoiosDenuncia.count).toHaveBeenCalledWith({
+        where: { idDenuncia: 10 },
+      });
+      expect(resultado).toEqual({ idDenuncia: 10, total: totalEsperado });
+    });
   });
+  // Testes de status do apoio
+  describe('Função: verificarSeUsuarioApoiou', () => {
+    const idUsuario = 1;
+    const idDenuncia = 10;
+
+    it('Deve retornar TRUE se achar um apoio no banco', async () => {
+      // O banco achou um apoio
+      prisma.apoiosDenuncia.findUnique.mockResolvedValue({ id: 5, idUsuario, idDenuncia });
+
+      const resultado = await service.verificarSeUsuarioApoiou(idUsuario, idDenuncia);
+
+      expect(resultado).toEqual({ apoiado: true });
+    });
+
+    it('Deve retornar FALSE se não achar nada no banco', async () => {
+      // O banco não achou nada (null)
+      prisma.apoiosDenuncia.findUnique.mockResolvedValue(null);
+
+      const resultado = await service.verificarSeUsuarioApoiou(idUsuario, idDenuncia);
+
+      expect(resultado).toEqual({ apoiado: false });
+    });
+  });
+});
