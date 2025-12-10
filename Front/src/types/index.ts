@@ -1,4 +1,5 @@
 export type TipoUsuario = 'COMUM' | 'ADMIN' | 'ADMINMASTER';
+export type CargoUsuario = 'ESTUDANTE' | 'SERVIDOR' | 'OUTRO';
 
 export interface Noticia {
   id: number;
