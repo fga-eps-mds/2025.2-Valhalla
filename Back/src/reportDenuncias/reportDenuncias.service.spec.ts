@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ReportDenunciasService } from './report-denuncias.service';
+import { ReportDenunciasService } from './reportDenuncias.service';
 import { PrismaService } from '../database/prisma.service';
-import { reportDenunciasDto } from './dto/report-denuncias.dto';
+import { reportDenunciasDto } from './dto/reportDenuncias.dto';
 import { NotFoundException } from '@nestjs/common';
 
 
