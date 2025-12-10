@@ -21,6 +21,7 @@
     "sonner": "^2.0.7"
   },
   "devDependencies": {
+    "@nestjs/cli": "^11.0.14",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^24.10.0",
     "@types/nodemailer": "^7.0.3",
@@ -28,5 +29,8 @@
     "@types/passport-local": "^1.0.38",
     "@types/react": "^19.2.2",
     "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "start:dev": "nest start --watch"
   }
 }
