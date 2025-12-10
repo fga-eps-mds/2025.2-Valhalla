@@ -49,12 +49,15 @@ export default function Gerencia() {
   const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
   const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
 
+  const [isModalEditarOpen, setIsModalEditarOpen] = useState(false);
+  const [selectedDenuncia, setSelectedDenuncia] = useState<Denuncia | null>(null);
+
   useEffect(() => {
     const buscarDenuncias = async () => {
       try {
         setIsloading(true);
 
-        const response = await api.get(`/denuncias?page=${currentPage}&limit=${limite}`);
+        const response = await api.get(`/denuncias?page=${currentPage}&limit=${limite}&usuario=${user?.id}`);
 
         const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
           id: denuncia.id,
@@ -111,6 +114,11 @@ return (
                                     onDelete={(id) => {
                                       setSelectedDenunciaId(id);
                                       setIsModalExcluirOpen(true);
+                                    }}
+                                    onEdit={(id) => {
+                                      const found = listagemDenuncias.find(d => d.id === id) || null;
+                                      setSelectedDenuncia(found);
+                                      setIsModalEditarOpen(true);
                                     }}
                                   />
                               );
