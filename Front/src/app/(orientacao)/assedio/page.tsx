@@ -7,15 +7,28 @@ interface LinkCardProps {
   href: string;
   title: string;
   text: string;
+  semEfeito?: boolean;
 }
 
-const LinkCard = ({ href, title, text }: LinkCardProps) => {
+const LinkCard = ({ href, title, text, semEfeito }: LinkCardProps) => {
+
+  const classesBase = "block p-6 bg-white rounded-lg shadow-md h-full";
+
+  if (semEfeito) {
+    return (
+      <div className={classesBase}>
+        <h3 className="font-bold text-lg text-gray-800 mb-2">{title}</h3>
+        <p className="text-sm text-gray-600">{text}</p>
+      </div>
+    );
+  }
+
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="block p-6 bg-white rounded-lg shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+      className={`${classesBase} hover:shadow-xl hover:scale-105 transition-all duration-300`}
     >
       <h3 className="font-bold text-lg text-gray-800 mb-2">{title}</h3>
       <p className="text-sm text-gray-600">{text}</p>
@@ -43,14 +56,15 @@ export default function AssedioPage() {
         text: "Para iniciar um processo administrativo interno de apuração."
       },
       {
-        href: "https://www.pcdf.df.gov.br/servicos/registro-online",
+        href: "https://delegaciaeletronica.pcdf.df.gov.br/",
         title: "Polícia Civil (PCDF)",
         text: "Registre um Boletim de Ocorrência (B.O.). Assédio sexual é crime."
       },
       {
         href: "tel:180",
         title: "Disque 180",
-        text: "Central de Atendimento à Mulher. Oferece acolhimento e orientação."
+        text: "Central de Atendimento à Mulher. Oferece acolhimento e orientação.",
+        semEfeito: true
       },
     ]
   };
@@ -113,6 +127,7 @@ export default function AssedioPage() {
                 href={link.href}
                 title={link.title}
                 text={link.text}
+                semEfeito={link.semEfeito}
               />
             ))}
           </div>

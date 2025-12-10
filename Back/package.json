@@ -21,22 +21,22 @@
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",
-    "@nestjs/common": "^10.0.0",
-    "@nestjs/config": "^3.0.0",
-    "@nestjs/core": "^10.0.0",
-    "@nestjs/jwt": "^10.0.0",
-    "@nestjs/mapped-types": "*",
-    "@nestjs/passport": "^10.0.0",
-    "@nestjs/platform-express": "^10.0.0",
-    "@prisma/client": "^5.0.0",
-    "bcrypt": "^5.0.0",
+    "@nestjs/common": "^11.1.9",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.9",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
+    "@nestjs/platform-express": "^11.1.9",
+    "@prisma/client": "^6.19.0",
+    "bcrypt": "^6.0.0",
     "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
-    "cloudinary": "^1.41.0",
-    "dotenv": "^16.0.0",
-    "nodemailer": "^6.9.0",
-    "passport": "^0.6.0",
+    "class-validator": "^0.14.2",
+    "cloudinary": "^2.8.0",
+    "dotenv": "^17.2.3",
+    "nodemailer": "^7.0.11",
+    "passport": "^0.7.0",
+    "@nestjs/mapped-types": "*",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.0",
     "prisma": "^5.0.0",
@@ -80,10 +80,33 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.ts"
+      "**/*.ts",
+      "!**/*.d.ts",
+      "!**/*.js",
+      "!**/main.ts",
+      "!**/*.module.ts",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/seed.ts",
+      "!**/jest.setup.ts",
+      "!**/*.spec.ts",
+      "!src/database/**",
+      "!test/**",
+      "!src/app.module.ts",
+      "!src/main.ts",
+      "!src/app.service.ts",
+      "!src/app.controller.ts"
     ],
     "coverageDirectory": "./coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coverageReporters": [
+      "json-summary",
+      "text",
+      "lcov"
+    ],
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/src/$1"
+    }
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

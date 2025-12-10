@@ -7,9 +7,20 @@ interface LinkCardProps {
   href: string;
   title: string;
   text: string;
+  semEfeito?: boolean;
 }
 
-const LinkCard = ({ href, title, text }: LinkCardProps) => {
+const LinkCard = ({ href, title, text, semEfeito }: LinkCardProps) => {
+
+  if (semEfeito) {
+    return (
+      <div className="block p-6 bg-white rounded-lg shadow-md">
+        <h3 className="font-bold text-lg text-gray-800 mb-2">{title}</h3>
+        <p className="text-sm text-gray-600">{text}</p>
+      </div>
+    );
+  }
+
   return (
     <a
       href={href}
@@ -55,7 +66,8 @@ export default function InfraestruturaPage() {
       {
         href: "https://www.gov.br/mdh/pt-br/canais_atendimento/disque-100",
         title: "Disque Direitos Humanos (Disque 100)",
-        text: "Se a falha for de acessibilidade, pode ser enquadrada como violação de direitos humanos."
+        text: "Se a falha for de acessibilidade, pode ser enquadrada como violação de direitos humanos.",
+        semEfeito: true
       }
     ]
   };
@@ -117,6 +129,7 @@ export default function InfraestruturaPage() {
                 href={link.href}
                 title={link.title}
                 text={link.text}
+                semEfeito={link.semEfeito}
               />
             ))}
           </div>

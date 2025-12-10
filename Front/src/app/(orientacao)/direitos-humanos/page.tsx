@@ -7,9 +7,20 @@ type LinkCardProps = {
   href: string;
   title: string;
   text: string;
+  semEfeito?: boolean;
 };
 
-const LinkCard: React.FC<LinkCardProps> = ({ href, title, text }) => {
+const LinkCard: React.FC<LinkCardProps> = ({ href, title, text, semEfeito }) => {
+
+  if (semEfeito) {
+    return (
+      <div className="block p-6 bg-white rounded-lg shadow-md">
+        <h3 className="font-bold text-lg text-gray-800 mb-2">{title}</h3>
+        <p className="text-sm text-gray-600">{text}</p>
+      </div>
+    );
+  }
+
   return (
     <a
       href={href}
@@ -45,10 +56,11 @@ export default function DireitosHumanosPage() {
       {
         href: "tel:100",
         title: "Disque 100",
-        text: "Canal federal para denúncias de violações de direitos humanos."
+        text: "Canal federal para denúncias de violações de direitos humanos.",
+        semEfeito: true
       },
       {
-        href: "https://www.pcdf.df.gov.br/servicos/registro-online",
+        href: "https://delegaciaeletronica.pcdf.df.gov.br/",
         title: "Polícia Civil (PCDF)",
         text: "Registre B.O. para crimes como injúria racial, racismo, etc."
       },
@@ -117,6 +129,7 @@ export default function DireitosHumanosPage() {
                 href={link.href}
                 title={link.title}
                 text={link.text}
+                semEfeito={link.semEfeito}
               />
             ))}
           </div>
