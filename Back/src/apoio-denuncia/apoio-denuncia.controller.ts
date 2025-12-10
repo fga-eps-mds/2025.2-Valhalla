@@ -1,34 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { ApoioDenunciaService } from './apoio-denuncia.service';
-import { CreateApoioDenunciaDto } from './dto/create-apoio-denuncia.dto';
-import { UpdateApoioDenunciaDto } from './dto/update-apoio-denuncia.dto';
+import { AlternarApoioDto } from './dto/alternar-apoio.dto';
 
 @Controller('apoio-denuncia')
 export class ApoioDenunciaController {
-  constructor(private readonly apoioDenunciaService: ApoioDenunciaService) {}
+  constructor(private readonly apoioService: ApoioDenunciaService) {}
 
-  @Post()
-  create(@Body() createApoioDenunciaDto: CreateApoioDenunciaDto) {
-    return this.apoioDenunciaService.create(createApoioDenunciaDto);
+  @Post('alternar')
+  async alternar(@Body() dto: AlternarApoioDto) {
+    return this.apoioService.alternarApoio(dto);
   }
 
-  @Get()
-  findAll() {
-    return this.apoioDenunciaService.findAll();
+  @Get('contagem/:idDenuncia')
+  async contar(@Param('idDenuncia', ParseIntPipe) idDenuncia: number) {
+    return this.apoioService.contarApoios(idDenuncia);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.apoioDenunciaService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateApoioDenunciaDto: UpdateApoioDenunciaDto) {
-    return this.apoioDenunciaService.update(+id, updateApoioDenunciaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.apoioDenunciaService.remove(+id);
+  @Get('status/:idDenuncia/:idUsuario')
+  async verificarStatus(
+    @Param('idDenuncia', ParseIntPipe) idDenuncia: number,
+    @Param('idUsuario', ParseIntPipe) idUsuario: number,
+  ) {
+    return this.apoioService.verificarSeUsuarioApoiou(idUsuario, idDenuncia);
   }
 }
