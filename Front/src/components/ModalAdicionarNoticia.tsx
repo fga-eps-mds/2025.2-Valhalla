@@ -1,44 +1,22 @@
 "use client";
 
 import {useState, useEffect} from "react";
-import{
-    CameraIcon,
-    ArrowLeftIcon,
-
-} from "@heroicons/react/24/outline";
-import{
-    ChevronUpDownIcon,
-    PlusIcon
-} from "@heroicons/react/20/solid";
+import{ CameraIcon, ArrowLeftIcon,} from "@heroicons/react/24/outline";
+import{ ChevronUpDownIcon, PlusIcon } from "@heroicons/react/20/solid";
 import api from '@/utils/api';
 import { useAuth } from '@/contexts/AuthContext';
 import {toast} from 'sonner';
-
-interface Categoria {
-  id: number;
-  nome: string;
-}
-
-const getCategorias = async (): Promise<Categoria[]> => {
-  try {
-    const response = await api.get('/categorias');
-    return response.data;
-  } catch (error) {
-    toast.error("Erro ao buscar categorias.");
-    console.error("Erro ao buscar categorias:", error);
-    return [];
-  }
-};
+import { TipoNoticia } from '@/types';
 
 interface CriarNoticiaDados {
   descricao: string;
-  idCategoria: number;
-  anonimato?: boolean;
+  tipo: TipoNoticia;
   mediaSrc?: string;
 }
 
 const adicionarNoticia = async (dados: CriarNoticiaDados) => {
   try {
+    console.log("Adicionando notícia:", dados);
     const response = await api.post('/noticias', dados);
     return response.data;
   } catch (error) {
@@ -48,31 +26,20 @@ const adicionarNoticia = async (dados: CriarNoticiaDados) => {
   }
 };
 
-export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
+export default function ModalAdicionarNoticia ({isOpen, onClose, onSuccess}: {isOpen: boolean; onClose: () => void; onSuccess: () => void}) {
   
 
   const [descricao, setDescricao] = useState('');
-  const [idCategoria, setIdCategoria] = useState('');
-  const [anonimato, setAnonimato] = useState<boolean | null>(null);
+  const [tipoNoticia, setTipoNoticia] = useState<TipoNoticia | "">('');
   const [mediaSrc, setMediaSrc] = useState<string>('');
   const {user} = useAuth();
 
   const idUsuario = user?.id;
-  // Estado local para guardar a LISTA CATEGORIA
-    const [listaCategorias, setListaCategorias] = useState<Categoria[]>([]);
 
-    useEffect(() => {
-      const carregar = async () => {
-        const dados = await getCategorias();
-        setListaCategorias(dados);
-      };
-      carregar();
-    }, []); 
+  // Função que é chamada ao clicar em PUBLICAR
+  const publicarNoticia = async () => {
 
-    // Função que é chamada ao clicar em PUBLICAR
-    const publicarNoticia = async () => {
-
-    if (!descricao || !idCategoria) {
+    if (!descricao || !tipoNoticia) {
       toast.error("Por favor, preencha a descrição e selecione uma categoria.");
       return;
     }
@@ -88,18 +55,19 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
         return;
       }
 
-      if (!idCategoria) {
+      if (!tipoNoticia) {
         toast.error("Por favor, selecione uma categoria.");
         return;
       }
 
       await adicionarNoticia({
         descricao: descricao,
-        idCategoria: Number(idCategoria),
-        mediaSrc: mediaSrc,
+        tipo: tipoNoticia,
+        mediaSrc: mediaSrc || undefined,
       });
 
       toast.success("Notícia publicada com sucesso!");
+      onSuccess();
       onClose();
 
     } catch (error) {
@@ -132,27 +100,27 @@ export default function ModalAdicionarNoticia ({isOpen, onClose}: {isOpen: boole
 
                     {/*Botões de TIPO DE NOTÍCIA*/}
                     <div className='flex items-center gap-[10px] mb-[26px]'></div>
+                          {/* Tipo */}
+                            <div className="flex flex-col gap-2">
+                              <label htmlFor="descricao" className="text-body mb-1">Tipo de Notícia</label>
+                              <div className="flex gap-3">
+                                {['GERAL', 'AVISO', 'EVENTO'].map((cat) => (
+                                  <button
+                                    key={cat}
+                                    onClick={() => setTipoNoticia(cat as TipoNoticia)}
+                                    className={`
+                                      px-4 py-2 rounded-full text-xs font-bold transition border
+                                      ${tipoNoticia === cat 
+                                        ? 'bg-azul-principal text-white border-azul-principal' 
+                                        : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'}
+                                    `}
+                                  >
+                                    {cat}
+                                  </button>
 
-                    {/*Campo de CATEGORIA*/}
-                    <div className='w-[366px] h-[52px] border border-[var(--color-azul-dark)] rounded-[10px] flex items-center p-[16px] mb-[30px]'>
-                    <ChevronUpDownIcon className='size-[24px]'/>
-                    <select 
-                      className='w-full h-full 
-                        px-[16px] text-small cursor-pointer bg-white
-                        appearance-none focus:outline-none focus:border-[var(--color-azul-principal)'
-                      value={idCategoria}
-                      onChange={(e) => setIdCategoria(e.target.value)}
-                    >
-                              <option value="" disabled>Selecione a Categoria</option>
-                              
-                              {listaCategorias.map((cat) => (
-                                <option key={cat.id} value={cat.id}>
-                                  {cat.nome}
-                              </option>
-                            ))}
-
-                          </select>
-                    </div>
+                                ))}
+                              </div>
+                            </div>
 
                      {/*Campo DESCRIÇÃO*/} 
                     <div>
