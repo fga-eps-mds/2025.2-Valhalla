@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import api from "@/utils/api";
 import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
 import BotaoMenu from "@/components/ui/botao-menu";
-import { UsersIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/solid";
+import { UsersIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/solid";
 import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
 import ModalEditarDenuncia from '@/components/modalEditarDenuncia';
 
@@ -223,6 +223,12 @@ export default function Gerencia() {
         icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
         texto="Minhas Denuncias"
         onClick={() => router.push('/minhas-denuncias')}
+      />
+      {/* Botão 3: Minhas Interações */}
+      <BotaoMenu
+        icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+        texto="Minhas Interações"
+        onClick={() => router.push('/interacoes')}
       />
 
     </div>

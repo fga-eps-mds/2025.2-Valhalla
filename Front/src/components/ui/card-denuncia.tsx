@@ -209,7 +209,7 @@ export default function CardDenuncia({
           <button
             onClick={handleReportar}
             disabled={loadingReport || !usuarioId || reportAtivo}
-            className={`flex items-center gap-1 transition-colors ${reportAtivo ? 'text-red-600' : 'text-red-400 hover:text-red-600'} cursor-pointer`}
+            className={`flex items-center gap-1 transition-colors ${reportAtivo ? 'text-red-600' : 'text-red-400 hover:text-red-600'} cursor-pointer disabled:cursor-default`}
           >
             {reportAtivo ? (
               <FlagSolid className="w-5 h-5" />

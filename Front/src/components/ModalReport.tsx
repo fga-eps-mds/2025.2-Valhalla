@@ -44,11 +44,11 @@ export default function ModalReport({
             <ExclamationTriangleIcon className="w-8 h-8 text-[#DB3C1A]" />
         </div>
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2 cursor-default">
             {"Reportar Denúncia?"}
         </h2>
         
-        <p className="text-gray-500 mb-8 text-sm leading-relaxed">
+        <p className="text-gray-500 mb-8 text-sm leading-relaxed cursor-default">
             {"Tem certeza que deseja reportar esta denúncia? Esta ação é irreversível."}
         </p>
 
