@@ -60,14 +60,14 @@ export default function Login() {
                     className="mt-2" 
                 />
                 
-                <h1 className='text-[36px] text-texto-primario mb-10  font-(--fonte-primaria)'>
+                <h1 className='text-[36px] text-texto-primario mb-10  font-fonte-primaria'>
                     Login
                 </h1>
 
                 <form className="w-full max-w-sm flex flex-col items-center" onSubmit={handleLogin}>
                     
                     <div className="w-full mb-5">
-                        <label htmlFor="email" className="block text-2xl text-gray-800 mb-2 font-(--fonte-primaria)">
+                        <label htmlFor="email" className="block text-2xl text-gray-800 mb-2 font-fonte-primaria">
                             E-mail
                         </label>
                         <div className="relative">
@@ -84,7 +84,7 @@ export default function Login() {
                     </div>
 
                     <div className="w-full mb-5">
-                        <label htmlFor="password" className="block text-2xl text-gray-800 mb-2 font-(--fonte-primaria)">
+                        <label htmlFor="password" className="block text-2xl text-gray-800 mb-2 font-fonte-primaria">
                             Senha
                         </label>
                         <div className="relative">

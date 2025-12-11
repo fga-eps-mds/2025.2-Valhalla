@@ -9,19 +9,16 @@ import { useRouter } from "next/navigation";
 
 export default function Orientacao() {
 
-
   const router = useRouter();
-
 
   return (
     <main>
-      
       <div className="flex justify-center">
-        <div className=" w-full scroll-m-0 max-w-[1440px] bg-gray-100  rounded-md px-12 py-14 ">
-          <div className="flex flex-col items-center  min-h-screen py-0">
-            <h1 className="text-4xl font-bold mb-8">Página de Orientação</h1>
+        <div className="w-full scroll-m-0 max-w-[1440px] bg-gray-50  rounded-md px-12 py-14 ">
+          <div className="flex flex-col items-center  min-h-screen">
+            <h1 className="text-4xl font-bold mt-10">Página de Orientações</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               
               {/* Botão 1: Acolhimento */}
               <BotaoMenu
