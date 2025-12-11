@@ -218,7 +218,8 @@ export default function Gerencia() {
     } else { if (user?.tipo === 'ADMIN') {
       return (
 
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2justify-items-center gap-6 bg-gray-50  p-4
+">
         
 
         {/* Botão 1: Denúncias de Usuários */}
