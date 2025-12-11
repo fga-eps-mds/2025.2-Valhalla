@@ -197,7 +197,7 @@ export default function Gerencia() {
                           ...d,
                           descricao: updated.descricao ?? d.descricao,
                           anonimato: updated.anonimato ?? d.anonimato,
-                          categoria: updated.categoria?.nome ?? d.categoria,
+                          categoria: updated.nomeCategoriaFront ?? updated.categoria?.nome ?? d.categoria,
                         } : d));
                       }}
                     />

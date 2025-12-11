@@ -1,128 +1,113 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-
-// --- IMPORTS (Caminhos Relativos para evitar erros) ---
 import Header from "../../../components/navbar"; 
-import CardNoticia from "../../../components/ui/card-noticia";
-import ModalNoticia from "../../../components/ui/modal-noticia"; // <--- NOVO IMPORT
-
-import { listarNoticias, desativarNoticia } from "@/utils/api";
+import ModalNoticia from "../../../components/ModalAdicionarNoticia";
+import { listarNoticias } from "@/utils/api"; // Vamos usar essa função centralizada
 import { useAuth } from "@/contexts/AuthContext";
-import { Noticia } from "@/types";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
+import { TipoNoticia } from '@/types';
+import CardNoticia from '@/components/ui/cardNoticia';
+
+// Interface ajustada para bater com o que o Card espera
+interface NoticiaFormatada {
+  id: number;
+  nomeUsuario: string;
+  fotoUsuario?: string | null;
+  descricao: string;
+  tipo: TipoNoticia;
+  data: string; 
+}
 
 export default function NoticiasPage() {
   const { user } = useAuth();
   
-  // --- ESTADOS DA LISTA ---
-  const [noticias, setNoticias] = useState<Noticia[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Estados
+  const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  
-  // --- ESTADOS DO MODAL (Novos) ---
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [noticiaEditando, setNoticiaEditando] = useState<Noticia | null>(null);
+  const [listaNoticias, setListaNoticias] = useState<NoticiaFormatada[]>([]); // Estado tipado
 
   const LIMIT = 10;
 
-  // --- BUSCA DE DADOS ---
+  // --- BUSCA UNIFICADA E SEGURA ---
   const carregarDados = useCallback(async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
+      
+      // Busca da API (page, limit)
       const dados = await listarNoticias(page, LIMIT);
-      setNoticias(dados.noticias);
+      
+      // FORMATAÇÃO DOS DADOS (O Segredo para o Card funcionar)
+      const formatadas: NoticiaFormatada[] = dados.noticias.map((n: any) => ({
+        id: n.id,
+        // Garante que pega o nome ou fallback
+        nomeUsuario: n.usuario?.nome || "Usuário Desconhecido", 
+        fotoUsuario: n.usuario?.mediaSrc,
+        descricao: n.descricao,
+        tipo: n.tipo,
+        // Formata a data para string bonita
+        data: new Date(n.dataCriacao).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }),
+      }));
+
+      setListaNoticias(formatadas);
       setTotal(dados.totalNoticias);
+
     } catch (error) {
       console.error("Erro ao buscar notícias:", error);
       toast.error("Não foi possível carregar as notícias.");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, [page]);
+  }, [page]); // Recarrega se mudar a página
 
+  // Roda a busca inicial
   useEffect(() => {
     carregarDados();
   }, [carregarDados]);
 
-  // --- AÇÕES (Deletar) ---
-  const handleDelete = async (id: number) => {
-    if (!confirm("Tem certeza que deseja excluir esta notícia?")) return;
-    try {
-      await desativarNoticia(id);
-      toast.success("Notícia excluída com sucesso!");
-      carregarDados(); 
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao excluir notícia.");
-    }
-  };
-
-  // --- AÇÕES (Abrir Modal) ---
-
-  // 1. Criar Nova (Botão +)
-  const handleOpenCreateModal = () => {
-    setNoticiaEditando(null); // Garante que o formulário venha limpo
-    setIsModalOpen(true);     // Abre a janelinha
-  };
-
-  // 2. Editar Existente (Botão Lápis)
-  const handleEdit = (id: number) => {
-    // Procura a notícia na lista atual da memória
-    const noticiaAlvo = noticias.find((n) => n.id === id);
-    
-    if (noticiaAlvo) {
-      setNoticiaEditando(noticiaAlvo); // Preenche o formulário
-      setIsModalOpen(true);            // Abre a janelinha
-    }
-  };
-
-  // 3. Sucesso (Quando o modal termina de salvar)
+  const handleOpenCreateModal = () => setIsModalOpen(true);
+  
   const handleModalSuccess = () => {
-    setIsModalOpen(false); // Fecha
-    carregarDados();       // Atualiza a lista para mostrar a mudança
+    setIsModalOpen(false); 
+    carregarDados(); // Atualiza a lista após criar
   };
 
   const isAdmin = user?.tipo === 'ADMIN' || user?.tipo === 'ADMINMASTER';
 
   return (
-    // LIMPEZA 1: bg-[var(--color-off-white)] -> bg-off-white
-    <main className="min-h-screen bg-off-white pb-20">
+    <main className="min-h-screen bg-branco pb-20">
       
-      <Header />
-
       <div className="pt-24 px-4 sm:px-8 flex justify-center">
         <div className="w-full max-w-[1000px]">
           
           <div className="flex justify-between items-center mb-8">
-            {/* LIMPEZA 2: text-[var(--color-texto-primario)] -> text-texto-primario */}
             <h1 className="text-h2 text-left text-texto-primario">
               Mural de Notícias
             </h1>
           </div>
 
-          {loading ? (
+          {isLoading ? (
             <div className="flex justify-center py-20">
-              {/* LIMPEZA 3: border-[var(--color-azul-principal)] -> border-azul-principal */}
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-azul-principal"></div>
             </div>
-          ) : noticias.length > 0 ? (
-            <div className="flex flex-col gap-6">
-              {noticias.map((noticia) => (
+          ) : listaNoticias.length > 0 ? (
+            <div className="space-y-4">
+              {listaNoticias.map((noticia) => (
                 <CardNoticia
                   key={noticia.id}
                   id={noticia.id}
+                  nomeUsuario={noticia.nomeUsuario}
+                  fotoUsuario={noticia.fotoUsuario}
                   descricao={noticia.descricao}
                   tipo={noticia.tipo}
-                  mediaSrc={noticia.mediaSrc}
-                  dataCriacao={noticia.dataCriacao}
-                  autorId={noticia.idUsuario}
-                  autorNome={noticia.usuario?.nome || "Usuário"}
-                  autorFoto={noticia.usuario?.mediaSrc}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
+                  data={noticia.data}
                 />
               ))}
             </div>
@@ -132,6 +117,7 @@ export default function NoticiasPage() {
             </div>
           )}
 
+          {/* Paginação */}
           {total > LIMIT && (
             <div className="flex justify-center gap-4 mt-8">
               <button
@@ -145,7 +131,7 @@ export default function NoticiasPage() {
                 Página {page}
               </span>
               <button
-                disabled={noticias.length < LIMIT || (page * LIMIT) >= total}
+                disabled={listaNoticias.length < LIMIT || (page * LIMIT) >= total}
                 onClick={() => setPage(p => p + 1)}
                 className="px-4 py-2 rounded-md bg-white border border-gray-300 disabled:opacity-50 hover:bg-gray-100 transition text-texto-corpo"
               >
@@ -160,7 +146,6 @@ export default function NoticiasPage() {
       {isAdmin && (
         <button
           onClick={handleOpenCreateModal}
-          // LIMPEZA 4: Cores simplificadas
           className="fixed bottom-10 right-10 w-16 h-16 bg-azul-principal hover:bg-azul-hover text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 z-50 cursor-pointer"
           title="Nova Notícia"
         >
@@ -171,7 +156,6 @@ export default function NoticiasPage() {
       <ModalNoticia 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        noticiaParaEditar={noticiaEditando}
         onSuccess={handleModalSuccess}
       />
 
