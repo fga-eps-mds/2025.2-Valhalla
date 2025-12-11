@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Header from "../../../components/navbar"; 
-import ModalNoticia from "../../../components/ModalAdicionarNoticia";
+import Header from "../../../../components/secao/navbar"; 
+import ModalNoticia from "../../../../components/modais/modalAdicionarNoticia";
 import { listarNoticias } from "@/utils/api"; // Vamos usar essa função centralizada
 import { useAuth } from "@/contexts/AuthContext";
 import { PlusIcon } from "@heroicons/react/24/solid";

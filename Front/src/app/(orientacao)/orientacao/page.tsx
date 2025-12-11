@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { UsersIcon, ScaleIcon, ShieldExclamationIcon, LifebuoyIcon, LightBulbIcon, BuildingOffice2Icon } from "@heroicons/react/24/solid";
-import InfoCards from "@/components/secaoInfo";
-import Navbar from "@/components/navbar";
-import BotaoMenu from "@/components/ui/botao-menu";
+import InfoCards from "@/components/secao/secaoInfo";
+import Navbar from "@/components/secao/navbar";
+import BotaoMenu from "@/components/ui/botaoMenu";
 import { useRouter } from "next/navigation";
 
 export default function Orientacao() {

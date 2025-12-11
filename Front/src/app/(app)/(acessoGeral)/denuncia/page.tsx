@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import ModalDenuncia from '@/components/modalDenuncia';
+import ModalDenuncia from '@/components/modais/modalDenuncia';
 import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import api from '@/utils/api';
-import CardDenuncia from '@/components/ui/card-denuncia';
+import CardDenuncia from '@/components/ui/cardDenuncia';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 

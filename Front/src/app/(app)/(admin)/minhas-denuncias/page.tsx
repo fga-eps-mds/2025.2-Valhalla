@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from 'sonner';
 import api from "@/utils/api";
-import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
-import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
-import ModalEditarDenuncia from "@/components/modalEditarDenuncia";
+import CardDenuncia from "@/components/ui/cardDenunciaGerencia";
+import ModalExcluirDenunciaSoft from "@/components/modais/modalExcluirDenunciaSoft";
+import ModalEditarDenuncia from "@/components/modais/modalEditarDenuncia";
 
 interface DenunciaBackend {
   id: number;

@@ -7,8 +7,8 @@ import { toast } from 'sonner';
 import api from "@/utils/api";
 import { TipoNoticia } from "@/types";
 import CardNoticia from "@/components/ui/cardNoticiaGerencia";
-import ModalExcluirNoticiaSoftProps from "@/components/modalExcluirNoticiaSoft";
-import ModalEditarNoticia from "@/components/modalEditarNoticia";
+import ModalExcluirNoticiaSoftProps from "@/components/modais/modalExcluirNoticiaSoft";
+import ModalEditarNoticia from "@/components/modais/modalEditarNoticia";
 
 interface CardNoticia {
   id: number;

@@ -3,7 +3,7 @@ import {Merriweather, Lato } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../contexts/AuthContext";
 import "./globals.css";
-import Footer from "@/components/footer";
+import Footer from "@/components/secao/footer";
 import { Toaster } from "sonner";
 
 

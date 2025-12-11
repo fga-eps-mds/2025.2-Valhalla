@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import api from '@/utils/api';
-import ModalReport from '@/components/ModalReport';
+import ModalReport from '@/components/modais/modalReport';
 import {
   UserCircleIcon as UserCircleSolid,
   FlagIcon as FlagSolid,
