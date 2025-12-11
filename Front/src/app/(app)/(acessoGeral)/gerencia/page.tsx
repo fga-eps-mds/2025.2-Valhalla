@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import api from "@/utils/api";
 import CardDenuncia from "@/components/ui/cardDenunciaGerencia";
 import BotaoMenu from "@/components/ui/botaoMenu";
-import { UsersIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/solid";
+import { UsersIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, NewspaperIcon, FlagIcon, BuildingLibraryIcon } from "@heroicons/react/24/solid";
 import ModalExcluirDenunciaSoft from "@/components/modais/modalExcluirDenunciaSoft";
 import ModalEditarDenuncia from '@/components/modais/modalEditarDenuncia';
 
@@ -242,13 +242,13 @@ export default function Gerencia() {
         />
         {/* Botão 4: Minhas Noticias */}
         <BotaoMenu
-          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+          icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
           texto="Minhas Noticias"
           onClick={() => router.push('/minhas-noticias')}
         />
         {/* Botão 5: Denuncias Reportadas */}
         <BotaoMenu
-          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+          icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
           texto="Denuncias Reportadas"
           onClick={() => router.push('/denuncias-reportadas')}
         />
@@ -284,19 +284,19 @@ export default function Gerencia() {
         />
         {/* Botão 4: Minhas Noticias */}
         <BotaoMenu
-          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+          icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
           texto="Minhas Noticias"
           onClick={() => router.push('/minhas-noticias')}
         />
         {/* Botão 5: Denuncias Reportadas */}
         <BotaoMenu
-          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+          icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
           texto="Denuncias Reportadas"
           onClick={() => router.push('/denuncias-reportadas')}
         />
         {/* Botão 6: admins */}
         <BotaoMenu
-          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+          icone={<BuildingLibraryIcon className="w-12 h-12 stroke-[2.5]" />}
           texto="Administradores"
           onClick={() => router.push('/admins')}
         />
