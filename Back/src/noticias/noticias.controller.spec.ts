@@ -54,8 +54,7 @@ describe('NoticiasController', () => {
     it('deve chamar o service com o ID do usuário logado e os dados', async () => {
       const dto: NoticiasDto = { 
         descricao: 'Nova Notícia', 
-        tipo: 'GERAL', 
-        idUsuario: 1 
+        tipo: 'GERAL',
       };
       
       await controller.criarNoticia(mockRequest as any, dto);
