@@ -176,6 +176,33 @@ describe('DenunciasService', () => {
       expect(result).toHaveProperty('denuncias');
       expect(result).toHaveProperty('totalDenuncias');
     });
+    it('[Sucesso] Deve listar excluindo denúncias de um usuário específico', async () => {
+      const page = 1;
+      const limit = 10;
+      const usuarioExcluido = 5;
+
+      await service.listarDenuncias(page, limit, usuarioExcluido);
+
+      expect(mockPrismaService.denuncia.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            dataDelete: null,
+            usuario: { dataDelete: null },
+            idUsuario: { not: usuarioExcluido }
+          })
+        })
+      );
+
+      expect(mockPrismaService.denuncia.count).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            dataDelete: null,
+            usuario: { dataDelete: null },
+            idUsuario: { not: usuarioExcluido }
+          })
+        })
+      );
+    });
   });
   describe('listarDenunciasPorUsuario', () => {
     it('[Sucesso] Deve listar por usuário com paginação', async () => {

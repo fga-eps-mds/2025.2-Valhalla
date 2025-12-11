@@ -74,9 +74,9 @@ describe('DenunciasController', () => {
     });
     it('[Integração] Listar Geral: Deve repassar QueryParams (page, limit) para service.listarDenuncias', async () => {
       mockDenunciasService.listarDenuncias.mockResolvedValue(mockListResult);
-      const result = await controller.listarDenuncias(2, 20); // page: 2, limit: 20
+      const result = await controller.listarDenuncias(2, 20, undefined); // page: 2, limit: 20, usuario: undefined
       
-      expect(mockDenunciasService.listarDenuncias).toHaveBeenCalledWith(2, 20);
+      expect(mockDenunciasService.listarDenuncias).toHaveBeenCalledWith(2, 20, undefined);
       expect(result).toEqual(mockListResult);
     });
     it('[Integração] Listar por Usuário: Deve repassar ID, page e limit para service.listarDenunciasPorUsuario', async () => {
