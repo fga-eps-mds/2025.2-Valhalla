@@ -90,6 +90,53 @@ describe('NoticiasService', () => {
         });
     });
 
+    describe('editarNoticia', () => {
+        const idNoticia = 150;
+        const idUsuarioDono = 5;
+        const mockNoticiaExistente = {
+            id: idNoticia,
+            idUsuario: idUsuarioDono,
+            dataDelete: null,
+            usuario: { id: idUsuarioDono, tipo: 'COMUM' }
+        };
+        const mockEdicaoDto = { descricao: 'Nova descrição' };
+
+        it('deve permitir que o dono edite sua própria notícia', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+            prisma.noticia.update.mockResolvedValue({ ...mockNoticiaExistente, ...mockEdicaoDto } as any);
+
+            await service.editarNoticia(idNoticia, idUsuarioDono, mockEdicaoDto as any, 'COMUM' as any);
+
+            expect(prisma.noticia.update).toHaveBeenCalledWith({
+                where: { id: idNoticia },
+                data: mockEdicaoDto,
+            });
+        });
+
+        it('deve permitir que ADMIN edite notícia de usuário COMUM', async () => {
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
+            prisma.noticia.update.mockResolvedValue({ ...mockNoticiaExistente, ...mockEdicaoDto } as any);
+
+            await service.editarNoticia(idNoticia, 10, mockEdicaoDto as any, 'ADMIN' as any);
+
+            expect(prisma.noticia.update).toHaveBeenCalled();
+        });
+
+        it('deve rejeitar edição de notícia quando usuário não tem permissão', async () => {
+            const mockNoticiaAdminMaster = {
+                id: idNoticia,
+                idUsuario: 20,
+                dataDelete: null,
+                usuario: { id: 20, tipo: 'ADMINMASTER' }
+            };
+            prisma.noticia.findUnique.mockResolvedValue(mockNoticiaAdminMaster as any);
+
+            await expect(
+                service.editarNoticia(idNoticia, 10, mockEdicaoDto as any, 'ADMIN' as any)
+            ).rejects.toThrow('Ação não autorizada!');
+        });
+    });
+
     describe('desativarNoticia e deletarNoticia', () => {
         const idNoticia = 200;
         const idUsuarioDono = 5;
@@ -131,7 +178,6 @@ describe('NoticiasService', () => {
 
             expect(prisma.noticia.delete).not.toHaveBeenCalled();
         });
-
         it('deve permitir a desativação se o requisitor for o dono da notícia (soft delete)', async () => {
             prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
             prisma.noticia.update.mockResolvedValue({ ...mockNoticiaExistente, dataDelete: new Date() } as any);
@@ -146,6 +192,35 @@ describe('NoticiasService', () => {
                 where: { id: idNoticia },
                 data: { dataDelete: expect.any(Date) },
             });
+        });
+
+        it('deve lançar ForbiddenException se um ADMIN tentar desativar notícia de outro ADMIN', async () => {
+            const adminOwner = {
+                id: idNoticia,
+                idUsuario: 25,
+                dataDelete: null,
+                usuario: { id: 25, tipo: 'ADMIN' }
+            };
+
+            prisma.noticia.findUnique.mockResolvedValue(adminOwner as any);
+
+            await expect(
+                service.desativarNoticia(idNoticia, idUsuarioAdmin, 'ADMIN' as any)
+            ).rejects.toThrow('Ação não autorizada!');
+        });
+
+        it('deve lançar ForbiddenException se um usuário COMUM tentar desativar notícia de outro', async () => {
+            const anotherUserNoticia = {
+                id: idNoticia,
+                idUsuario: 99,
+                dataDelete: null,
+                usuario: { id: 99, tipo: 'COMUM' }
+            };
+            prisma.noticia.findUnique.mockResolvedValue(anotherUserNoticia as any);
+
+            await expect(
+                service.desativarNoticia(idNoticia, idUsuarioDono, 'COMUM' as any)
+            ).rejects.toThrow('Ação não autorizada!');
         });
 
         it('deve lançar NotFoundException se a notícia a ser deletada/desativada não existir', async () => {
@@ -198,19 +273,16 @@ describe('NoticiasService', () => {
             const limit = 5;
             const expectedSkip = 5;
 
-            prisma.$transaction.mockResolvedValue([noticiasMock, totalNoticias]);
             prisma.noticia.findMany.mockResolvedValue(noticiasMock as any);
             prisma.noticia.count.mockResolvedValue(totalNoticias);
 
-            const result: any = await service.listarNoticias(page, limit);
-            
-            console.log('Retorno do Service:', result); 
+            const result = await service.listarNoticias(page, limit);
 
             expect(prisma.noticia.findMany).toHaveBeenCalledWith(
                 expect.objectContaining({
                     skip: expectedSkip,
                     take: limit,
-                    where: expect.objectContaining({ dataDelete: null }),
+                    where: { dataDelete: null, usuario: { dataDelete: null } },
                 })
             );
 
@@ -218,26 +290,15 @@ describe('NoticiasService', () => {
             expect(result.totalNoticias).toBe(totalNoticias);
         });
 
-        it('deve listar notícias ativas filtradas por ID do usuário', async () => {
-            const totalNoticiasUsuario = 3;
+        it('deve listar notícias ativas por usuário usando transação', async () => {
+            const totalNoticiasUsuario = noticiasMock.length;
             const page = 1;
             const limit = 10;
 
             prisma.$transaction.mockResolvedValue([noticiasMock, totalNoticiasUsuario]);
-
-            await service.listarNoticiasPorUsuario(idUsuario, page, limit);
-
-            expect(prisma.noticia.findMany).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    where: expect.objectContaining({ idUsuario: idUsuario, dataDelete: null }),
-                    take: limit,
-                })
-            );
-            expect(prisma.noticia.count).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    where: expect.objectContaining({ idUsuario: idUsuario }),
-                })
-            );
+            const result = await service.listarNoticiasPorUsuario(idUsuario, page, limit);
+            expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+            expect(result).toEqual({ noticias: noticiasMock, totalNoticias: totalNoticiasUsuario });
         });
     });
 });
