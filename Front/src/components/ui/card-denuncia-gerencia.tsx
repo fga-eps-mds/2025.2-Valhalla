@@ -67,6 +67,9 @@ export default function CardDenuncia({
                 </h3>
             </div>
 
+            <div className="mt-4 mr-10 text-body leading-relaxed wrap-break-words break-all whitespace-pre-wrap text-left">
+              {descricao}
+            </div>
 
         </div>
 
@@ -95,12 +98,6 @@ export default function CardDenuncia({
             </button>
         </div>
 
-      </div>
-
-      {/* --- DESCRIÇÃO --- */}
-      {/* Margem top para separar da data */}
-      <div className="mt-4 text-body leading-relaxed wrap-break-words whitespace-pre-wrap text-left">
-        {descricao}
       </div>
 
     </div>
@@ -138,6 +135,9 @@ export default function CardDenuncia({
                 </h3>
             </div>
 
+            <div className="mt-4 mr-10 text-body leading-relaxed wrap-break-words break-all whitespace-pre-wrap text-left">
+              {descricao}
+            </div>
 
         </div>
 
@@ -159,12 +159,6 @@ export default function CardDenuncia({
             </button>
         </div>
 
-      </div>
-
-      {/* --- DESCRIÇÃO --- */}
-      {/* Margem top para separar da data */}
-      <div className="mt-4 text-body leading-relaxed wrap-break-words whitespace-pre-wrap text-left">
-        {descricao}
       </div>
 
     </div>
