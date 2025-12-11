@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import ModalDenuncia from '@/components/modalDenuncia';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import ModalDenuncia from '@/components/modais/modalDenuncia';
 import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import api from '@/utils/api';
-import CardDenuncia from '@/components/ui/card-denuncia';
+import CardDenuncia from '@/components/ui/cardDenuncia';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -36,8 +36,6 @@ type Denuncia = {
 
 export default function PaginaDenuncias() {
 
-  const { user } = useAuth();
-
   const [abrirModal, setabrirModal] = useState(false)
   
   const [todasDenuncias, setTodasDenuncias] = useState<Denuncia[]>([]);
@@ -49,43 +47,40 @@ export default function PaginaDenuncias() {
   const [termoBusca, setTermoBusca] = useState('');
   const [filtroCategoria, setFiltroCategoria] = useState('Todas');
 
+  const { user } = useAuth();
+
+
+  const buscarTudo = useCallback(async () => {
+    try {
+      const response = await api.get(`/denuncias?limit=1000`);
+      
+      const listaBruta = response.data.denuncias || response.data;
+      
+      const denunciasFormatadas: Denuncia[] = listaBruta.map((denuncia: DenunciaBackend) => ({
+        id: denuncia.id,
+        nomeUsuario: denuncia.usuario?.nome,
+        fotoUsuario: denuncia.usuario?.mediaSrc,
+        descricao: denuncia.descricao,
+        anonimato: denuncia.anonimato,
+        categoria: denuncia.categoria.nome,
+        data: new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR', {
+          day: '2-digit', month: '2-digit', year: 'numeric'
+        }),
+      }));
+      
+      setTodasDenuncias(denunciasFormatadas);
+
+    } catch (error) {
+      console.error("Erro ao buscar denúncias:", error);
+      toast.error("Erro ao atualizar lista.");
+    } finally {
+    }
+  }, []);
 
   useEffect(() => {
-    const buscarTudo = async () => {
-      try {
-        setIsloading(true);
-
-        const response = await api.get(`/denuncias?limit=1000`);
-
-        const listaBruta = response.data.denuncias || response.data;
-
-        const denunciasFormatadas: Denuncia[] = listaBruta.map((denuncia: DenunciaBackend) => ({
-          id: denuncia.id,
-          nomeUsuario: denuncia.usuario?.nome,
-          fotoUsuario: denuncia.usuario?.mediaSrc,
-          descricao: denuncia.descricao,
-          anonimato: denuncia.anonimato,
-          categoria: denuncia.categoria.nome,
-          data: new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          }),
-        }));
-
-        setTodasDenuncias(denunciasFormatadas);
-
-      } catch (error) {
-        console.error("Erro ao buscar denúncias:", error);
-        toast.error("Erro ao buscar denúncias.");
-      } finally {
-        setIsloading(false);
-      }
-    }
-
-    buscarTudo();
-  }, []); 
-
+    setIsloading(true);
+    buscarTudo().finally(() => setIsloading(false));
+  }, [buscarTudo]);
 
   const { dadosVisiveis, totalPaginas } = useMemo(() => {
     
@@ -178,14 +173,14 @@ export default function PaginaDenuncias() {
                         dadosVisiveis.map(denuncia => (
                               <CardDenuncia
                                 key={denuncia.id}
+                                idDenuncia={denuncia.id}
+                                usuarioId={user.id}
                                 nomeUsuario={denuncia.nomeUsuario}
                                 fotoUsuario={denuncia.fotoUsuario}
                                 descricao={denuncia.descricao}
                                 anonimato={denuncia.anonimato}
                                 categoria={denuncia.categoria}
                                 data={denuncia.data}
-                                idDenuncia={denuncia.id}
-                                usuarioId={user?.id}
                               />
                           ))
                       ) : (
@@ -242,23 +237,7 @@ export default function PaginaDenuncias() {
       <button 
       onClick={() => setabrirModal(true)}
       aria-label="Nova Denúncia"
-      className="
-          fixed                   /* Fixo na tela */
-          bottom-14               /* Posição: 56px de baixo */
-          right-[50px]            /* Posição: 50px da direita */
-          h-26                    /* Altura: 104px */
-          w-26                    /* Largura: 104px */
-          rounded-full            /* Totalmente redondo */
-          bg-azul-dark          /* Cor de fundo */
-          hover:bg-azul-light   /* Cor ao passar o mouse */
-          flex                    /* Para centralizar o ícone */
-          items-center            /* ...verticalmente */
-          justify-center          /* ...horizontalmente */
-          shadow-lg               /* Sombra */
-          transition-colors       /* Efeito de transição */
-          duration-300
-          cursor-pointer
-        "
+      className="fixed bottom-10 right-10 w-16 h-16 bg-azul-principal hover:bg-azul-hover text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 z-50 cursor-pointer"
       >
         <PlusIcon className="h-12 w-12 text-white"/>
       </button>
@@ -266,6 +245,7 @@ export default function PaginaDenuncias() {
       <ModalDenuncia 
         isOpen={abrirModal}
         onClose={() => setabrirModal(false)}
+        onSucess={buscarTudo}
       />
     </div>
   );

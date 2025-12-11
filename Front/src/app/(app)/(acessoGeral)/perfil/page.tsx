@@ -11,9 +11,9 @@ import {
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import ModalEditarSenha from '@/components/modalEditarSenha'; 
-import ModalExcluirConta from '@/components/ModalExcluirContaSoft';
-import ModalEditarPerfil from '@/components/ModalEditarPerfil';
+import ModalEditarSenha from '@/components/modais/modalEditarSenha'; 
+import ModalExcluirConta from '@/components/modais/modalExcluirContaSoft';
+import ModalEditarPerfil from '@/components/modais/modalEditarPerfil';
 
 import Link from "next/link";
 

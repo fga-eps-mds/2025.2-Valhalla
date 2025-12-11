@@ -1,11 +1,11 @@
 'use client';
 
-import SecaoDesenvolvedores from "@/components/secaoDevs";
-import Header from "@/components/navbar"
+import SecaoDesenvolvedores from "@/components/secao/secaoDevs";
+import Header from "@/components/secao/navbar"
 import Image from "next/image";
 import Link from "next/link";
 
-import InfoCards from "@/components/secaoInfo";
+import InfoCards from "@/components/secao/secaoInfo";
 
 export default function Home() {
   return (

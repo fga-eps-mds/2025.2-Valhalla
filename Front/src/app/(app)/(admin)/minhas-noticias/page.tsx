@@ -5,93 +5,91 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from 'sonner';
 import api from "@/utils/api";
-import CardDenuncia from "@/components/ui/cardDenunciaGerencia";
-import ModalExcluirDenunciaSoft from "@/components/modais/modalExcluirDenunciaSoft";
-import ModalEditarDenuncia from "@/components/modais/modalEditarDenuncia";
+import { TipoNoticia } from "@/types";
+import CardNoticia from "@/components/ui/cardNoticiaGerencia";
+import ModalExcluirNoticiaSoftProps from "@/components/modais/modalExcluirNoticiaSoft";
+import ModalEditarNoticia from "@/components/modais/modalEditarNoticia";
 
-interface DenunciaBackend {
-  id: number;
-  descricao: string;
-  idCategoria: number;
-  mediaSrc: string | null;
-  anonimato: boolean;
-  dataCriacao: string;
-  usuario: {
-    nome: string;
-    mediaSrc: string | null;
-  };
-  categoria: {
-    nome: string;
-  };
-}
-
-type Denuncia = {
+interface CardNoticia {
   id: number;
   nomeUsuario: string;
   fotoUsuario?: string | null;
   descricao: string;
-  anonimato: boolean;
-  categoria: string;
-  idCategoria: number;
+  tipo: TipoNoticia;
   data: string;
-};
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
+}
+
+interface NoticiaBackend {
+  id: number;
+  descricao: string;
+  mediaSrc: string | null;
+  dataCriacao: string;
+  dataUpdate: string;
+  idUsuario: number;
+  tipo: TipoNoticia;
+  usuario: {
+          nome: string;
+          mediaSrc: string | null;
+      };
+}
 
 export default function Gerencia() {
     
   const { user } = useAuth();
-  const router = useRouter();
   
-  const [listagemDenuncias, setListagemDenuncias] = useState<Denuncia[]>([]);
+  // --- ESTADOS DA LISTA ---
+  const [isLoading, setIsLoading] = useState(true);
   const [totalDePaginas, setTotalDePaginas] = useState(1);
+
+  // --- ESTADOS DO MODAL (Novos) ---
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [todasNoticias, setTodasNoticias] = useState<CardNoticia[]>([]);
+
+  const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
+  const [selectedNoticiaId, setSelectedNoticiaId] = useState<number | null>(null);
+
+  const [isModalEditarOpen, setIsModalEditarOpen] = useState(false);
+  const [selectedNoticia, setSelectedNoticia] = useState<CardNoticia | null>(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [limite, setLimite] = useState(20);
 
-  const [isLoading, setIsloading] = useState(false);
-
-  const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
-  const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
-
-  const [isModalEditarOpen, setIsModalEditarOpen] = useState(false);
-  const [selectedDenuncia, setSelectedDenuncia] = useState<Denuncia | null>(null);
-
-  useEffect(() => {
-    const buscarDenuncias = async () => {
+    useEffect(() => {
+    const buscarTudo = async () => {
       try {
-        setIsloading(true);
+        setIsLoading(true);
 
-        console.log(`denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
-        const response = await api.get(`/denuncias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
-        console.log('Resposta da API:', response.data);
+        const response = await api.get(`/noticias/usuario/${user?.id}?page=${currentPage}&limit=${limite}`);
 
-        const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
-          id: denuncia.id,
-          nomeUsuario: denuncia.usuario?.nome,
-          fotoUsuario: denuncia.usuario?.mediaSrc,
-          descricao: denuncia.descricao,
-          anonimato: denuncia.anonimato,
-          categoria: denuncia.categoria.nome,
-          idCategoria: denuncia.idCategoria,
-          data: new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR', {
+        const listaBruta = response.data.noticias || response.data;
+
+        const noticiasFormatadas: CardNoticia[] = listaBruta.map((noticia: NoticiaBackend) => ({
+          id: noticia.id,
+          nomeUsuario: noticia.usuario?.nome,
+          fotoUsuario: noticia.usuario?.mediaSrc,
+          descricao: noticia.descricao,
+          tipo: noticia.tipo,
+          data: new Date(noticia.dataCriacao).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
           }),
         }));
 
-        setListagemDenuncias(denunciasFormatadas);
-        const totalDeItens = response.data.totalDenuncias;
-        setTotalDePaginas(Math.ceil(totalDeItens / limite));
+        setTodasNoticias(noticiasFormatadas);
 
       } catch (error) {
-        console.error("Erro ao buscar denúncias:", error);
-        toast.error("Erro ao buscar denúncias.");
+        console.error("Erro ao buscar notícias:", error);
+        toast.error("Erro ao buscar notícias.");
       } finally {
-        setIsloading(false);
+        setIsLoading(false);
       }
     }
 
-    buscarDenuncias();
-  }, [currentPage, limite, user]);
+    buscarTudo();
+  }, []); 
 
 return (
         <main>
@@ -104,26 +102,24 @@ return (
                     <section>
                       <div className="container mx-auto max-w-7xl p-4 md:p-8">
                         <div className="grid grid-cols-1 gap-4 md:gap-6">
-                          {listagemDenuncias.length > 0 ? (
-                            listagemDenuncias.map(denuncia => {
+                          {todasNoticias.length > 0 ? (
+                            todasNoticias.map(noticia => {
                               return (
-                                  <CardDenuncia
-                                    key={denuncia.id}
-                                    id={denuncia.id}
-                                    nomeUsuario={denuncia.nomeUsuario}
-                                    fotoUsuario={denuncia.fotoUsuario}
-                                    descricao={denuncia.descricao}
-                                    anonimato={denuncia.anonimato}
-                                    categoria={denuncia.categoria}
-                                    idCategoria={denuncia.idCategoria || undefined}
-                                    data={denuncia.data}
+                                  <CardNoticia
+                                    key={noticia.id}
+                                    id={noticia.id}
+                                    nomeUsuario={noticia.nomeUsuario}
+                                    fotoUsuario={noticia.fotoUsuario}
+                                    descricao={noticia.descricao}
+                                    tipo={noticia.tipo}
+                                    data={noticia.data}
                                     onDelete={(id) => {
-                                      setSelectedDenunciaId(id);
+                                      setSelectedNoticiaId(id);
                                       setIsModalExcluirOpen(true);
                                     }}
                                     onEdit={(id) => {
-                                      const found = listagemDenuncias.find(d => d.id === id) || null;
-                                      setSelectedDenuncia(found);
+                                      const found = todasNoticias.find(d => d.id === id) || null;
+                                      setSelectedNoticia(found);
                                       setIsModalEditarOpen(true);
                                     }}
                                   />
@@ -171,29 +167,25 @@ return (
                         Próximo
                       </button>
                     </section>
-                    <ModalExcluirDenunciaSoft 
+                    <ModalExcluirNoticiaSoftProps 
                             isOpen={isModalExcluirOpen} 
                             onClose={() => setIsModalExcluirOpen(false)}
-                            denunciaId={selectedDenunciaId}
-                            onDeleted={(id) => setListagemDenuncias(prev => prev.filter(d => d.id !== id))}
+                            noticiaId={selectedNoticiaId}
+                            onDeleted={(id) => setTodasNoticias(prev => prev.filter(d => d.id !== id))}
                           />
-                    <ModalEditarDenuncia
+                    <ModalEditarNoticia
                       isOpen={isModalEditarOpen}
                       onClose={() => setIsModalEditarOpen(false)}
-                      denuncia={selectedDenuncia ? {
-                        id: selectedDenuncia.id,
-                        descricao: selectedDenuncia.descricao,
-                        categoria: selectedDenuncia.categoria,
-                        idCategoria: selectedDenuncia.idCategoria,
-                        anonimato: selectedDenuncia.anonimato,
+                      noticia={selectedNoticia ? {
+                        id: selectedNoticia.id,
+                        descricao: selectedNoticia.descricao,
+                        tipo: selectedNoticia.tipo,
                       } : null}
                       onSaved={(updated) => {
-                        setListagemDenuncias(prev => prev.map(d => d.id === updated.id ? {
+                        setTodasNoticias(prev => prev.map(d => d.id === updated.id ? {
                           ...d,
                           descricao: updated.descricao ?? d.descricao,
-                          anonimato: updated.anonimato ?? d.anonimato,
-                          categoria: updated.nomeCategoria ?? d.categoria,
-                          idCategoria: updated.idCategoria ?? d.idCategoria,
+                          tipo: updated.tipo ?? d.tipo,
                         } : d));
                       }}
                     />

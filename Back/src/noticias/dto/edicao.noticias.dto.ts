@@ -1,4 +1,5 @@
 import { IsInt, IsString, IsOptional} from "class-validator";
+import { TipoNoticia } from "@prisma/client";
 
 export class EdicaoNoticiasDto {
 
@@ -12,7 +13,7 @@ export class EdicaoNoticiasDto {
 
     @IsString({message: 'O tipo deve ser um texto.'})
     @IsOptional()
-    tipo?:string;
+    tipo?:TipoNoticia;
 
     @IsString({message: 'A mediaSrc deve ser um texto.'})
     @IsOptional()

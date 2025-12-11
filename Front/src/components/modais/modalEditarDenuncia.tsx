@@ -137,7 +137,7 @@ export default function ModalEditarDenuncia ({
 
         toast.success("Denúncia editada com sucesso!");
         onClose();
-        if (onSaved) onSaved({...updated, nomeCategoria: nomeCategoriaNova});
+        if (onSaved) onSaved({...updated, nomeCategoriaFront: nomeCategoriaNova});
 
       } catch (error) {
         toast.error("Erro ao editar denúncia. Verifique o console.");

@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from 'sonner';
 import api from "@/utils/api";
-import CardDenuncia from "@/components/ui/card-denuncia-gerencia";
-import BotaoMenu from "@/components/ui/botao-menu";
-import { UsersIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/solid";
-import ModalExcluirDenunciaSoft from "@/components/modalExcluirDenunciaSoft";
-import ModalEditarDenuncia from '@/components/modalEditarDenuncia';
+import CardDenuncia from "@/components/ui/cardDenunciaGerencia";
+import BotaoMenu from "@/components/ui/botaoMenu";
+import { UsersIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, NewspaperIcon, FlagIcon, BuildingLibraryIcon } from "@heroicons/react/24/solid";
+import ModalExcluirDenunciaSoft from "@/components/modais/modalExcluirDenunciaSoft";
+import ModalEditarDenuncia from '@/components/modais/modalEditarDenuncia';
 
 interface DenunciaBackend {
   id: number;
@@ -106,7 +106,17 @@ export default function Gerencia() {
                 ) : (
                   <>
                     <section>
+
+                      <div className=" pt-8 flex flex-col items-center justify-center">
+                      <BotaoMenu
+                      icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+                      texto="Minhas Interações"
+                      onClick={() => router.push('/interacoes')}
+                    />
+                      </div>
+
                       <div className="container mx-auto max-w-7xl p-4 md:p-8">
+
                         <div className="grid grid-cols-1 gap-4 md:gap-6">
                           {listagemDenuncias.length > 0 ? (
                             listagemDenuncias.map(denuncia => {
@@ -197,7 +207,7 @@ export default function Gerencia() {
                           ...d,
                           descricao: updated.descricao ?? d.descricao,
                           anonimato: updated.anonimato ?? d.anonimato,
-                          categoria: updated.categoria?.nome ?? d.categoria,
+                          categoria: updated.nomeCategoriaFront ?? updated.categoria?.nome ?? d.categoria,
                         } : d));
                       }}
                     />
@@ -205,34 +215,95 @@ export default function Gerencia() {
                 )}
         </main>
       );
-    } else {
+    } else { if (user?.tipo === 'ADMIN') {
       return (
 
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
-      
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
+        
 
-      {/* Botão 1: Denúncias de Usuários */}
-      <BotaoMenu
-        icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
-        texto="Denuncias de Usuarios"
-        onClick={() => router.push('/denuncias-usuarios')} 
-      />
+        {/* Botão 1: Denúncias de Usuários */}
+        <BotaoMenu
+          icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
+          texto="Denuncias de Usuarios"
+          onClick={() => router.push('/denuncias-usuarios')} 
+        />
 
-      {/* Botão 2: Minhas Denúncias */}
-      <BotaoMenu
-        icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
-        texto="Minhas Denuncias"
-        onClick={() => router.push('/minhas-denuncias')}
-      />
-      {/* Botão 3: Minhas Interações */}
-      <BotaoMenu
-        icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
-        texto="Minhas Interações"
-        onClick={() => router.push('/interacoes')}
-      />
+        {/* Botão 2: Minhas Denúncias */}
+        <BotaoMenu
+          icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+          texto="Minhas Denuncias"
+          onClick={() => router.push('/minhas-denuncias')}
+        />
+        {/* Botão 3: Minhas Interações */}
+        <BotaoMenu
+          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+          texto="Minhas Interações"
+          onClick={() => router.push('/interacoes')}
+        />
+        {/* Botão 4: Minhas Noticias */}
+        <BotaoMenu
+          icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
+          texto="Minhas Noticias"
+          onClick={() => router.push('/minhas-noticias')}
+        />
+        {/* Botão 5: Denuncias Reportadas */}
+        <BotaoMenu
+          icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
+          texto="Denuncias Reportadas"
+          onClick={() => router.push('/denuncias-reportadas')}
+        />
 
-    </div>
+      </div>
 
       );
+    } else {
+      
+      return (
+
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
+        
+
+        {/* Botão 1: Denúncias de Usuários */}
+        <BotaoMenu
+          icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
+          texto="Denuncias de Usuarios"
+          onClick={() => router.push('/denuncias-usuarios')} 
+        />
+
+        {/* Botão 2: Minhas Denúncias */}
+        <BotaoMenu
+          icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+          texto="Minhas Denuncias"
+          onClick={() => router.push('/minhas-denuncias')}
+        />
+        {/* Botão 3: Minhas Interações */}
+        <BotaoMenu
+          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+          texto="Minhas Interações"
+          onClick={() => router.push('/interacoes')}
+        />
+        {/* Botão 4: Minhas Noticias */}
+        <BotaoMenu
+          icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
+          texto="Minhas Noticias"
+          onClick={() => router.push('/minhas-noticias')}
+        />
+        {/* Botão 5: Denuncias Reportadas */}
+        <BotaoMenu
+          icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
+          texto="Denuncias Reportadas"
+          onClick={() => router.push('/denuncias-reportadas')}
+        />
+        {/* Botão 6: admins */}
+        <BotaoMenu
+          icone={<BuildingLibraryIcon className="w-12 h-12 stroke-[2.5]" />}
+          texto="Administradores"
+          onClick={() => router.push('/admins')}
+        />
+
+      </div>
+
+     );
     }
+  } 
 }

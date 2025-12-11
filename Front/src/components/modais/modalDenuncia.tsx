@@ -41,7 +41,7 @@ const criarDenuncia = async (dados: CriarDenunciaDados) => {
   }
 };
 
-export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
+export default function ModalDenuncia ({isOpen, onClose, onSucess}: {isOpen: boolean; onClose: () => void; onSucess: () => void;}) {
   
 
   const [descricao, setDescricao] = useState('');
@@ -100,6 +100,7 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
         });
 
         toast.success("Denúncia realizada com sucesso!");
+        onSucess();
         onClose();
 
       } catch (error) {
@@ -230,3 +231,4 @@ export default function ModalDenuncia ({isOpen, onClose}: {isOpen: boolean; onCl
           </>
         )
 }
+

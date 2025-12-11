@@ -1,6 +1,6 @@
 import "../globals.css";
 import RoleGuard from '../../contexts/RoleGuard';
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/secao/navbar";
 
 export default function RootLayout({
   children,
