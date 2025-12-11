@@ -6,6 +6,7 @@ import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import api from '@/utils/api';
 import CardDenuncia from '@/components/ui/card-denuncia';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface DenunciaBackend {
   id: number;
@@ -34,6 +35,8 @@ type Denuncia = {
 };
 
 export default function PaginaDenuncias() {
+
+  const { user } = useAuth();
 
   const [abrirModal, setabrirModal] = useState(false)
   
@@ -181,6 +184,8 @@ export default function PaginaDenuncias() {
                                 anonimato={denuncia.anonimato}
                                 categoria={denuncia.categoria}
                                 data={denuncia.data}
+                                idDenuncia={denuncia.id}
+                                usuarioId={user?.id}
                               />
                           ))
                       ) : (
