@@ -89,6 +89,7 @@ export class NoticiasService {
                 dataCriacao: true,
                 dataUpdate: true,
                 idUsuario: true,
+                tipo: true,
                 usuario: {
                     select: {
                         nome: true,
@@ -122,6 +123,7 @@ export class NoticiasService {
                     dataCriacao: true,
                     dataUpdate: true,
                     idUsuario: true,
+                    tipo: true,
                     usuario: {
                         select: {
                             id: true,

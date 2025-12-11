@@ -77,13 +77,19 @@ model Noticia {
   id Int @id @default(autoincrement())
   idUsuario Int
   descricao String
-  tipo String
+  tipo TipoNoticia
   mediaSrc String?
   dataDelete DateTime?
   dataCriacao DateTime @default(now())
   dataUpdate DateTime @updatedAt
   usuario Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade)
   }
+
+enum TipoNoticia {
+  GERAL
+  AVISO
+  EVENTO
+}
 
 model Categoria {
   id Int @id @default(autoincrement())
