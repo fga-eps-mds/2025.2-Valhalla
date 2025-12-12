@@ -129,12 +129,12 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
         <button
           type="button"
           onClick={handleClose}
-          className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors"
+          className="absolute top-6 left-6 text-black hover:text-gray-600 transition-colors cursor-pointer"
         >
           <ArrowLeftIcon className="size-8" />
         </button>
 
-        <h1 className='text-[28px] text-texto-primario font-(--fonte-primaria) mb-8 mt-2'>
+        <h1 className="text-[28px] text-texto-primario font-(--fonte-primaria) mb-8 mt-2 cursor-default">
             Alterar Senha
         </h1>
         
@@ -143,7 +143,7 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
             <div className="w-full">
                 <label className="text-sm font-semibold text-gray-700 mb-1 ml-1 block">Senha Atual</label>
                 <div className="relative">
-                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-azul-dark" />
+                    <LockClosedIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-azul-dark"/>
                     <input 
                         type={mostrarSenha ? "text" : "password"}
                         placeholder="Digite sua senha atual"
@@ -156,7 +156,7 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
                         onClick={() => setMostrarSenha(!mostrarSenha)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-azul-principal"
                     >
-                        {mostrarSenha ? <EyeSlashIcon className="size-5"/> : <EyeIcon className="size-5"/>}
+                        {mostrarSenha ? <EyeSlashIcon className="size-5 cursor-pointer"/> : <EyeIcon className="size-5 cursor-pointer"/>}
                     </button>
                 </div>
             </div>
@@ -222,7 +222,7 @@ export default function modalEditarSenha({ isOpen, onClose }: modalEditarSenhaPr
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
-                className="flex items-center justify-center border border-azul-dark rounded-xl py-3 mt-6 bg-azul-principal w-full text-white hover:bg-[#254c9b] transition font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="flex items-center justify-center self-center border border-azul-dark rounded-xl py-3 mt-6 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-bold cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
                 {loading ? 'SALVANDO...' : 'SALVAR ALTERAÇÕES'}
             </button>

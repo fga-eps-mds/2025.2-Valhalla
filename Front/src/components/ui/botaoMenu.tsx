@@ -11,8 +11,9 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
     <button
       onClick={onClick}
       className="
-        flex items-center justify-center gap-6
-        w-[350px] h-[120px] 
+        px-10
+        flex items-center justify-center
+        w-[330px] h-[120px] 
         bg-white 
         border-2 border-azul-principal 
         rounded-[15px] 
@@ -21,6 +22,7 @@ export default function BotaoMenu({ texto, icone, onClick }: BotaoMenuProps) {
         transition-all duration-300
         group
         cursor-pointer
+        gap-3
       "
     >
       {/* Ícone */}

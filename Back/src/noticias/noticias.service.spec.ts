@@ -142,7 +142,6 @@ describe('NoticiasService', () => {
         const idUsuarioDono = 5;
         const idUsuarioAdmin = 10;
 
-        // Mock correto com usuario incluso para evitar erro de leitura de 'id'
         const mockNoticiaExistente = {
             id: idNoticia,
             idUsuario: idUsuarioDono,
@@ -178,6 +177,7 @@ describe('NoticiasService', () => {
 
             expect(prisma.noticia.delete).not.toHaveBeenCalled();
         });
+
         it('deve permitir a desativação se o requisitor for o dono da notícia (soft delete)', async () => {
             prisma.noticia.findUnique.mockResolvedValue(mockNoticiaExistente as any);
             prisma.noticia.update.mockResolvedValue({ ...mockNoticiaExistente, dataDelete: new Date() } as any);
@@ -226,7 +226,6 @@ describe('NoticiasService', () => {
         it('deve lançar NotFoundException se a notícia a ser deletada/desativada não existir', async () => {
             prisma.noticia.findUnique.mockResolvedValue(null);
 
-            // Ajustado mensagem de erro para bater com o service
             await expect(
                 service.deletarNoticia(idNoticia, idUsuarioAdmin, 'ADMINMASTER' as any)
             ).rejects.toThrow('Notícia com ID 200 não encontrada.');

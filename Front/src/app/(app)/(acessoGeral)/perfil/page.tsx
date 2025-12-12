@@ -43,7 +43,7 @@ export default function Perfil() {
     if (!user) return null;
 
     return (
-        <div className="min-h-[calc(100vh-80px)] w-full bg-white flex flex-col items-center py-12 px-4">
+        <div className="w-full flex flex-col items-center py-12 px-4 bg-gray-50">
             
             <div className="flex flex-col items-center mb-12">
                 <div className="w-32 h-32 rounded-full border border-gray-400 flex items-center justify-center mb-6 overflow-hidden relative bg-white">

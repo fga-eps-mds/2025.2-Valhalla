@@ -217,92 +217,90 @@ export default function Gerencia() {
       );
     } else { if (user?.tipo === 'ADMIN') {
       return (
+      <main className="flex flex-col items-center justify-start px-12 py-14 bg-gray-50">
+        <h1 className="text-h2 font-bold mt-10">Painel de Gerenciamento ADMIN</h1>
 
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
-        
-
-        {/* Botão 1: Denúncias de Usuários */}
-        <BotaoMenu
-          icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
-          texto="Denuncias de Usuarios"
-          onClick={() => router.push('/denuncias-usuarios')} 
-        />
-
-        {/* Botão 2: Minhas Denúncias */}
-        <BotaoMenu
-          icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
-          texto="Minhas Denuncias"
-          onClick={() => router.push('/minhas-denuncias')}
-        />
-        {/* Botão 3: Minhas Interações */}
-        <BotaoMenu
-          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
-          texto="Minhas Interações"
-          onClick={() => router.push('/interacoes')}
-        />
-        {/* Botão 4: Minhas Noticias */}
-        <BotaoMenu
-          icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
-          texto="Minhas Noticias"
-          onClick={() => router.push('/minhas-noticias')}
-        />
-        {/* Botão 5: Denuncias Reportadas */}
-        <BotaoMenu
-          icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
-          texto="Denuncias Reportadas"
-          onClick={() => router.push('/denuncias-reportadas')}
-        />
-
-      </div>
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {/* Botão 1: Denúncias de Usuários */}
+          <BotaoMenu
+            icone={<UsersIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de grupo
+            texto="Denuncias de Usuarios"
+            onClick={() => router.push('/denuncias-usuarios')} 
+          />
+          {/* Botão 2: Minhas Denúncias */}
+          <BotaoMenu
+            icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+            texto="Minhas Denuncias"
+            onClick={() => router.push('/minhas-denuncias')}
+          />
+          {/* Botão 3: Minhas Interações */}
+          <BotaoMenu
+            icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+            texto="Minhas Interações"
+            onClick={() => router.push('/interacoes')}
+          />
+          {/* Botão 4: Minhas Noticias */}
+          <BotaoMenu
+            icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
+            texto="Minhas Noticias"
+            onClick={() => router.push('/minhas-noticias')}
+          />
+          {/* Botão 5: Denuncias Reportadas */}
+          <BotaoMenu
+            icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
+            texto="Denuncias Reportadas"
+            onClick={() => router.push('/denuncias-reportadas')}
+          />
+        </div>
+      </main>
 
       );
     } else {
       
       return (
 
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 space-y-6">
-        
+      <main className="flex flex-col items-center justify-start px-12 py-14 bg-gray-50">
+        <h1 className="text-h2 font-bold mt-10">Painel de Gerenciamento ADMIN MASTER</h1>
 
-        {/* Botão 1: Denúncias de Usuários */}
-        <BotaoMenu
-          icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
-          texto="Denuncias de Usuarios"
-          onClick={() => router.push('/denuncias-usuarios')} 
-        />
-
-        {/* Botão 2: Minhas Denúncias */}
-        <BotaoMenu
-          icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
-          texto="Minhas Denuncias"
-          onClick={() => router.push('/minhas-denuncias')}
-        />
-        {/* Botão 3: Minhas Interações */}
-        <BotaoMenu
-          icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
-          texto="Minhas Interações"
-          onClick={() => router.push('/interacoes')}
-        />
-        {/* Botão 4: Minhas Noticias */}
-        <BotaoMenu
-          icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
-          texto="Minhas Noticias"
-          onClick={() => router.push('/minhas-noticias')}
-        />
-        {/* Botão 5: Denuncias Reportadas */}
-        <BotaoMenu
-          icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
-          texto="Denuncias Reportadas"
-          onClick={() => router.push('/denuncias-reportadas')}
-        />
-        {/* Botão 6: admins */}
-        <BotaoMenu
-          icone={<BuildingLibraryIcon className="w-12 h-12 stroke-[2.5]" />}
-          texto="Administradores"
-          onClick={() => router.push('/admins')}
-        />
-
-      </div>
-
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {/* Botão 1: Denúncias de Usuários */}
+          <BotaoMenu
+            icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
+            texto="Denuncias de Usuarios"
+            onClick={() => router.push('/denuncias-usuarios')} 
+          />
+          {/* Botão 2: Minhas Denúncias */}
+          <BotaoMenu
+            icone={<ChatBubbleLeftIcon className="w-12 h-12 stroke-[2.5]" />} // Ícone de boia/alvo
+            texto="Minhas Denuncias"
+            onClick={() => router.push('/minhas-denuncias')}
+          />
+          {/* Botão 3: Minhas Interações */}
+          <BotaoMenu
+            icone={<ChatBubbleLeftRightIcon className="w-12 h-12 stroke-[2.5]" />}
+            texto="Minhas Interações"
+            onClick={() => router.push('/interacoes')}
+          />
+          {/* Botão 4: Minhas Noticias */}
+          <BotaoMenu
+            icone={<NewspaperIcon className="w-12 h-12 stroke-[2.5]" />}
+            texto="Minhas Noticias"
+            onClick={() => router.push('/minhas-noticias')}
+          />
+          {/* Botão 5: Denuncias Reportadas */}
+          <BotaoMenu
+            icone={<FlagIcon className="w-12 h-12 stroke-[2.5]" />}
+            texto="Denuncias Reportadas"
+            onClick={() => router.push('/denuncias-reportadas')}
+          />
+          {/* Botão 6: admins */}
+          <BotaoMenu
+            icone={<BuildingLibraryIcon className="w-12 h-12 stroke-[2.5]" />}
+            texto="Administradores"
+            onClick={() => router.push('/admins')}
+          />
+        </div>
+      </main>
      );
     }
   } 

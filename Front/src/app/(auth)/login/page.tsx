@@ -129,7 +129,7 @@ export default function Login() {
                         </div>
                     <button
                         type="submit"
-                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-semibold">
+                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-semibold cursor-pointer">
                         LOGIN
                         <ArrowRightEndOnRectangleIcon className='size-5'/>
                     </button>
