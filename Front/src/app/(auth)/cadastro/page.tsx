@@ -179,7 +179,7 @@ export default function Cadastro() {
                             onClick={() => setMostrarSenha(!mostrarSenha)}
                             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-azul-principal"
                         >
-                            {mostrarSenha ? <EyeSlashIcon className="size-5"/> : <EyeIcon className="size-5"/>}
+                            {mostrarSenha ? <EyeSlashIcon className="size-5 cursor-pointer"/> : <EyeIcon className="size-5 cursor-pointer"/>}
                         </button>
                     </div>
 
@@ -239,7 +239,7 @@ export default function Cadastro() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex items-center justify-center border border-azul-dark rounded-xl py-3 mt-4 gap-2 bg-azul-principal w-full text-white hover:bg-[#254c9b] transition font-bold shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center self-center border border-azul-dark rounded-xl py-3 mt-4 gap-2 bg-azul-principal w-60 text-white hover:bg-[#254c9b] transition font-bold shadow-md cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                         {loading ? 'CADASTRANDO...' : 'CADASTRAR'}
                         {!loading && <ArrowRightEndOnRectangleIcon className='size-5'/>}
@@ -253,8 +253,8 @@ export default function Cadastro() {
                             onChange={() => setTermosAceitos(!termosAceitos)}
                             className="w-5 h-5 accent-azul-principal cursor-pointer" 
                         />
-                        <label htmlFor="termos" className="text-sm text-gray-600 cursor-pointer select-none">
-                            Li e aceito os <a href="#" className="text-azul-principal underline hover:text-[#254c9b]">termos de uso</a>
+                        <label htmlFor="termos" className="text-sm text-gray-600 select-none">
+                            Li e aceito os <a href="#" className="text-azul-principal underline hover:text-[#254c9b] cursor-pointer">termos de uso</a>
                         </label>
                         <ShieldCheckIcon className='size-5 text-azul-principal'/>
                     </div>
