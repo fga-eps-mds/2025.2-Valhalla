@@ -158,7 +158,6 @@ export default function PaginaDenuncias() {
                                 <option value="Todas">Todas as Categorias</option>
                                 <option value="Assédio">Assédio</option>
                                 <option value="Fraude">Fraude</option>
-                                <option value="Conteúdo Impróprio">Conteúdo Impróprio</option>
                                 <option value="Infraestrutura">Infraestrutura</option>
                                 <option value="Direitos Humanos">Direitos Humanos</option>
                                 <option value="Melhorias">Melhorias</option>

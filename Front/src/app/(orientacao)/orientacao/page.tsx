@@ -20,11 +20,11 @@ export default function Orientacao() {
 
             <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               
-              {/* Botão 1: Acolhimento */}
+              {/* Botão 1: Direitos Humanos */}
               <BotaoMenu
                 icone={<UsersIcon className="w-12 h-12 fill-current" />} // Ícone de grupo
                 texto="Direitos Humanos"
-                onClick={() => router.push('/acolhimento')} 
+                onClick={() => router.push('/direitos-humanos')} 
               />
 
               {/* Botão 2: Integridade */}

@@ -72,4 +72,28 @@ export class DenunciasController {
     ) {
       return this.denunciasService.listarDenunciasPorUsuario(id, page, limit);
     }
+  
+    @Get('usuario/apoiadas/:id')
+    async listarDenunciasApoiadasPeloUsuario(
+      @Param('id', ParseIntPipe) id: number,
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+      @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+    ) {
+      return this.denunciasService.listarDenunciasApoiadasPeloUsuario(id, page, limit);
+    }
+
+    @Get('denuncias/reportadas')
+    async listarDenunciasReportadas(
+      @Request() req: AuthRequest,
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+      @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
+    ) {
+      return this.denunciasService.listarDenunciasReportadas(req.user.id, page, limit);
+    }
+
+    @Get('denuncias/top-denuncias')
+    async topDenuncias() {
+      return this.denunciasService.topDenuncias();
+    }
+    
 }

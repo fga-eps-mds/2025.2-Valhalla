@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <>
       <Navbar />
-      <main className="flex-1 w-full pt-20 bg-gray-50">{children}</main>
+      <main className="flex-1 w-full pt-16 bg-gray-50">{children}</main>
     </>
   );
 }

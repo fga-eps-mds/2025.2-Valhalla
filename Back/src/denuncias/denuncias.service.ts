@@ -170,6 +170,119 @@ export class DenunciasService{
         return { denuncias, totalDenuncias };
     }
 
+    async listarDenunciasApoiadasPeloUsuario(idUsuario: number, page: number, limit: number) {
+
+        const skip = (page - 1) * limit;
+
+        const denuncias = await this.prisma.denuncia.findMany({
+            where: {dataDelete: null, apoiosDenuncia: { some: { idUsuario } } },
+            orderBy: {id: 'desc'},
+            skip: skip,
+            take: limit,
+            select: {
+                id: true,
+                descricao: true,
+                idCategoria: true,
+                mediaSrc: true,
+                anonimato: true,
+                dataCriacao: true,
+                dataUpdate: true,
+                idUsuario: true,
+                usuario: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        mediaSrc: true,
+                    }
+                },
+                categoria: {
+                    select: {
+                        nome: true,
+                    }
+                }
+            }
+        });
+
+        const totalDenuncias = await this.prisma.denuncia.count({
+            where: {dataDelete: null, apoiosDenuncia: { some: { idUsuario } }},
+        });
+
+        return { denuncias, totalDenuncias };
+    }
+
+    async listarDenunciasReportadas(idUsuario: number, page: number, limit: number) {
+
+        const skip = (page - 1) * limit;
+
+        const denuncias = await this.prisma.denuncia.findMany({
+            where: {dataDelete: null, reportsDenuncia: { some: {} } },
+            orderBy: {id: 'desc'},
+            skip: skip,
+            take: limit,
+            select: {
+                id: true,
+                descricao: true,
+                idCategoria: true,
+                mediaSrc: true,
+                anonimato: true,
+                dataCriacao: true,
+                dataUpdate: true,
+                idUsuario: true,
+                usuario: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        mediaSrc: true,
+                    }
+                },
+                categoria: {
+                    select: {
+                        nome: true,
+                    }
+                }
+            }
+        });
+
+        const totalDenuncias = await this.prisma.denuncia.count({
+            where: {dataDelete: null, reportsDenuncia: { some: {} }},
+        });
+
+        return { denuncias, totalDenuncias };
+    }
+
+    async topDenuncias() {
+
+        const denuncias = await this.prisma.denuncia.findMany({
+            where: {dataDelete: null,  },
+            orderBy: {apoiosDenuncia: {_count: 'desc'}},
+            take: 3,
+            select: {
+                id: true,
+                descricao: true,
+                idCategoria: true,
+                mediaSrc: true,
+                anonimato: true,
+                dataCriacao: true,
+                dataUpdate: true,
+                idUsuario: true,
+                usuario: {
+                    select: {
+                        id: true,
+                        nome: true,
+                        mediaSrc: true,
+                    }
+                },
+                categoria: {
+                    select: {
+                        nome: true,
+                    }
+                }
+            }
+        });
+        return { denuncias };
+    }
+
+
     private async definirHierarquia(idDenuncia: number, idRequisitor: number, idTipo: TipoUsuario){
         
         const denuncia = await this.prisma.denuncia.findUnique({

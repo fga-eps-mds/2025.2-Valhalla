@@ -25,6 +25,7 @@ interface CardDenunciaProps {
   idDenuncia?: number;
   usuarioId?: number;
   apoioCount?: number;
+  atualizar?: () => void;
 }
 
 export default function CardDenuncia({ 
@@ -37,6 +38,7 @@ export default function CardDenuncia({
   idDenuncia, 
   usuarioId, 
   apoioCount = 0,
+  atualizar,
 }: CardDenunciaProps) {
 
   // Lógica de Anonimato
@@ -96,6 +98,8 @@ export default function CardDenuncia({
           .get(`/apoio-denuncia/contagem/${idDenuncia}`)
           .then((res) => setApoioCnt(Number(res.data.total) || 0))
           .catch(() => {});
+        
+        atualizar && atualizar();
       } else {
         throw new Error('Erro ao alternar apoio');
       }
@@ -127,6 +131,7 @@ export default function CardDenuncia({
             setReportAtivo(!!reportado);
           })
           .catch(() => {});
+        atualizar && atualizar();
       } else {
         throw new Error('Erro ao criar report');
       }
