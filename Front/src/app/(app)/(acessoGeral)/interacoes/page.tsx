@@ -52,7 +52,7 @@ export default function PaginaDenuncias() {
 
   const buscarTudo = useCallback(async () => {
     try {
-      const response = await api.get(`denuncias/usuario/apoiadas/${user.id}`);
+      const response = await api.get(`denuncias/usuario/apoiadas/${user?.id}`);
       
       const listaBruta = response.data.denuncias || response.data;
       
@@ -144,7 +144,7 @@ export default function PaginaDenuncias() {
                               <CardDenuncia
                                 key={denuncia.id}
                                 idDenuncia={denuncia.id}
-                                usuarioId={user.id}
+                                usuarioId={user?.id}
                                 nomeUsuario={denuncia.nomeUsuario}
                                 fotoUsuario={denuncia.fotoUsuario}
                                 descricao={denuncia.descricao}

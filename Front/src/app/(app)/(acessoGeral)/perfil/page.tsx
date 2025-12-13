@@ -47,10 +47,10 @@ export default function Perfil() {
             
             <div className="flex flex-col items-center mb-12">
                 <div className="w-32 h-32 rounded-full border border-gray-400 flex items-center justify-center mb-6 overflow-hidden relative bg-white">
-                    {user.mediaSrc ? (
+                    {user?.mediaSrc ? (
                         <Image 
-                            src={user.mediaSrc} 
-                            alt={`Foto de ${user.nome}`}
+                            src={user?.mediaSrc} 
+                            alt={`Foto de ${user?.nome}`}
                             fill 
                             className="object-cover"
                         />
@@ -60,10 +60,10 @@ export default function Perfil() {
                 </div>
 
                 <h1 className="text-[32px] text-texto-primario font-(--fonte-primaria) mb-1 text-center capitalize">
-                    {user.nome}
+                    {user?.nome}
                 </h1>
                 <p className="text-lg text-texto-primario font-(--fonte-primaria)">
-                    {user.email}
+                    {user?.email}
                 </p>
             </div>
 
@@ -95,7 +95,7 @@ export default function Perfil() {
                     <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
                 </button>
 
-                {user.tipo !== 'ADMINMASTER' && (
+                {user?.tipo !== 'ADMINMASTER' && (
                     <button onClick={() => setIsModalExcluirOpen(true)}
                     className="w-[190px] flex items-center justify-center px-6 py-3 mt-2 mb-2 rounded-xl bg-[#DB3C1A] text-white hover:bg-[#b02f14] transition shadow-md font-bold text-sm gap-2 border border-azul-dark cursor-pointer">
                         EXCLUIR CONTA

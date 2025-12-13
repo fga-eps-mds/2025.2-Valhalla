@@ -22,7 +22,7 @@ export default function ModalEditarPerfil({ isOpen, onClose }: ModalEditarPerfil
 
   useEffect(() => {
     if (user) {
-      setNome(user.nome || '');
+      setNome(user?.nome || '');
     }
   }, [user, isOpen]);
 
@@ -84,9 +84,9 @@ export default function ModalEditarPerfil({ isOpen, onClose }: ModalEditarPerfil
             
             {/* --- FOTO DE PERFIL (Centralizada) --- */}
             <div className="-mt-16 mb-6 relative w-32 h-32 rounded-full border-4 border-white bg-white overflow-hidden group cursor-pointer shadow-sm">
-                {user.mediaSrc ? (
+                {user?.mediaSrc ? (
                     <Image 
-                        src={user.mediaSrc} 
+                        src={user?.mediaSrc} 
                         alt="Foto" 
                         fill 
                         className="object-cover"

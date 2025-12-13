@@ -56,9 +56,9 @@ describe('UsuarioController', () => {
       await controller.deletarUsuario(mockRequest, idAlvo);
 
       expect(service.deletarUsuario).toHaveBeenCalledWith(
-        mockRequest.user.id,   // ID do Solicitante (10)
+        mockRequest.user?.id,   // ID do Solicitante (10)
         idAlvo,                // ID do Alvo (5)
-        mockRequest.user.tipo  // Tipo do Solicitante (COMUM)
+        mockRequest.user?.tipo  // Tipo do Solicitante (COMUM)
       );
     });
   });
@@ -69,9 +69,9 @@ describe('UsuarioController', () => {
       await controller.desativarUsuario(mockRequest, idAlvo);
 
       expect(service.desativarUsuario).toHaveBeenCalledWith(
-        mockRequest.user.id,
+        mockRequest.user?.id,
         idAlvo,
-        mockRequest.user.tipo
+        mockRequest.user?.tipo
       );
     });
   });
@@ -84,7 +84,7 @@ describe('UsuarioController', () => {
       await controller.editarUsuario(mockRequest, dto);
 
       expect(service.editarUsuario).toHaveBeenCalledWith(
-        mockRequest.user.id, // 10
+        mockRequest.user?.id, // 10
         dto,
         {senha: false}
       );

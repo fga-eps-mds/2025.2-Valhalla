@@ -25,7 +25,7 @@ export class CategoriasController {
     @Body() data: criarCategoriasDto,
     @Request() req: AuthRequest,
   ) {
-    return this.categoriasService.criarCategorias(data, req.user.tipo);
+    return this.categoriasService.criarCategorias(data, req.user?.tipo);
   }
 
   @Patch(':id')
@@ -34,7 +34,7 @@ export class CategoriasController {
     @Body() data: edicaoCategoriasDto,
     @Request() req: AuthRequest,
   ) {
-    return this.categoriasService.editarCategorias(id, data, req.user.tipo);
+    return this.categoriasService.editarCategorias(id, data, req.user?.tipo);
   }
 
   @Delete(':id')
@@ -42,7 +42,7 @@ export class CategoriasController {
     @Param('id', ParseIntPipe) id: number,
     @Request() req: AuthRequest,
   ) {
-    return this.categoriasService.deletarCategorias(id, req.user.tipo);
+    return this.categoriasService.deletarCategorias(id, req.user?.tipo);
   }
 
   @IsPublic()

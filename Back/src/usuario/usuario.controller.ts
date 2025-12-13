@@ -23,7 +23,7 @@ export class UsuarioController {
         @Body() data:CriacaoUsuarioDto,
         @Request() req: AuthRequest
     ){
-        return this.usuarioService.criarUsuario(data, {tipo: req.user.tipo});
+        return this.usuarioService.criarUsuario(data, {tipo: req.user?.tipo});
     }
         
     @Delete("delete-permanente/:id")
@@ -31,7 +31,7 @@ export class UsuarioController {
         @Request() req: AuthRequest,
         @Param("id", ParseIntPipe) id:number,
     ){
-        return this.usuarioService.deletarUsuario(req.user.id, id, req.user.tipo);
+        return this.usuarioService.deletarUsuario(req.user?.id, id, req.user?.tipo);
     }
 
     @Delete(":id")
@@ -39,7 +39,7 @@ export class UsuarioController {
         @Request() req: AuthRequest,
         @Param("id", ParseIntPipe) id:number,
     ){
-        return this.usuarioService.desativarUsuario(req.user.id, id, req.user.tipo);
+        return this.usuarioService.desativarUsuario(req.user?.id, id, req.user?.tipo);
     }
 
     @IsPublic()
@@ -62,7 +62,7 @@ export class UsuarioController {
         @Request() req: AuthRequest,
         @Body() updateData: EdicaoUsuarioDto,
     ) {
-        return this.usuarioService.editarUsuario(req.user.id, updateData, {senha: false});
+        return this.usuarioService.editarUsuario(req.user?.id, updateData, {senha: false});
     };
 }
 

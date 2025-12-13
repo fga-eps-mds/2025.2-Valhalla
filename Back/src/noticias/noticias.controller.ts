@@ -14,7 +14,7 @@ export class NoticiasController {
         @Request() req: AuthRequest,
         @Body() data: NoticiasDto,
     ) {
-        return this.noticiasService.criarNoticia(req.user.id, data, req.user.tipo);
+        return this.noticiasService.criarNoticia(req.user?.id, data, req.user?.tipo);
     }
 
     @Patch(':id')
@@ -23,7 +23,7 @@ export class NoticiasController {
         @Request() req: AuthRequest,
         @Body() data: EdicaoNoticiasDto,
     ) {
-        return this.noticiasService.editarNoticia(id, req.user.id, data, req.user.tipo);
+        return this.noticiasService.editarNoticia(id, req.user?.id, data, req.user?.tipo);
     }
 
     @Delete('delete-permanente/:id')
@@ -31,7 +31,7 @@ export class NoticiasController {
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
     ) {
-        return this.noticiasService.deletarNoticia(id, req.user.id, req.user.tipo);
+        return this.noticiasService.deletarNoticia(id, req.user?.id, req.user?.tipo);
     }
 
     @Delete(':id')
@@ -39,7 +39,7 @@ export class NoticiasController {
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
     ) {
-        return this.noticiasService.desativarNoticia(id, req.user.id, req.user.tipo);
+        return this.noticiasService.desativarNoticia(id, req.user?.id, req.user?.tipo);
     }
 
     @IsPublic()

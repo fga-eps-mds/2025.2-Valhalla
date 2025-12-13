@@ -60,9 +60,9 @@ describe('NoticiasController', () => {
       await controller.criarNoticia(mockRequest as any, dto);
 
       expect(service.criarNoticia).toHaveBeenCalledWith(
-        mockRequest.user.id,
+        mockRequest.user?.id,
         dto,
-        mockRequest.user.tipo
+        mockRequest.user?.tipo
       );
     });
   });
@@ -76,9 +76,9 @@ describe('NoticiasController', () => {
 
       expect(service.editarNoticia).toHaveBeenCalledWith(
         idNoticia,
-        mockRequest.user.id,
+        mockRequest.user?.id,
         dto,
-        mockRequest.user.tipo
+        mockRequest.user?.tipo
       );
     });
   });
@@ -91,8 +91,8 @@ describe('NoticiasController', () => {
 
       expect(service.deletarNoticia).toHaveBeenCalledWith(
         idNoticia,
-        mockRequest.user.id,
-        mockRequest.user.tipo
+        mockRequest.user?.id,
+        mockRequest.user?.tipo
       );
     });
   });
@@ -105,8 +105,8 @@ describe('NoticiasController', () => {
 
       expect(service.desativarNoticia).toHaveBeenCalledWith(
         idNoticia,
-        mockRequest.user.id,
-        mockRequest.user.tipo
+        mockRequest.user?.id,
+        mockRequest.user?.tipo
       );
     });
   });

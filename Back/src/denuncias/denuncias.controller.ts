@@ -17,7 +17,7 @@ export class DenunciasController {
       @Request() req: AuthRequest,
       @Body() data: DenunciaDto
     ) {
-        return this.denunciasService.criarDenuncia(req.user.id, data);
+        return this.denunciasService.criarDenuncia(req.user?.id, data);
     }
 
     @Patch(':id')
@@ -26,7 +26,7 @@ export class DenunciasController {
       @Request() req: AuthRequest,
       @Body() data: edicaoDenunciaDto,
     ) {
-        return this.denunciasService.editarDenuncia(id, req.user.id, data);
+        return this.denunciasService.editarDenuncia(id, req.user?.id, data);
     }
 
     @Delete('delete-permanente/:id')
@@ -34,7 +34,7 @@ export class DenunciasController {
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
     ) {
-        return this.denunciasService.deletarDenuncia(id, req.user.id, req.user.tipo);
+        return this.denunciasService.deletarDenuncia(id, req.user?.id, req.user?.tipo);
     }
 
     @Delete(':id')
@@ -42,7 +42,7 @@ export class DenunciasController {
       @Param('id', ParseIntPipe) id: number,
       @Request() req: AuthRequest,
     ) {
-        return this.denunciasService.desativarDenuncia(id, req.user.id, req.user.tipo);
+        return this.denunciasService.desativarDenuncia(id, req.user?.id, req.user?.tipo);
     }
     
     @IsPublic()
@@ -88,7 +88,7 @@ export class DenunciasController {
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
       @Query('limit', new DefaultValuePipe(15), ParseIntPipe) limit: number,
     ) {
-      return this.denunciasService.listarDenunciasReportadas(req.user.id, page, limit);
+      return this.denunciasService.listarDenunciasReportadas(req.user?.id, page, limit);
     }
 
     @Get('denuncias/top-denuncias')

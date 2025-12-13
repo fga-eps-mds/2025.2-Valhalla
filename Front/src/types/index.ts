@@ -9,10 +9,16 @@ export interface Noticia {
   mediaSrc: string | null;  
   idUsuario: number;        
   dataCriacao: string;      
-  
-  
   usuario?: {
     nome: string;
     mediaSrc: string | null;
   };
 }
+
+export interface Usuario {
+    id: number;
+    nome: string;
+    email: string;
+    tipo: TipoUsuario;
+    mediaSrc: string | null;
+};
