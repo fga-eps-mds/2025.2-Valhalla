@@ -1,0 +1,42 @@
+name: Integração Contínua (Valhalla)
+
+on:
+  push:
+    branches: [ "main", "master", "develop", "feature/**" ]
+  pull_request:
+    branches: [ "main", "master" ] 
+
+jobs:
+  verificacao-geral:
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Instalar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' 
+
+    - name: (Back) Instalar dependências
+      working-directory: ./Back 
+      run: npm ci 
+
+    - name: (Back) Gerar Cliente Prisma
+      working-directory: ./Back
+      run: npx prisma generate 
+
+    - name: (Back) Verificar Compilação (Build)
+      working-directory: ./Back
+      run: npm run build 
+
+
+    - name: (Front) Instalar dependências
+      working-directory: ./Front
+      run: npm ci
+
+    - name: (Front) Verificar Compilação (Build)
+      working-directory: ./Front
+      run: npm run build 
+      
