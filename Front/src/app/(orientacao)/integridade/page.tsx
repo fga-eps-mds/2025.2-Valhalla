@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Image from "next/image";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 interface LinkCardProps {
   href: string;
@@ -62,6 +64,15 @@ export default function IntegridadePage() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+
+      <div className="max-w-7xl pt-6 mx-auto w-full flex items-center justify-between">
+          <div className="flex items-center gap-4">
+              <Link href="/orientacao" className="p-2 rounded-full hover:bg-gray-200 transition">
+                  <ArrowLeftIcon className="w-6 h-6 text-azul-dark" />
+              </Link>
+          </div>
+      </div>
+
       <main className="max-w-6xl mx-auto">
         
         <header className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">

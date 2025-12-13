@@ -176,7 +176,7 @@ export default function GerenciarAdmins() {
         <div className="min-h-screen bg-gray-50 p-8 flex flex-col gap-8">
             <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Link href="/dashboard" className="p-2 rounded-full hover:bg-gray-200 transition">
+                    <Link href="/gerencia" className="p-2 rounded-full hover:bg-gray-200 transition">
                         <ArrowLeftIcon className="w-6 h-6 text-azul-dark" />
                     </Link>
                     <h1 className="text-3xl font-bold text-azul-dark">Gestão de Administradores</h1>

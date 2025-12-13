@@ -1,44 +1,194 @@
-import Link from 'next/link';
-import { WrenchScrewdriverIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
+'use client';
 
-interface EmConstrucaoProps {
-  titulo?: string;
-  mensagem?: string;
-  voltarPara?: string;
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from 'sonner';
+import api from "@/utils/api";
+import CardDenuncia from "@/components/ui/cardDenunciaGerencia";
+import ModalExcluirDenunciaSoft from "@/components/modais/modalExcluirDenunciaSoft";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
+
+interface DenunciaBackend {
+  id: number;
+  descricao: string;
+  idCategoria: number;
+  mediaSrc: string | null;
+  anonimato: boolean;
+  dataCriacao: string;
+  usuario: {
+    nome: string;
+    mediaSrc: string | null;
+  };
+  categoria: {
+    nome: string;
+  };
 }
 
-export default function EmConstrucao({ 
-  titulo = "Página em Construção", 
-  mensagem = "Estamos trabalhando duro para trazer novidades nesta seção. Volte em breve!",
-  voltarPara = "/"
-}: EmConstrucaoProps) {
-  return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center bg-gray-50">
-      
-      {/* Ícone Animado */}
-      <div className="bg-white p-6 rounded-full shadow-lg mb-6 animate-pulse">
-        <WrenchScrewdriverIcon className="w-16 h-16 text-azul-principal" />
-      </div>
+type Denuncia = {
+  id: number;
+  nomeUsuario: string;
+  fotoUsuario?: string | null;
+  descricao: string;
+  anonimato: boolean;
+  categoria: string;
+  data: string;
+};
 
-      {/* Título */}
-      <h1 className="text-3xl md:text-4xl font-bold text-azul-principal mb-4">
-        {titulo}
-      </h1>
+export default function Gerencia() {
+    
+  const { user } = useAuth();
+  const router = useRouter();
+  
+  const [listagemDenuncias, setListagemDenuncias] = useState<Denuncia[]>([]);
+  const [totalDePaginas, setTotalDePaginas] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limite, setLimite] = useState(20);
 
-      {/* Descrição */}
-      <p className="text-gray-600 text-lg max-w-md mb-8 leading-relaxed">
-        {mensagem}
-      </p>
+  const [isLoading, setIsloading] = useState(false);
 
-      {/* Botão de Voltar */}
-      <Link 
-        href={voltarPara}
-        className="flex items-center gap-2 px-6 py-3 bg-azul-principal text-white rounded-full hover:bg-azul-hover transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1"
-      >
-        <ArrowLeftIcon className="w-5 h-5" />
-        <span>Voltar ao Início</span>
-      </Link>
+  const [isModalExcluirOpen, setIsModalExcluirOpen] = useState(false);
+  const [selectedDenunciaId, setSelectedDenunciaId] = useState<number | null>(null);
 
-    </div>
-  );
+  const [isModalEditarOpen, setIsModalEditarOpen] = useState(false);
+  const [selectedDenuncia, setSelectedDenuncia] = useState<Denuncia | null>(null);
+
+  useEffect(() => {
+    const buscarDenuncias = async () => {
+      try {
+        setIsloading(true);
+
+        const response = await api.get(`/denuncias/denuncias/reportadas?page=${currentPage}&limit=${limite}`);
+
+        const denunciasFormatadas: Denuncia[] = response.data.denuncias.map((denuncia: DenunciaBackend) => ({
+          id: denuncia.id,
+          nomeUsuario: denuncia.usuario?.nome,
+          fotoUsuario: denuncia.usuario?.mediaSrc,
+          descricao: denuncia.descricao,
+          anonimato: denuncia.anonimato,
+          categoria: denuncia.categoria.nome,
+          data: new Date(denuncia.dataCriacao).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          }),
+        }));
+
+        setListagemDenuncias(denunciasFormatadas);
+        const totalDeItens = response.data.totalDenuncias;
+        setTotalDePaginas(Math.ceil(totalDeItens / limite));
+
+      } catch (error) {
+        console.error("Erro ao buscar denúncias:", error);
+        toast.error("Erro ao buscar denúncias.");
+      } finally {
+        setIsloading(false);
+      }
+    }
+
+    buscarDenuncias();
+  }, [currentPage, limite, user]);
+
+return (
+        <main>
+          {isLoading ? (
+                  <div className="py-12 text-center">
+                    <div className="max-w-7xl pt-8 mx-auto w-full flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                          <Link href="/gerencia" className="p-2 rounded-full hover:bg-gray-200 transition">
+                              <ArrowLeftIcon className="w-6 h-6 text-azul-dark" />
+                          </Link>
+                      </div>
+                    </div>
+                    <p className="text-gray-500 text-lg">Carregando...</p>
+                  </div>
+                ) : (
+                  <>
+                    <section>
+                      <div className="container mx-auto max-w-7xl p-4 md:p-8">
+                    <div className="max-w-7xl pt-8 mx-auto w-full flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                          <Link href="/gerencia" className="p-2 rounded-full hover:bg-gray-200 transition">
+                              <ArrowLeftIcon className="w-6 h-6 text-azul-dark" />
+                          </Link>
+                      </div>
+                    </div>
+                        <div className="grid grid-cols-1 pt-8 gap-4 md:gap-6">
+                          {listagemDenuncias.length > 0 ? (
+                            listagemDenuncias.map(denuncia => {
+                              return (
+                                  <CardDenuncia
+                                    key={denuncia.id}
+                                    id={denuncia.id}
+                                    nomeUsuario={denuncia.nomeUsuario}
+                                    fotoUsuario={denuncia.fotoUsuario}
+                                    descricao={denuncia.descricao}
+                                    anonimato={denuncia.anonimato}
+                                    categoria={denuncia.categoria}
+                                    data={denuncia.data}
+                                    onDelete={(id) => {
+                                      setSelectedDenunciaId(id);
+                                      setIsModalExcluirOpen(true);
+                                    }}
+                                    onEdit={(id) => {
+                                      const found = listagemDenuncias.find(d => d.id === id) || null;
+                                      setSelectedDenuncia(found);
+                                      setIsModalEditarOpen(true);
+                                    }}
+                                  />
+                              );
+                            })
+                          ) : (
+                            <p className="col-span-full text-center text-gray-500 text-lg">
+                              Ops! Nenhuma Denuncia foi encontrada.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </section>
+                    <section className="flex justify-center items-center space-x-2 py-8">
+                      
+                      {/* Botão "Anterior" */}
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                      >
+                        Anterior
+                      </button>
+                      {/* Botões de Número */}
+                      {Array.from({ length: totalDePaginas }, (_, i) => i + 1).map(pageNumber => (
+                        <button
+                          key={pageNumber}
+                          onClick={() => setCurrentPage(pageNumber)}
+                          className={`px-4 py-2 rounded shadow-sm ${
+                            currentPage === pageNumber 
+                            ? 'bg-amarelo text-white' 
+                            : 'bg-white text-black' 
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+
+                      {/* Botão "Próximo" */}
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalDePaginas))}
+                        disabled={currentPage === totalDePaginas}
+                        className="px-4 py-2 rounded bg-white text-black shadow-sm disabled:opacity-50"
+                      >
+                        Próximo
+                      </button>
+                    </section>
+                    <ModalExcluirDenunciaSoft 
+                            isOpen={isModalExcluirOpen} 
+                            onClose={() => setIsModalExcluirOpen(false)}
+                            denunciaId={selectedDenunciaId}
+                            onDeleted={(id) => setListagemDenuncias(prev => prev.filter(d => d.id !== id))}
+                          />
+                  </>
+                )}
+        </main>
+      );
 }

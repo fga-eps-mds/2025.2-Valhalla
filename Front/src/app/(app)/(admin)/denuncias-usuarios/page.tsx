@@ -7,6 +7,8 @@ import { toast } from 'sonner';
 import api from "@/utils/api";
 import CardDenuncia from "@/components/ui/cardDenunciaGerencia";
 import ModalExcluirDenunciaSoft from "@/components/modais/modalExcluirDenunciaSoft";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 interface DenunciaBackend {
   id: number;
@@ -92,13 +94,27 @@ return (
         <main>
           {isLoading ? (
                   <div className="py-12 text-center">
+                    <div className="max-w-7xl pt-8 mx-auto w-full flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                          <Link href="/gerencia" className="p-2 rounded-full hover:bg-gray-200 transition">
+                              <ArrowLeftIcon className="w-6 h-6 text-azul-dark" />
+                          </Link>
+                      </div>
+                    </div>
                     <p className="text-gray-500 text-lg">Carregando...</p>
                   </div>
                 ) : (
                   <>
                     <section>
                       <div className="container mx-auto max-w-7xl p-4 md:p-8">
-                        <div className="grid grid-cols-1 gap-4 md:gap-6">
+                        <div className="max-w-7xl pt-8 mx-auto w-full flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                              <Link href="/gerencia" className="p-2 rounded-full hover:bg-gray-200 transition">
+                                  <ArrowLeftIcon className="w-6 h-6 text-azul-dark" />
+                              </Link>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 pt-8 gap-4 md:gap-6">
                           {listagemDenuncias.length > 0 ? (
                             listagemDenuncias.map(denuncia => {
                               return (
