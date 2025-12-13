@@ -2,7 +2,7 @@ name: Integração Contínua (Valhalla)
 
 on:
   push:
-    branches: [ "main", "master", "develop" ]
+    branches: [ "main", "master", "develop", "feature/ci" ]
   pull_request:
     branches: [ "main", "master" ] 
 
