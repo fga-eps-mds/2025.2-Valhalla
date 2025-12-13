@@ -1,28 +1,189 @@
-# template-repository - Branch Main
+# 2025.2 Valhalla — Guardiões da Universidade
 
-Template de Repositório para a matéria de Métodos de Desenvolvimento de Software lecionado pelo professor Ricardo Ajax.
+![Logo](./Front/public/logos/logo-navbar.svg)
 
-Essa Branch deve ser usada exclusivamente para a versão de produção dos softwares da equipe.
+## Sobre
 
-O repositório conta com mais 3 branchs:
-* docs: Usada para armazenar a documentação do projeto.
-* developer: usada como um intermediário antes do código chegar realmente para produção. É o ambiente ideal para realizar os últimos testes antes das apresentações.
-* gh-pages: Local dos arquivos estáticos de deploy da documentação. (Para deploy da documentação, consultar seu monitor)
+O **Guardiões da Universidade**, desenvolvido pelo grupo **Valhalla** no 2° semestre de 2025 na disciplina *Métodos de Desenvolvimento de Software*, tem como objetivo oferecer um **canal de denúncias e orientação** para a comunidade acadêmica da *Universidade de Brasília (UnB)*.  
+A plataforma permite que alunos e servidores relatem situações, conheçam os procedimentos oficiais e acompanhem informações sobre demandas da universidade.
 
-## Especificações Técnicas do Repositório
 
-Este repositório é planejado e estruturado para que seja realizado documentações de software. Caso haja outra necessidades, deve-se consultar a professora.
+### ⚠️ Observação Importante
 
-Atualmente se usa a ferramenta MkDocs para gerar sua documentação baseado nos seus arquivos markdowns, vocês podem achar mais instruções sobre o MkDocs através do link da documentação da ferramenta: [https://www.mkdocs.org/](https://www.mkdocs.org/).
+Por questões legais, a UnB **não pode receber denúncias por plataformas não oficiais** regulamentadas pelo Governo Federal.  
+Dessa forma, o Guardiões da Universidade **não registra denúncias oficialmente**, atuando apenas como um **meio de apoio e desburocratização**. Esse também foi o motivo da escolha do nome do projeto.
 
-Também é usado uma "sub-ferramenta" do MkDocs para sua estilização, o Material Theme, que pode ser consultado através do link: [https://squidfunk.github.io/mkdocs-material/](https://squidfunk.github.io/mkdocs-material/).
+---
 
-Este repositório também conta com uma pipeline de automatização de deploy do seu conteúdo MkDocs, para que a cada commit feito na main, a pipeline gere uma versão atualizada da sua documentação em minutos. Vale ressaltar que é importante realizar uma configuração para que tudo funcione da forma correta, as instruções são as seguintes:
+<div align="center">
 
-* Acesse as configurações do repositório;
-* Procure a aba de "Pages"
-* Em "Source" escolha a opção "Deploy from a branch";
-* Em "Branch" escolha "gh-pages";
-* Clique em salvar e pronto;
+[![Acessar Documentação](https://img.shields.io/badge/Acessar_Documentação-3060BF?style=for-the-badge&logo=github&logoColor=white)](https://fga-eps-mds.github.io/2025.2-Valhalla-Docs/)
 
-Após essas etapas de configuração, o seu GitPages deve funcionar normalmente.
+</div>
+
+
+--- 
+## Tecnologias Utilizadas
+* **Front-end:** React, TypeScript, TailwindCSS
+* **Back-end:** Node.js, TypeScript
+* **Banco de Dados:** PostgreSQL, ORM Prisma
+* **Outras Ferramentas:** Jest
+
+---
+## Instalação
+
+Para rodar o projeto localmente, siga os passos abaixo:
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/fga-eps-mds/2025.2-Valhalla.git
+    ```
+2.  **Navegue até o diretório do projeto:**
+    ```bash
+    cd 2025.2-Valhalla
+    ```
+3.  **Instale as dependências do Front-end:**
+    ```bash
+    cd Front
+    npm install
+    ```
+4.  **Instale as dependências do Back-end:**
+    ```bash
+    cd ../Back
+    npm install
+    ```
+5.  **Configure as variáveis de ambiente:**
+    Crie um arquivo `.env` na pasta `Back` e adicione as seguintes variáveis:
+    ```
+    DATABASE_URL="postgresql://user:password@host:port/database"
+    JWT_SECRET="your_jwt_secret"
+    ```
+    Substitua `user`, `password`, `host`, `port` e `database` pelas suas credenciais do PostgreSQL. `your_jwt_secret` deve ser uma string segura e aleatória.
+
+6.  **Execute as migrações do banco de dados:**
+    ```bash
+    cd Back
+    npx prisma migrate dev --name init
+    ```
+7.  **Inicie o Back-end:**
+    ```bash
+    npm run start
+    ou
+    npm run start:dev
+    ```
+8.  **Inicie o Front-end:**
+    Abra um novo terminal, navegue até a pasta `Front` e execute:
+    ```bash
+    npm run dev
+    ```
+
+O aplicativo estará disponível em `http://localhost:3000` (ou outra porta, dependendo da configuração do seu ambiente).
+
+---
+## Testes
+O backend utiliza **Jest** para a execução de testes automatizados, garantindo a qualidade e confiabilidade do código.
+Para rodar os testes no projeto, siga os passos abaixo:
+
+1. **Navegue ao diretório do projeto**
+    ```bash
+    cd ../back
+    ```
+2. **Execução dos testes**
+    ```bash
+    # Executa todos os testes
+    npm run test
+
+    # Executa os testes em modo watch
+    npm run test:watch
+
+    # Gera relatório de cobertura de testes
+    npm run test:cov
+    ```
+3. **Relatório em csv**
+   Gera um relatório na pasta `../back/coverage/planilha-cobertura.csv`
+    ```bash
+    # Geração do relatório de testes em .csv
+    node gerar-csv.js
+    ```
+---
+
+## Equipe de Desenvolvimento
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="./Front/public/devs/antonio.jpeg" width="100"><br>
+        <strong>Antonio Lucas</strong><br>241025597<br>
+        <a href="https://github.com/Devv-Antonio">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/diniz.jpeg" width="100"><br>
+        <strong>Gabriel Diniz</strong><br>241025630<br>
+        <a href="https://github.com/GabrielDiniz12">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/Bonifacio.jpg" width="100"><br>
+        <strong>Gustavo Bonifácio</strong><br>241025659<br>
+        <a href="https://github.com/Gustavo27033">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/julia.jpg" width="100"><br>
+        <strong>Julia Gabriella</strong><br>241036142<br>
+        <a href="https://github.com/juliagabriellafs">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/laura.jpg" width="100"><br>
+        <strong>Laura Rogelin</strong><br>222006928<br>
+        <a href="https://github.com/laurarogelin">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="./Front/public/devs/gepeto.jpg" width="100"><br>
+        <strong>Lucas Alves</strong><br>241025541<br>
+        <a href="https://github.com/xLucasMelo">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/luquinhas.jpg" width="100"><br>
+        <strong>Lucas Oliveira</strong><br>241011386<br>
+        <a href="https://github.com/dev-LucasDpaula">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/americo.jpeg" width="100"><br>
+        <strong>Pedro Henrique</strong><br>241025980<br>
+        <a href="https://github.com/dev-americo">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/ian.jpeg" width="100"><br>
+        <strong>Pedro Ian</strong><br>241025837<br>
+        <a href="https://github.com/pedroiaan">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+      <td align="center">
+        <img src="./Front/public/devs/pedrin.jpg" width="100"><br>
+        <strong>Pedro Lucas</strong><br>241025710<br>
+        <a href="https://github.com/Pwdrinho">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="28">
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
