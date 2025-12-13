@@ -80,6 +80,32 @@ Para rodar o projeto localmente, siga os passos abaixo:
 O aplicativo estará disponível em `http://localhost:3000` (ou outra porta, dependendo da configuração do seu ambiente).
 
 ---
+## Testes
+O backend utiliza **Jest** para a execução de testes automatizados, garantindo a qualidade e confiabilidade do código.
+Para rodar os testes no projeto, siga os passos abaixo:
+
+1. **Navegue ao diretório do projeto**
+    ```bash
+    cd ../back
+    ```
+2. **Execução dos testes**
+    ```bash
+    # Executa todos os testes
+    npm run test
+
+    # Executa os testes em modo watch
+    npm run test:watch
+
+    # Gera relatório de cobertura de testes
+    npm run test:cov
+    ```
+3. **Relatório em csv**
+   Gera um relatório na pasta `../back/coverage/planilha-cobertura.csv`
+    ```bash
+    # Geração do relatório de testes em .csv
+    node gerar-csv.js
+    ```
+---
 
 ## Equipe de Desenvolvimento
 
