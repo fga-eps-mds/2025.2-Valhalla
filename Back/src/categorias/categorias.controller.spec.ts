@@ -46,7 +46,7 @@ describe('CategoriasController', () => {
       const dto: criarCategoriasDto = { nome: 'Nova' };
       await controller.criarCategorias(dto, mockRequest);
 
-      expect(service.criarCategorias).toHaveBeenCalledWith(dto, mockRequest.user.tipo);
+      expect(service.criarCategorias).toHaveBeenCalledWith(dto, mockRequest.user?.tipo);
     });
   });
 
@@ -55,7 +55,7 @@ describe('CategoriasController', () => {
       const dto: edicaoCategoriasDto = { nome: 'Editado' };
       await controller.editarCategoria(1, dto, mockRequest);
 
-      expect(service.editarCategorias).toHaveBeenCalledWith(1, dto, mockRequest.user.tipo);
+      expect(service.editarCategorias).toHaveBeenCalledWith(1, dto, mockRequest.user?.tipo);
     });
   });
 
@@ -63,7 +63,7 @@ describe('CategoriasController', () => {
     it('deve chamar service com ID e tipo do usuário', async () => {
       await controller.deletarCategoria(1, mockRequest);
 
-      expect(service.deletarCategorias).toHaveBeenCalledWith(1, mockRequest.user.tipo);
+      expect(service.deletarCategorias).toHaveBeenCalledWith(1, mockRequest.user?.tipo);
     });
   });
 

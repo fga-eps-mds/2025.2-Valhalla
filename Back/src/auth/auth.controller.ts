@@ -24,7 +24,7 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Patch('mudar-senha')
     async mudarSenha(@Req() req, @Body() MudarSenhaDto: MudarSenhaDto){
-        return this.authService.mudarSenha(req.user.id, MudarSenhaDto.senhaAntiga, MudarSenhaDto.senhaNova);
+        return this.authService.mudarSenha(req.user?.id, MudarSenhaDto.senhaAntiga, MudarSenhaDto.senhaNova);
     }
 
     @IsPublic() 

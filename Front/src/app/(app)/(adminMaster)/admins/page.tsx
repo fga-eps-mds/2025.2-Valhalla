@@ -78,7 +78,7 @@ export default function GerenciarAdmins() {
                 return;
             }
 
-            const adminsFiltrados = listaBruta.filter((user: UsuarioAdmin) => user.tipo === 'ADMIN');
+            const adminsFiltrados = listaBruta.filter((user: UsuarioAdmin) => user?.tipo === 'ADMIN');
             
             setListaAdmins(adminsFiltrados);
 

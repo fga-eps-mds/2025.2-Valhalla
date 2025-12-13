@@ -157,7 +157,7 @@ export default function PaginaDenuncias() {
                             >
                                 <option value="Todas">Todas as Categorias</option>
                                 <option value="Assédio">Assédio</option>
-                                <option value="Fraude">Fraude</option>
+                                <option value="Acolhimento">Acolhimento</option>
                                 <option value="Infraestrutura">Infraestrutura</option>
                                 <option value="Direitos Humanos">Direitos Humanos</option>
                                 <option value="Melhorias">Melhorias</option>
@@ -173,7 +173,7 @@ export default function PaginaDenuncias() {
                               <CardDenuncia
                                 key={denuncia.id}
                                 idDenuncia={denuncia.id}
-                                usuarioId={user.id}
+                                usuarioId={user?.id}
                                 nomeUsuario={denuncia.nomeUsuario}
                                 fotoUsuario={denuncia.fotoUsuario}
                                 descricao={denuncia.descricao}

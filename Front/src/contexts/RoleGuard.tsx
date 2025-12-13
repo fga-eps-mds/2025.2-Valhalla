@@ -53,7 +53,7 @@ export default function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
         return;
       }
 
-    if (allowedRoles && user && !allowedRoles.includes(user.tipo)) {
+    if (allowedRoles && user && !allowedRoles.includes(user?.tipo)) {
 
         toast.error('Acesso Negado!', {
         description: 'Você não tem permissão para acessar essa área.',
@@ -72,7 +72,7 @@ export default function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
     );
   }
 
-  if (allowedRoles && user && !allowedRoles.includes(user.tipo)) {
+  if (allowedRoles && user && !allowedRoles.includes(user?.tipo)) {
       return null;
   }
 

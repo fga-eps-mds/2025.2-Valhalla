@@ -23,7 +23,7 @@ export default function ModalExcluirConta({ isOpen, onClose }: ModalExcluirConta
 
     setLoading(true);
     try {
-      await excluirContaSoft(user.id);
+      await excluirContaSoft(user?.id);
       
       toast.success("Sua conta foi excluída com sucesso.");
       
